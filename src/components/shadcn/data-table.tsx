@@ -324,8 +324,6 @@ export function DataTable({
           <SelectContent>
             <SelectItem value="person-id">By Student</SelectItem>
             <SelectItem value="groups-id">By Group</SelectItem>
-            <SelectItem value="key-personnel">Cheta budet</SelectItem>
-            <SelectItem value="focus-documents">Cheta tozhe budet</SelectItem>
           </SelectContent>
         </Select>
         <TabsList className="**:data-[slot=badge]:bg-muted-foreground/30 hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:px-1 @4xl/main:flex">
@@ -333,10 +331,6 @@ export function DataTable({
           <TabsTrigger value="groups-id">
             By Group
           </TabsTrigger>
-          <TabsTrigger value="key-personnel">
-            Cheta budet
-          </TabsTrigger>
-          <TabsTrigger value="focus-documents">Cheta tozhe budet</TabsTrigger>
         </TabsList>
         <div className="flex items-center gap-2">
           <DropdownMenu>
@@ -509,7 +503,7 @@ export function DataTable({
       </TabsContent>
       <TabsContent
         value="groups-id"
-        className="flex flex-col px-4 lg:px-6"
+        className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
       >
         <div className="overflow-hidden rounded-lg border">
           <DndContext
@@ -639,12 +633,6 @@ export function DataTable({
             </div>
           </div>
         </div>
-      </TabsContent>
-      <TabsContent value="key-personnel" className="flex flex-col px-4 lg:px-6">
-        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
-      </TabsContent>
-      <TabsContent value="focus-documents" className="flex flex-col px-4 lg:px-6">
-        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
       </TabsContent>
     </Tabs>
   )

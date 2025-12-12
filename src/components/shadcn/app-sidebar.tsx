@@ -2,19 +2,19 @@ import * as React from "react"
 import { useTheme } from "@/lib/useTheme"
 import {
   IconAppWindow,
-  IconBrandTelegram,
+  // IconBrandTelegram,
   IconHelp,
   IconMap,
-  IconMoodTongueWink,
+  // IconMoodTongueWink,
   IconPaw,
   IconSettings,
   IconUsersGroup,
 } from "@tabler/icons-react"
 
 // import { NavDocuments } from "@/components/nav-documents"
-import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
+import { NavMain } from "@/components/shadcn/nav-main"
+import { NavSecondary } from "@/components/shadcn/nav-secondary"
+import { NavUser } from "@/components/shadcn/nav-user"
 import {
   Sidebar,
   SidebarContent,
@@ -28,11 +28,11 @@ import { useNavigate } from "react-router-dom"
 
 const data = {
   navMain: [
-    {
-      title: "DevJokes",
-      url: "https://github.com/shrutikapoor08/devjoke",
-      icon: IconMoodTongueWink,
-    },
+    // {
+    //   title: "DevJokes",
+    //   url: "https://github.com/shrutikapoor08/devjoke",
+    //   icon: IconMoodTongueWink,
+    // },
     {
       title: "AITU Map",
       url: "https://yuujiso.github.io/aitumap/",
@@ -48,11 +48,11 @@ const data = {
       url: "https://youtu.be/dQw4w9WgXcQ?si=cs98hgCR45G0Vjlb",
       icon: IconAppWindow,
     },
-    {
-      title: "My TG Channel",
-      url: "https://t.me/safemys",
-      icon: IconBrandTelegram,
-    },
+    // {
+    //   title: "My TG Channel",
+    //   url: "https://t.me/safemys",
+    //   icon: IconBrandTelegram,
+    // },
   ],
   navSecondary: [
     {

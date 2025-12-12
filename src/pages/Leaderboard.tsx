@@ -3,11 +3,11 @@ import { useEffect, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 // import type { User } from '@supabase/supabase-js'
 import { useUser } from '@/hooks/useUser'
-import { DataTable } from '@/components/data-table'
-import { AppSidebar } from "@/components/app-sidebar"
-// import { ChartAreaInteractive } from "@/components/chart-area-interactive"
-import { SectionCards } from "@/components/section-cards"
-import { SiteHeader } from "@/components/site-header"
+import { DataTable } from '@/components/shadcn/data-table'
+import { AppSidebar } from "@/components/shadcn/app-sidebar"
+// import { ChartAreaInteractive } from "@/components/shadcn/chart-area-interactive"
+// import { SectionCards } from "@/components/shadcn/section-cards"
+import { SiteHeader } from "@/components/shadcn/site-header"
 import { z } from 'zod';
 import {
   SidebarInset,
@@ -231,7 +231,7 @@ export default function Leaderboard() {
                 </div>
               )}
 
-              <SectionCards />
+              {/* <SectionCards /> */}
               
               {/* <div className="px-4 lg:px-6">
                 <ChartAreaInteractive />

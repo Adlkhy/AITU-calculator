@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import { useUser } from './hooks/useUser';
 import FinalGrades from './pages/FinalGrades';
 import TermOfService from './pages/TermOfService';
+import AI from './pages/AI';
 
 function App() {
   const { user, loading, session } = useUser();
@@ -29,6 +30,11 @@ function App() {
           <Route path="/" element={<MainCalculator />} />
           <Route path="/login" element={<Login />} />
           <Route path="/term-of-service" element={<TermOfService />} />
+          <Route path="/ai" element={
+            <ProtectedRoute>
+              <AI />
+            </ProtectedRoute>}
+          />
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/leaderboard" element={
             <ProtectedRoute>
