@@ -1,4 +1,4 @@
-import { Moon, Sun, Zap, Flame, TreePine } from "lucide-react" //icons
+import { Moon, Sun, Flame, TreePine } from "lucide-react" //icons
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -28,13 +28,6 @@ export function ModeToggle() {
               ? "scale-100 rotate-0" 
               : "scale-0 rotate-90"
           }`} />
-          
-          {/* Cyberpunk theme icon */}
-          <Zap className={`absolute h-[1.2rem] w-[1.2rem] transition-all ${
-            theme === "cyberpunk" 
-              ? "scale-100 rotate-0" 
-              : "scale-0 rotate-90"
-          }`} />
 
           {/* Nature theme icon */}
           <TreePine className={`absolute h-[1.2rem] w-[1.2rem] transition-all ${
@@ -45,7 +38,7 @@ export function ModeToggle() {
           
           {/* Amber themes icon */}
           <Flame className={`absolute h-[1.2rem] w-[1.2rem] transition-all ${
-            theme === "amber" || theme === "amethyst" 
+            theme === "amethyst" 
               ? "scale-100 rotate-0" 
               : "scale-0 rotate-90"
           }`} />
@@ -55,19 +48,13 @@ export function ModeToggle() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
+          VioletBloom
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("cyberpunk")}>
-          Cyberpunk
-        </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("nature")}>
           Nature
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("amber")}>
-          Amber
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("amethyst")}>
           Amethyst

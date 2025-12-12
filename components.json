@@ -18,5 +18,7 @@
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
-  "registries": {}
+  "registries": {
+    "@paceui-ui": "https://ui.paceui.com/r/{name}.json"
+  }
 }

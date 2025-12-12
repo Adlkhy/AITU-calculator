@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { useUser } from '@/hooks/useUser'
 import { DataTable } from '@/components/shadcn/data-table'
 import { AppSidebar } from "@/components/shadcn/app-sidebar"
+import { DotLoader } from '@/components/shadcn/gsap/dot-loader'
 // import { ChartAreaInteractive } from "@/components/shadcn/chart-area-interactive"
 // import { SectionCards } from "@/components/shadcn/section-cards"
 import { SiteHeader } from "@/components/shadcn/site-header"
@@ -159,6 +160,24 @@ export default function Leaderboard() {
   // Enhanced: Get current user's rank and stats
   const currentUserRank = leaderboardData.find(item => item.isCurrentUser)?.id || 0;
   const currentUserAverage = leaderboardData.find(item => item.isCurrentUser)?.grade || '0%';
+  const game = [
+    [14, 7, 0, 8, 6, 13, 20],
+    [14, 7, 13, 20, 16, 27, 21],
+    [14, 20, 27, 21, 34, 24, 28],
+    [27, 21, 34, 28, 41, 32, 35],
+    [34, 28, 41, 35, 48, 40, 42],
+    [34, 28, 41, 35, 48, 42, 46],
+    [34, 28, 41, 35, 48, 42, 38],
+    [34, 28, 41, 35, 48, 30, 21],
+    [34, 28, 41, 48, 21, 22, 14],
+    [34, 28, 41, 21, 14, 16, 27],
+    [34, 28, 21, 14, 10, 20, 27],
+    [28, 21, 14, 4, 13, 20, 27],
+    [28, 21, 14, 12, 6, 13, 20],
+    [28, 21, 14, 6, 13, 20, 11],
+    [28, 21, 14, 6, 13, 20, 10],
+    [14, 6, 13, 20, 9, 7, 21],
+  ];
 
   if (isLoading) {
     return (
@@ -174,9 +193,16 @@ export default function Leaderboard() {
         <SidebarInset>
           <SiteHeader />
           <div className="min-h-screen flex items-center justify-center">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-              <p className="mt-4 text-foreground">Loading leaderboard... let's see where you at</p>
+            <div className="text-center flex items-center gap-5 rounded px-4 py-3">
+              <DotLoader 
+                frames={game}
+                className='gap-0.5'
+                color="primary"
+                duration={150}
+                isPlaying={true}
+                dotClassName='bg-foreground/15 [&.active]:bg-foreground size-1.5 sm:size-2.5' 
+              ></DotLoader>
+              <p className="text-base sm:text-2xl font-medium text-foreground">Loading...</p>
             </div>
           </div>
         </SidebarInset>
