@@ -1,6 +1,7 @@
 import { useUser } from '../hooks/useUser';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Card, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { useEffect } from 'react';
 import { Navbar08 } from '@/components/Navbar2';
 import { DotLoader } from '@/components/shadcn/gsap/dot-loader';
@@ -60,10 +61,18 @@ export default function Profile() {
     <>
     <Navbar08 />
     <div className="text-foreground min-h-screen font-sans px-4 sm:px-8">
-      <div className="max-w-4xl mx-auto bg-card rounded-lg border border-foreground shadow-lg p-4 sm:p-8">
-        <h1 className="text-2xl font-bold text-foreground mb-6">Profile</h1>
+      <Card className='max-w-4xl mx-auto my-8 '>
+        <CardContent>
+          <CardTitle className="text-3xl text-center mb-2 mt-4 sm:mt-6">Welcome back, {user.user_metadata?.full_name || 'User'}!</CardTitle>
+          <CardDescription className="text-center text-foreground/70 text-base mb-4 sm:mb-6">
+            Here is your profile overview. You can update your information and view your activity.
+          </CardDescription>
+        </CardContent>
+      </Card>
+      <Card className="max-w-4xl mx-auto bg-card p-4 sm:p-8">
+        <CardTitle className="text-2xl text-foreground">Profile</CardTitle>
         
-        <div className="space-y-6">
+        <CardContent className="space-y-6 px-0">
           {/* Avatar Section */}
           <div className="flex items-center space-x-4">
             <Avatar className="h-16 w-16">
@@ -114,8 +123,8 @@ export default function Profile() {
               <p className="text-foreground">@{user.user_metadata.user_name}</p>
             </div>
           )}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
       <div className="text-foreground font-sans pt-4 sm:pt-8">
         <div className="max-w-4xl mx-auto">
           <div className="bg-card rounded-xl p-6 mb-8 shadow-lg border border-foreground">

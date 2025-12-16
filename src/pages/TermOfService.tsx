@@ -92,10 +92,10 @@ export default function Profile() {
             <p className="font-semibold text-center">By proceeding, you swear you have read this entire document and willingly submit to our terms.</p>
             <div className="mt-4 flex justify-center">
               <button 
-                onClick={() => navigate('/login', { replace: true })} 
+                onClick={() => navigate('/signup', { replace: true })} 
                 className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition"
               >
-                Accept Terms and Continue to Login
+                Accept Terms and Continue to Signup
               </button>
             </div>
           </div>

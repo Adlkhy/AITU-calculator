@@ -7,6 +7,7 @@ import { useTheme } from "@/lib/useTheme"
 import { useUser } from '@/hooks/useUser';
 import { supabase } from '@/lib/supabaseClient';
 import { useNavigate } from 'react-router-dom';
+import { Sparkles } from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -270,7 +271,7 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
       <header
         ref={combinedRef}
         className={cn(
-          'sticky top-0 z-50 w-full max-w-4xl mx-auto border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-8',
+          'sticky top-0 z-50 w-full max-w-4xl mx-auto  bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-8',
           className
         )}
         {...props}
@@ -322,7 +323,7 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
                     {logo}
                   </div>
                   <span className="font-bold text-xl sm:inline-block hidden">Evalis</span>
-                  {theme === 'dark' || theme === 'cyberpunk' || theme === 'system' ?
+                  {theme === 'dark' || theme === 'system' ?
                   <img src="/white.png" alt="logo" className="h-6 ms-2 hidden md:inline" /> : <img src="/dark.png" alt="logo" className="h-6 ms-2 hidden md:inline" />
                   }
                   
@@ -334,9 +335,18 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
             <div className="flex flex-1 items-center justify-end gap-2">
               {/* User menu - UPDATED */}
               <ModeToggle />
+              <Button 
+                variant="outline"
+                onClick={() => navigate('/ai')}
+                size="sm"
+                className='w-16 h-9 px-4 flex items-center justify-around'
+                >
+                <Sparkles className="h-4 w-4" />
+                AI
+              </Button>
               {!user || !loading || (
                 <Button 
-                  variant="ghost" 
+                  variant="secondary" 
                   className="h-9 px-4"
                   onClick={() => navigate('/login')}
                 >Login

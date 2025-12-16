@@ -94,12 +94,6 @@ export default function MainCalculator() {
                   <p className="font-semibold md:text-xl mb-2 max-w-4xl">
                     🎓 Select a subject to calculate your grade in real-time.
                   </p>
-                  <p className="text-foreground bg-background my-2 rounded-xl p-3 shadow-lg border border-foreground max-w-4xl ">
-                    This grade calculator is based on the{" "}
-                    <strong>official syllabus</strong> and grading scheme, but
-                    please note that it may not be <strong>100%</strong>{" "}
-                    accurate.
-                  </p>
                 </div>
               )}
             {selectedSubject === "Budget" && (

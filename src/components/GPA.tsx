@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { Card, CardContent, CardTitle, CardDescription } from './ui/card';
+import { Input } from './ui/input';
 
 export type SubjectRow = {
   id: number;
@@ -125,222 +126,228 @@ export default function GpaCalculator() {
 
   return (
     <div className="px-4 pt-4 md:px-8 md:pt-8 max-w-4xl mx-auto w-full">
-      <div className="bg-card rounded-lg p-4 md:p-6 border border-foreground">
-        <h3 className="text-xl font-bold text-foreground mb-4">
-          GPA Calculator
-        </h3>
+      <Card className="p-4 md:p-6">
+        <CardContent className="px-0">
+          <CardTitle className="text-xl text-foreground mb-4">
+            GPA Calculator
+          </CardTitle>
 
-        {/* BUTTONS */}
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
-          <Button
-            onClick={addRow}
-            variant="default"
-            size="sm"
-            type="button"
-            disabled={rows.length >= 10}
-            className="px-4 py-2 bg-primary text-secondary font-medium w-full sm:w-auto"
-          >
-            + Add subject
-          </Button>
-          <Button
-            onClick={reset}
-            variant="outline"
-            size="sm"
-            type="button"
-            disabled={rows.length === 0}
-            className="px-4 py-2 text-foreground w-full sm:w-auto"
-          >
-            Reset
-          </Button>
-        </div>
+          {/* BUTTONS */}
+          <CardDescription className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
+            <Button
+              onClick={addRow}
+              variant="default"
+              size="sm"
+              type="button"
+              disabled={rows.length >= 10}
+              className="px-4 py-2 bg-primary text-secondary font-medium w-full sm:w-auto"
+            >
+              + Add subject
+            </Button>
+            <Button
+              onClick={reset}
+              variant="outline"
+              size="sm"
+              type="button"
+              disabled={rows.length === 0}
+              className="px-4 py-2 text-foreground w-full sm:w-auto"
+            >
+              Reset
+            </Button>
+          </CardDescription>
 
-        {/* DESKTOP TABLE */}
-        <div className="hidden sm:block overflow-x-auto">
-          <table className="w-full table-auto border-collapse text-sm md:text-base">
-            <thead className="">
-              <tr className="text-left text-foreground/80">
-                <th className="py-2">#</th>
-                <th className="py-2">Subject name</th>
-                <th className="py-2">Percent (%)</th>
-                <th className="py-2">Credits</th>
-                <th className="py-2">GPA</th>
-                <th className="py-2">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="">
-              {rows.map((r, idx) => {
-                const g = percentToGpa(Number(r.percent) || 0);
-                return (
-                  <tr key={r.id} className="border-t border-foreground/10">
-                    <td className="py-2 pr-4">{idx + 1}</td>
-                    <td className="py-2">
-                      <Input
-                        value={r.name}
-                        className="w-40 p-2 border border-foreground bg-input"
-                        onChange={(e) =>
-                          updateRow(r.id, { name: e.target.value })
-                        }
-                      />
-                    </td>
-                    <td className="py-2">
-                      <Input
-                        type="number"
-                        min={0}
-                        max={100}
-                        value={r.percent}
-                        placeholder="67"
-                        className="w-24 p-2 border border-foreground bg-input"
-                        onChange={(e) =>
-                          updateRow(r.id, {
-                            percent:
-                              e.target.value === ""
-                                ? ""
-                                : Number(e.target.value),
-                          })
-                        }
-                      />
-                    </td>
-                    <td className="py-2">
-                      <Input
-                        type="number"
-                        min={0}
-                        value={r.credits}
-                        className="w-20 p-2 border border-foreground bg-input"
-                        onChange={(e) =>
-                          updateRow(r.id, {
-                            credits:
-                              e.target.value === ""
-                                ? ""
-                                : Number(e.target.value),
-                          })
-                        }
-                      />
-                    </td>
-                    <td className="py-2">{g.toFixed(2)}</td>
-                    <td className="py-2">
-                      <Button
-                        onClick={() => removeRow(r.id)}
-                        variant="destructive"
-                        size="sm"
-                        disabled={rows.length === 1}
-                        type="button"
-                        className="px-2 py-1 text-destructive-foreground"
-                      >
-                        Remove
-                      </Button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+          {/* DESKTOP TABLE */}
+          <div className="hidden sm:block overflow-x-auto">
+            <table className="w-full table-auto border-collapse text-sm md:text-base">
+              <thead className="">
+                <tr className="text-left text-foreground/80">
+                  <th className="py-2">#</th>
+                  <th className="py-2">Subject name</th>
+                  <th className="py-2">Percent (%)</th>
+                  <th className="py-2">Credits</th>
+                  <th className="py-2">GPA</th>
+                  <th className="py-2">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="">
+                {rows.map((r, idx) => {
+                  const g = percentToGpa(Number(r.percent) || 0);
+                  return (
+                    <tr key={r.id} className="border-t border-foreground/10">
+                      <td className="py-2 pr-4">{idx + 1}</td>
+                      <td className="py-2">
+                        <Input
+                          value={r.name}
+                          className="w-40 p-2 border border-foreground/20 bg-input"
+                          onChange={(e) =>
+                            updateRow(r.id, { name: e.target.value })
+                          }
+                        />
+                      </td>
+                      <td className="py-2">
+                        <Input
+                          type="number"
+                          min={0}
+                          max={100}
+                          value={r.percent}
+                          placeholder="67"
+                          className="w-24 p-2 border border-foreground/20 bg-input"
+                          onChange={(e) =>
+                            updateRow(r.id, {
+                              percent:
+                                e.target.value === ""
+                                  ? ""
+                                  : Number(e.target.value),
+                            })
+                          }
+                        />
+                      </td>
+                      <td className="py-2">
+                        <Input
+                          type="number"
+                          min={0}
+                          value={r.credits}
+                          className="w-20 p-2 border border-foreground/20 bg-input"
+                          onChange={(e) =>
+                            updateRow(r.id, {
+                              credits:
+                                e.target.value === ""
+                                  ? ""
+                                  : Number(e.target.value),
+                            })
+                          }
+                        />
+                      </td>
+                      <td className="py-2">{g.toFixed(2)}</td>
+                      <td className="py-2">
+                        <Button
+                          onClick={() => removeRow(r.id)}
+                          variant="destructive"
+                          size="sm"
+                          disabled={rows.length === 1}
+                          type="button"
+                          className="px-2 py-1 text-destructive-foreground"
+                        >
+                          Remove
+                        </Button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
 
-        {/* MOBILE CARDS */}
-        <div className="sm:hidden flex flex-col gap-4">
-          {rows.map((r, idx) => {
-            const g = percentToGpa(Number(r.percent) || 0);
-            return (
-              <div
-                key={r.id}
-                className="border border-foreground/20 p-4 rounded-lg bg-card"
-              >
-                <div className="text-sm text-foreground/70 mb-2">
-                  Subject #{idx + 1}
-                </div>
-
-                <div className="flex flex-col gap-3">
-                  <Input
-                    value={r.name}
-                    placeholder="Subject..."
-                    className="w-full p-2 border border-foreground/60 bg-input"
-                    onChange={(e) => updateRow(r.id, { name: e.target.value })}
-                  />
-
-                  <Input
-                    type="number"
-                    value={r.percent}
-                    placeholder="Percent... 67%"
-                    className="w-full p-2 border border-foreground/60 bg-input"
-                    onChange={(e) =>
-                      updateRow(r.id, {
-                        percent:
-                          e.target.value === "" ? "" : Number(e.target.value),
-                      })
-                    }
-                  />
-
-                  <Input
-                    type="number"
-                    value={r.credits}
-                    placeholder="Credits"
-                    className="w-full p-2 border border-foreground/60 bg-input"
-                    onChange={(e) =>
-                      updateRow(r.id, {
-                        credits:
-                          e.target.value === "" ? "" : Number(e.target.value),
-                      })
-                    }
-                  />
-
-                  <div className="text-lg font-bold text-primary">
-                    GPA: {g.toFixed(2)}
+          {/* MOBILE CARDS */}
+          <div className="sm:hidden flex flex-col gap-4">
+            {rows.map((r, idx) => {
+              const g = percentToGpa(Number(r.percent) || 0);
+              return (
+                <div
+                  key={r.id}
+                  className="border border-foreground/20 p-4 rounded-lg bg-card"
+                >
+                  <div className="text-sm text-foreground/70 mb-2">
+                    Subject #{idx + 1}
                   </div>
 
-                  <Button
-                    onClick={() => removeRow(r.id)}
-                    variant="destructive"
-                    size="sm"
-                    disabled={rows.length === 1}
-                    type="button"
-                    className="w-full px-3 py-2 text-secondary"
-                  >
-                    Remove
-                  </Button>
+                  <div className="flex flex-col gap-3">
+                    <Input
+                      value={r.name}
+                      placeholder="Subject..."
+                      className="w-full p-2 border border-foreground/20 bg-input"
+                      onChange={(e) => updateRow(r.id, { name: e.target.value })}
+                    />
+
+                    <Input
+                      type="number"
+                      value={r.percent}
+                      placeholder="Percent... 67%"
+                      className="w-full p-2 border border-foreground/20 bg-input"
+                      onChange={(e) =>
+                        updateRow(r.id, {
+                          percent:
+                            e.target.value === "" ? "" : Number(e.target.value),
+                        })
+                      }
+                    />
+
+                    <Input
+                      type="number"
+                      value={r.credits}
+                      placeholder="Credits"
+                      className="w-full p-2 border border-foreground/20 bg-input"
+                      onChange={(e) =>
+                        updateRow(r.id, {
+                          credits:
+                            e.target.value === "" ? "" : Number(e.target.value),
+                        })
+                      }
+                    />
+
+                    <div className="text-lg font-bold text-primary">
+                      GPA: {g.toFixed(2)}
+                    </div>
+
+                    <Button
+                      onClick={() => removeRow(r.id)}
+                      variant="destructive"
+                      size="sm"
+                      disabled={rows.length === 1}
+                      type="button"
+                      className="w-full px-3 py-2 text-secondary"
+                    >
+                      Remove
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* STATS */}
-        <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div className="p-3 rounded-md border bg-card">
-            <div className="text-sm text-foreground/70">Total credits</div>
-            <div className="text-2xl font-bold">{totalCredits}</div>
+              );
+            })}
           </div>
 
-          <div className="p-3 rounded-md border bg-card">
-            <div className="text-sm text-foreground/70">Total percent</div>
-            <div className="text-2xl font-bold text-primary">
-              {weightedPercent.toFixed(1)}%
-            </div>
-          </div>
+          {/* STATS */}
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <Card className="p-3 rounded-md shadow-none hover:shadow-lg transition-shadow">
+              <CardContent className="px-0">
+                <CardTitle className="text-sm font-normal text-foreground/70">Total credits</CardTitle>
+                <CardDescription className="text-2xl text-foreground font-bold">{totalCredits}</CardDescription>
+              </CardContent>
+            </Card>
 
-          <div className="p-3 rounded-md border bg-card">
-            <div className="text-sm text-foreground/70">Total GPA</div>
-            <div className="text-2xl font-bold text-primary">
-              {weightedGpa.toFixed(2)}{" "}
-              <span className={letterColor(gpaToLetter(weightedGpa))}>
-                {gpaToLetter(weightedGpa)}
-              </span>
-            </div>
+            <Card className="p-3 rounded-md shadow-none hover:shadow-lg transition-shadow">
+              <CardContent className="px-0">
+                <CardTitle className="text-sm font-normal text-foreground/70">Total percent</CardTitle>
+                <CardDescription className="text-2xl text-primary font-bold">{weightedPercent.toFixed(1)}%</CardDescription>
+              </CardContent>
+            </Card>
+
+            <Card className="p-3 rounded-md shadow-none hover:shadow-lg transition-shadow">
+              <CardContent className="px-0">
+                <CardTitle className="text-sm font-normal text-foreground/70">Total GPA</CardTitle>
+                <CardDescription className="text-2xl font-bold text-primary">
+                  {weightedGpa.toFixed(2)}{" "}
+                  <span className={letterColor(gpaToLetter(weightedGpa))}>
+                    {gpaToLetter(weightedGpa)}
+                  </span>
+                </CardDescription>
+              </CardContent>
+            </Card>
           </div>
-        </div>
-        <div className="mt-2 text-sm text-foreground text-right">
-          <p>
-            Credits to{" "}
-            <a
-              href="https://t.me/Ferum_m"
-              className="text-primary"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ferumm
-            </a>
-          </p>
-        </div>
-      </div>
+          <div className="mt-2 text-sm text-foreground text-right">
+            <p>
+              Credits to{" "}
+              <a
+                href="https://t.me/Ferum_m"
+                className="text-primary"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Ferumm
+              </a>
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

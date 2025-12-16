@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './components/theme-provider';
 import MainCalculator from './pages/CalculatorApp'; // We'll create this
-import Login from './components/Login';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 import AuthCallback from './pages/AuthCallback';
 import Leaderboard from './pages/Leaderboard';
 import NotFoundPage from './components/NotFoundPage';
@@ -29,6 +30,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainCalculator />} />
           <Route path="/login" element={<Login />} />
+          <Route path='/signup' element={<Signup />} />
           <Route path="/term-of-service" element={<TermOfService />} />
           <Route path="/ai" element={
             <ProtectedRoute>

@@ -269,7 +269,7 @@ export default function FinalGrades() {
             </Card>
 
           </div>
-                <div className="space-y-4">
+          <div className="space-y-4">
           </div>
 
           {/* Grades Grid */}

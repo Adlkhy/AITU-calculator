@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { Card, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { Input } from "./ui/input";
 
 const totalWeeks = 10;
 const hoursPerClass = 2;
@@ -41,56 +43,58 @@ export default function AttendanceTracker() {
 
   return (
     <div className="px-4 pt-4 sm:px-8 sm:pt-8">
-      <div className="bg-card rounded-xl p-6 shadow-lg border border-foreground">
-      <h3 className="text-xl font-bold text-foreground mb-3">Attendance Tracker</h3>
+      <Card className="p-6">
+        <CardContent className="px-0">
+        <CardTitle className="text-xl font-bold text-foreground mb-3">Attendance Tracker</CardTitle>
 
-      <div className="flex flex-col sm:flex-row sm:gap-4 gap-2 mb-6">
-        <div className="flex flex-col sm:flex-1">
-          <label className="text-foreground font-semibold mb-1">
-            Pairs per week:
-          </label>
-          <input
-            type="number"
-            min={0}
-            value={classesPerWeek}
-            onChange={(e) => setClassesPerWeek(e.target.value)}
-            className="w-full p-2 rounded-md border border-foreground focus:outline-none focus:ring-1 focus:ring-ring bg-input"
-          />
-        </div>
+          <div className="flex flex-col sm:flex-row sm:gap-4 gap-2 mb-6">
+            <div className="flex flex-col sm:flex-1">
+              <label className="text-foreground font-semibold mb-1">
+                Pairs per week:
+              </label>
+              <Input
+                type="number"
+                min={0}
+                value={classesPerWeek}
+                onChange={(e) => setClassesPerWeek(e.target.value)}
+                className="w-full bg-input text-accent-foreground p-2 border border-foreground/20 rounded-md"
+              />
+            </div>
 
-        <div className="flex flex-col sm:flex-1 mt-2 sm:mt-0">
-          <label className="text-foreground font-semibold mb-1">
-            Missed pairs:
-          </label>
-          <input
-            type="number"
-            min={0}
-            value={missedClasses}
-            onChange={(e) => setMissedClasses(e.target.value)}
-            className="w-full p-2 rounded-md border border-foreground focus:outline-none focus:ring-1 focus:ring-ring bg-input"
-          />
-        </div>
-      </div>
+            <div className="flex flex-col sm:flex-1 mt-2 sm:mt-0">
+              <label className="text-foreground font-semibold mb-1">
+                Missed pairs:
+              </label>
+              <Input
+                type="number"
+                min={0}
+                value={missedClasses}
+                onChange={(e) => setMissedClasses(e.target.value)}
+                className="w-full bg-input text-accent-foreground p-2 border border-foreground/20 rounded-md"
+              />
+            </div>
+          </div>
 
-      <div className="text-center mb-4">
-        <p className="text-lg text-foreground">Attendance:</p>
-        <p className="text-4xl font-bold text-primary">
-          {attendancePercent.toFixed(1)}%
-        </p>
-      </div>
+          <div className="text-center mb-4">
+            <p className="text-lg text-foreground">Attendance:</p>
+            <p className="text-4xl font-bold text-primary">
+              {attendancePercent.toFixed(1)}%
+            </p>
+          </div>
 
-      <ProgressBar percent={attendancePercent} />
+          <ProgressBar percent={attendancePercent} />
 
-      <div className="mt-4 text-sm grid grid-cols-1 sm:grid-cols-2 sm:gap-1 text-foreground text-left">
-        <p>Total course hours: {totalHours}h</p>
-        <p>Missed hours: {missedHours}h</p>
-        <p>1 pair = {hoursPerClass} hours</p>
-        <p>Total weeks: {totalWeeks}</p>
-      </div>
-      <div className="mt-2 text-sm text-foreground text-right">
-        <p>Credits to <a href="https://t.me/Ferum_m" className="text-primary" target="_blank" rel="noopener noreferrer">Ferumm</a></p>
-      </div>
-      </div>
+          <CardDescription className="mt-4 text-sm grid grid-cols-1 sm:grid-cols-2 sm:gap-1 text-foreground text-left">
+            <p>Total course hours: {totalHours}h</p>
+            <p>Missed hours: {missedHours}h</p>
+            <p>1 pair = {hoursPerClass} hours</p>
+            <p>Total weeks: {totalWeeks}</p>
+          </CardDescription>
+          <div className="mt-2 text-sm text-foreground text-right">
+            <p>Credits to <a href="https://t.me/Ferum_m" className="text-primary" target="_blank" rel="noopener noreferrer">Ferumm</a></p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

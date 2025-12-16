@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardTitle } from './ui/card';
+import { Input } from './ui/input';
 
 interface GradeInputProps {
   label: string;
@@ -10,12 +12,12 @@ interface GradeInputProps {
 const GradeInput = ({ label, value, onChange } : GradeInputProps) => (
   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3">
     <label className="text-foreground mb-1 sm:mb-0">{label}</label>
-    <input
+    <Input
       type="number"
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder="0-100"
-      className="w-full sm:w-32 bg-input text-accent-foreground p-2 rounded-md border border-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+      className="w-full sm:w-32 bg-input text-accent-foreground p-2 border border-foreground/20 rounded-md"
     />
   </div>
 );
@@ -70,13 +72,14 @@ function Programming() {
       <div className="max-w-4xl mx-auto">
 
         {/* --- RESULTS DISPLAY --- */}
-        <div className="bg-card rounded-lg p-6 mb-8 shadow-lg border border-foreground">
-          <h2 className="text-lg font-medium text-foreground text-center">
+        <Card className="p-6 mb-8">
+          <CardContent className='px-0'>
+          <CardTitle className="text-lg text-foreground text-center">
             Your Calculated Final Grade < br/>(B1-, Rakisheva Tolkyn)
-          </h2>
-          <p className="text-5xl font-bold text-center text-primary mt-2">
+          </CardTitle>
+          <CardDescription className="text-4xl font-bold text-center text-primary">
             {finalGrade.toFixed(2)}%
-          </p>
+          </CardDescription>
           <div className="mt-6 grid grid-cols-2 gap-4 text-center">
             <div>
                 <p className="text-foreground">RegMid Score</p>
@@ -87,36 +90,43 @@ function Programming() {
                 <p className="text-xl font-semibold text-accent-foreground">{attestation2.toFixed(2)} / 100</p>
             </div>
           </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* --- GRADE INPUTS --- */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* RegMid Column */}
-            <div className="bg-card p-5 rounded-lg border border-foreground">
-                <h3 className="text-2xl font-bold mb-4 text-center">RegMid (30%)</h3>
-                <h4 className="font-semibold text-lg mb-2 text-foreground">Assignments (20%)</h4>
+            <Card className="p-5">
+              <CardContent className='px-0'>
+                <CardTitle className="text-2xl mb-4 text-center">RegMid (30%)</CardTitle>
+                <CardDescription className="font-semibold text-lg mb-2 text-foreground">Assignments (20%)</CardDescription>
                 <GradeInput label="CV presentation" value={assignment1} onChange={setAssignment1} />
                 <GradeInput label="Speaking Cards" value={assignment2} onChange={setAssignment2} />
                 <hr className="border-foreground my-4" />
-                <h4 className="font-semibold text-lg mb-2 text-foreground">Midterm (10%)</h4>
+                <CardDescription className="font-semibold text-lg mb-2 text-foreground">Midterm (10%)</CardDescription>
                 <GradeInput label="Quiz" value={midtermQuiz} onChange={setMidtermQuiz} />
-            </div>
+              </CardContent>
+            </Card>
 
             {/* RegEnd & Final Column */}
             <div>
-                <div className="bg-card p-5 rounded-lg border border-foreground mb-8">
-                    <h3 className="text-2xl font-bold mb-4 text-center">RegEnd (30%)</h3>
-                    <h4 className="font-semibold text-lg mb-2 text-foreground">Assignments (20%)</h4>
+                <Card className="p-5 mb-8">
+                  <CardContent className='px-0'>
+                    <CardTitle className="text-2xl mb-4 text-center">RegEnd (30%)</CardTitle>
+                    <CardDescription className="font-semibold text-lg mb-2 text-foreground">Assignments (20%)</CardDescription>
                     <GradeInput label="Case study" value={assignment3} onChange={setAssignment3} />
                     <GradeInput label="Pitch Speech" value={assignment4} onChange={setAssignment4} />
                     <hr className="border-foreground my-4" />
-                    <h4 className="font-semibold text-lg mb-2 text-foreground">Endterm (10%)</h4>
+                    <CardDescription className="font-semibold text-lg mb-2 text-foreground">Endterm (10%)</CardDescription>
                     <GradeInput label="Quiz" value={endtermQuiz} onChange={setEndtermQuiz} />
-                </div>
-                <div className="bg-card p-5 rounded-lg border border-foreground">
-                    <h3 className="text-2xl font-bold mb-4 text-center">Final Exam (40%)</h3>
+                  </CardContent>
+                </Card>
+                <Card className="p-5">
+                  <CardContent className='px-0'>
+                    <CardTitle className="text-2xl mb-4 text-center">Final Exam (40%)</CardTitle>
                     <GradeInput label="Speaking" value={finalExam} onChange={setFinalExam} />
-                </div>
+                  </CardContent>
+                </Card>
             </div>
         </div>
       </div>
