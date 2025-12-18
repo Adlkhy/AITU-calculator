@@ -82,7 +82,7 @@ function Programming() {
             <CardTitle className="text-lg text-foreground text-center">
               Your Calculated Final Grade < br/> (Orazova Arailym)
             </CardTitle>
-            <CardDescription className="text-4xl font-bold text-center text-primary mt-2">
+            <CardDescription className="text-4xl font-bold text-center text-primary">
               {finalGrade.toFixed(2)}%
             </CardDescription>
             <div className="mt-6 grid grid-cols-2 gap-4 text-center">
