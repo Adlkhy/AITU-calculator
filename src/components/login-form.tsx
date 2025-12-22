@@ -11,27 +11,48 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 
+interface LoginFormProps extends React.ComponentProps<"div"> {
+  email: string;
+  setEmail: (email: string) => void;
+  password: string;
+  setPassword: (password: string) => void;
+  error?: string;
+  loading?: boolean;
+  onSubmit: (e: React.FormEvent) => void;
+}
 export function LoginForm({
   className,
+  email,
+  setEmail,
+  password,
+  setPassword,
+  error,
+  loading,
+  onSubmit,
   ...props
-}: React.ComponentProps<"div">) {
+}: LoginFormProps) {
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form onSubmit={onSubmit} className="p-6 md:p-8">
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
                 <p className="text-muted-foreground text-balance">
                   Login to your <span className="text-primary font-semibold">Evalis</span> account
                 </p>
+                  { error && (
+                    <p className="text-muted-foreground text-balance">{error}</p>
+                  ) }
               </div>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
                   id="email"
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="12345@astanait.edu.kz"
                   required
                 />
@@ -46,10 +67,15 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input 
+                id="password" 
+                type="password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required />
               </Field>
               <Field>
-                <Button type="submit">Login</Button>
+                <Button type="submit" disabled={loading}>{loading ? "Loading..." : "Login"}</Button>
               </Field>
               {/* <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with
