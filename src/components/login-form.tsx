@@ -43,7 +43,7 @@ export function LoginForm({
                   Login to your <span className="text-primary font-semibold">Evalis</span> account
                 </p>
                   { error && (
-                    <p className="text-muted-foreground text-balance">{error}</p>
+                    <p className="text-red-500 text-balance">{error}</p>
                   ) }
               </div>
               <Field>

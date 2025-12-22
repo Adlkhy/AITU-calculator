@@ -25,7 +25,7 @@ export default function MainCalculator() {
     "GPA",
     "Budget",
   ];
-  const [selectedSubject, setSelectedSubject] = useState(subjects[8]);
+  const [selectedSubject, setSelectedSubject] = useState(subjects[0]);
 
   const renderCalculator = () => {
     switch (selectedSubject) {

@@ -34,7 +34,7 @@ function App() {
           <Route path="/term-of-service" element={<TermOfService />} />
           <Route path="/ai" element={
             <ProtectedRoute>
-              <AI />
+              <AI subject={''} />
             </ProtectedRoute>}
           />
           <Route path="/auth/callback" element={<AuthCallback />} />
