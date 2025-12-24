@@ -2,138 +2,221 @@ import { useUser } from '../hooks/useUser';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
-import { useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useEffect, useState } from 'react';
 import { Navbar08 } from '@/components/Navbar2';
 import { DotLoader } from '@/components/shadcn/gsap/dot-loader';
+import { supabase } from '@/lib/supabaseClient';
+import { cn } from "@/lib/utils"; // shadcn utility
+
+// 1. Define your provided photos
+const AVATAR_OPTIONS = [
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix',
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka',
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=Buddy',
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=Max',
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=Jasper',
+];
 
 export default function Profile() {
   const { user, loading } = useUser();
   const navigate = useNavigate();
 
-  const game = [
-    [14, 7, 0, 8, 6, 13, 20],
-    [14, 7, 13, 20, 16, 27, 21],
-    [14, 20, 27, 21, 34, 24, 28],
-    [27, 21, 34, 28, 41, 32, 35],
-    [34, 28, 41, 35, 48, 40, 42],
-    [34, 28, 41, 35, 48, 42, 46],
-    [34, 28, 41, 35, 48, 42, 38],
-    [34, 28, 41, 35, 48, 30, 21],
-    [34, 28, 41, 48, 21, 22, 14],
-    [34, 28, 41, 21, 14, 16, 27],
-    [34, 28, 21, 14, 10, 20, 27],
-    [28, 21, 14, 4, 13, 20, 27],
-    [28, 21, 14, 12, 6, 13, 20],
-    [28, 21, 14, 6, 13, 20, 11],
-    [28, 21, 14, 6, 13, 20, 10],
-    [14, 6, 13, 20, 9, 7, 21],
-  ];
+  // State for editing
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    full_name: '',
+    avatar_url: '',
+    social_link: ''
+  });
+
+  const game = [[14, 7, 0, 8, 6, 13, 20], [14, 7, 13, 20, 16, 27, 21], [14, 20, 27, 21, 34, 24, 28], [27, 21, 34, 28, 41, 32, 35], [34, 28, 41, 35, 48, 40, 42], [34, 28, 41, 35, 48, 42, 46], [34, 28, 41, 35, 48, 42, 38], [34, 28, 41, 35, 48, 30, 21], [34, 28, 41, 48, 21, 22, 14], [34, 28, 41, 21, 14, 16, 27], [34, 28, 21, 14, 10, 20, 27], [28, 21, 14, 4, 13, 20, 27], [28, 21, 14, 12, 6, 13, 20], [28, 21, 14, 6, 13, 20, 11], [28, 21, 14, 6, 13, 20, 10], [14, 6, 13, 20, 9, 7, 21]];
 
   useEffect(() => {
     if (!loading && !user) {
       navigate('/login', { replace: true });
     }
+    if (user) {
+      setFormData({
+        full_name: user.user_metadata?.full_name || '',
+        avatar_url: user.user_metadata?.avatar_url || AVATAR_OPTIONS[0],
+        social_link: user.user_metadata?.social_link || ''
+      });
+    }
   }, [user, loading, navigate]);
+
+  const handleSave = async () => {
+    try {
+      const { error } = await supabase.auth.updateUser({
+        data: { 
+          full_name: formData.full_name, 
+          avatar_url: formData.avatar_url,
+          social_link: formData.social_link 
+        }
+      });
+      if (error) throw error;
+
+      console.log("Saved Data:", formData);
+      setIsEditing(false);
+      // Optional: Refresh page or show success toast
+    } catch (error) {
+      alert("Error updating profile");
+    }
+  };
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center flex items-center gap-5 rounded px-4 py-3">
-          <DotLoader 
-            frames={game}
-            className='gap-0.5'
-            color="primary"
-            duration={150}
-            isPlaying={true}
-            dotClassName='bg-foreground/15 [&.active]:bg-foreground size-1.5 sm:size-2.5' 
-            ></DotLoader>
+          <DotLoader frames={game} className='gap-0.5' color="primary" duration={150} isPlaying={true} dotClassName='bg-foreground/15 [&.active]:bg-foreground size-1.5 sm:size-2.5' />
           <p className="text-base sm:text-2xl font-medium text-foreground">Loading...</p>
         </div>
       </div>
     );
   }
 
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
 
   return (
     <>
-    <Navbar08 />
-    <div className="text-foreground min-h-screen font-sans px-4 sm:px-8">
-      <Card className='max-w-4xl mx-auto my-8 '>
-        <CardContent>
-          <CardTitle className="text-3xl text-center mb-2 mt-4 sm:mt-6">Welcome back, {user.user_metadata?.full_name || 'User'}!</CardTitle>
-          <CardDescription className="text-center text-foreground/70 text-base mb-4 sm:mb-6">
-            Here is your profile overview. You can update your information and view your activity.
-          </CardDescription>
-        </CardContent>
-      </Card>
-      <Card className="max-w-4xl mx-auto bg-card p-4 sm:p-8">
-        <CardTitle className="text-2xl text-foreground">Profile</CardTitle>
-        
-        <CardContent className="space-y-6 px-0">
-          {/* Avatar Section */}
-          <div className="flex items-center space-x-4">
-            <Avatar className="h-16 w-16">
-              <AvatarImage src={user.user_metadata?.avatar_url} alt='Avatar' />
-            </Avatar>
-            <div>
-              <h2 className="text-lg font-semibold">
-                { user.user_metadata?.full_name || 'No name set'}
-              </h2>
-              <p className="text-foreground">{user.email}</p>
-            </div>
+      <Navbar08 />
+      <div className="text-foreground min-h-screen font-sans px-4 sm:px-8 pb-20">
+        <Card className='max-w-4xl mx-auto my-8'>
+          <CardContent>
+            <CardTitle className="text-3xl text-center mb-2 mt-4 sm:mt-6">
+              Welcome back, {user.user_metadata?.full_name || 'User'}!
+            </CardTitle>
+            <CardDescription className="text-center text-foreground/70 text-base mb-4 sm:mb-6">
+              Manage your profile and access your grade calculators.
+            </CardDescription>
+          </CardContent>
+        </Card>
+
+        <Card className="max-w-4xl mx-auto bg-card p-4 sm:p-8">
+          <div className="flex justify-between items-center mb-6">
+            <CardTitle className="text-2xl text-foreground">Profile Details</CardTitle>
+            <Button 
+              variant={isEditing ? "outline" : "default"} 
+              onClick={() => isEditing ? setIsEditing(false) : setIsEditing(true)}
+            >
+              {isEditing ? "Cancel" : "Edit Profile"}
+            </Button>
           </div>
 
-          {/* User Info */}
-          <div className="flex flex-col sm:flex-row justify-between gap-6">
-            <div>
-              <label className="block text-sm font-semibold text-foreground mb-1">
-                Full Name
-              </label>
-              <p className="text-foreground">
-                { user.user_metadata?.full_name || 'Not provided'}
-              </p>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-semibold text-foreground mb-1">
-                Email
-              </label>
-              <p className="text-foreground">{user.email}</p>
-            </div>
+          <CardContent className="space-y-8 px-0">
+            {isEditing ? (
+              /* EDIT MODE UI */
+              <div className="space-y-6">
+                <div className="space-y-4">
+                  <Label>Select Profile Picture</Label>
+                  <div className="flex flex-wrap gap-4">
+                    {AVATAR_OPTIONS.map((url) => (
+                      <button
+                        key={url}
+                        onClick={() => setFormData({ ...formData, avatar_url: url })}
+                        className={cn(
+                          "rounded-full p-1 border-2 transition-all",
+                          formData.avatar_url === url ? "border-primary scale-110" : "border-transparent opacity-50 hover:opacity-100"
+                        )}
+                      >
+                        <Avatar className="h-16 w-16">
+                          <AvatarImage src={url} />
+                        </Avatar>
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-foreground mb-1">
-                Account Created
-              </label>
-              <p className="text-foreground">
-                {new Date(user.created_at).toLocaleDateString()}
-              </p>
-            </div>
-          </div>
+                <div className="grid gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Full Name</Label>
+                    <Input 
+                      id="name" 
+                      value={formData.full_name} 
+                      onChange={(e) => setFormData({...formData, full_name: e.target.value})} 
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="social">Social Link (e.g. Instagram, LinkedIn)</Label>
+                    <Input 
+                      id="social" 
+                      placeholder="https://..."
+                      value={formData.social_link} 
+                      onChange={(e) => setFormData({...formData, social_link: e.target.value})} 
+                    />
+                  </div>
+                </div>
 
-          {/* GitHub Info (if available) */}
-          {user.user_metadata?.user_name && (
-            <div>
-              <label className="block text-sm font-semibold text-foreground mb-1">
-                GitHub Username
-              </label>
-              <p className="text-foreground">@{user.user_metadata.user_name}</p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-      <div className="text-foreground font-sans pt-4 sm:pt-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-card rounded-xl p-6 mb-8 shadow-lg border border-foreground">
-            <h2 className="text-xl font-bold text-foreground mb-4">My Calculators</h2>
-            <p>In the future you will be able to access your own created calculators here and the main page of course.</p>
-          </div>
+                <Button className="w-full sm:w-auto" onClick={handleSave}>
+                  Save Changes
+                </Button>
+              </div>
+            ) : (
+              /* VIEW MODE UI */
+              <>
+                <div className="flex items-center space-x-4">
+                  <Avatar className="h-20 w-20 border-2 border-primary/20">
+                    <AvatarImage src={user.user_metadata?.avatar_url || AVATAR_OPTIONS[0]} alt='Avatar' />
+                  </Avatar>
+                  <div>
+                    <h2 className="text-xl font-bold">
+                      {user.user_metadata?.full_name || 'No name set'}
+                    </h2>
+                    <p className="text-foreground/60">{user.email}</p>
+                    {user.user_metadata?.social_link && (
+                      <a 
+                        href={user.user_metadata.social_link} 
+                        target="_blank" 
+                        rel="noreferrer"
+                        className="text-primary text-sm underline mt-1 block"
+                      >
+                        Social
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4 border-t border-border">
+                  <div>
+                    <label className="text-xs uppercase tracking-wider font-bold text-foreground/50">Full Name</label>
+                    <p className="text-foreground font-medium">{user.user_metadata?.full_name || 'Not provided'}</p>
+                  </div>
+                  <div>
+                    <label className="text-xs uppercase tracking-wider font-bold text-foreground/50">Email</label>
+                    <p className="text-foreground font-medium">{user.email}</p>
+                  </div>
+                  <div>
+                    <label className="text-xs uppercase tracking-wider font-bold text-foreground/50">Joined</label>
+                    <p className="text-foreground font-medium">{new Date(user.created_at).toLocaleDateString()}</p>
+                  </div>
+                </div>
+              </>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* BOTTOM SECTION: CALCULATOR PLACEHOLDER */}
+        <div className="max-w-4xl mx-auto mt-8">
+          <Card className="border-dashed border-2 bg-card/50">
+            <CardContent className="p-8">
+              <h2 className="text-xl font-bold text-foreground mb-4">Selected Subject Calculator</h2>
+              <div className="bg-background/50 rounded-lg p-10 flex flex-col items-center justify-center border">
+                {/* When you implement the calculator, it goes here */}
+                <p className="text-foreground/60 italic text-center">
+                  Your active calculator for [Selected Subject] will be displayed here. 
+                  <br />
+                  <span className="text-sm">(Calculator Component - Coming Soon)</span>
+                </p>
+                <Button variant="outline" className="mt-4" onClick={() => navigate('/')}>
+                  Go to Main Calculator
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
-    </div>
     </>
   );
 }
