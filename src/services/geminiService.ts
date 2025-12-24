@@ -1,65 +1,77 @@
-import { GoogleGenAI, Type, type Schema } from "@google/genai";
+
+import { GoogleGenAI, Type } from "@google/genai";
 import type { ParsedResponse } from "../hooks/types";
 
 const apiKey = import.meta.env.VITE_API_KEY;
-
 if (!apiKey) {
-  throw new Error("Missing API key. Please set the API_KEY environment variable.");
+  throw new Error("VITE_API_KEY is not defined in environment variables.");
 }
+const ai = new GoogleGenAI({ apiKey });
 
-// Initialize Gemini Client
-const ai = new GoogleGenAI({ apiKey: apiKey });
-
-/**
- * Extracts grading breakdown from a syllabus file (Image or PDF).
- * @param base64Data The base64 string of the file (header stripped).
- * @param mimeType The mime type of the file.
- * @returns A promise resolving to the parsed grading categories.
- */
 export const parseSyllabus = async (
   base64Data: string,
   mimeType: string
 ): Promise<ParsedResponse> => {
-  
   const systemInstruction = `
-    You are a helpful assistant that extracts grading criteria from university syllabi.
-    Your goal is to identify the categories and their percentage weights.
+    You are a world-class academic assistant specializing in extracting grading structures from complex university syllabi.
     
-    Rules:
-    1. Extract the weight as a number between 0 and 100.
-    2. If a range is given (e.g., 10-15%), take the average.
-    3. Ensure the weights ideally sum up to 100, but extract exactly what is stated.
-    4. Ignore non-grading related text.
+    CRITICAL INSTRUCTION:
+    Syllabi often use hierarchical tables. For example, a course might have "1st Attestation" worth 30%, which itself contains "Assignments" (60 points) and "Mid Term" (40 points).
+    
+    YOUR GOAL:
+    1. Identify the top-level categories that sum to 100% of the final grade.
+    2. If a category has sub-components (like specific assignments, quizzes, or attendance within an Attestation), extract them into the 'subItems' array.
+    3. Look for mathematical formulas at the bottom of tables (e.g., "0.3 * Att1 + 0.3 * Att2 + 0.4 * Final"). Use these to determine 'overallWeight'.
+    4. Normalize all 'overallWeight' values to sum to 100.
+    
+    RULES:
+    - 'overallWeight' must be a number (0-100).
+    - 'subItems' should capture the granular detail so students can track individual task progress.
+    - If a category uses points (e.g., 60 points out of 100 for that section), represent it clearly.
   `;
 
-  // Define the output schema for strict JSON generation
-  const responseSchema: Schema = {
+  const responseSchema = {
     type: Type.OBJECT,
     properties: {
-      breakdown: {
-        type: Type.ARRAY,
-        items: {
-          type: Type.OBJECT,
-          properties: {
-            category: {
-              type: Type.STRING,
-              description: "The name of the grading category.",
-            },
-            weight: {
-              type: Type.NUMBER,
-              description: "The percentage weight of this category (0-100).",
-            },
+      syllabus: {
+        type: Type.OBJECT,
+        properties: {
+          courseName: { type: Type.STRING, description: "The name of the course if found." },
+          breakdown: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                name: { type: Type.STRING, description: "Category name (e.g., 1st Attestation, Final Exam)." },
+                overallWeight: { type: Type.NUMBER, description: "The percentage this category contributes to the total 100% course grade." },
+                maxPoints: { type: Type.NUMBER, description: "Total points available in this category if applicable." },
+                subItems: {
+                  type: Type.ARRAY,
+                  items: {
+                    type: Type.OBJECT,
+                    properties: {
+                      name: { type: Type.STRING, description: "Sub-assignment or task name." },
+                      weight: { type: Type.NUMBER, description: "Weight or points of this sub-item within its category." },
+                      description: { type: Type.STRING }
+                    },
+                    required: ["name", "weight"]
+                  }
+                }
+              },
+              required: ["name", "overallWeight"]
+            }
           },
-          required: ["category", "weight"],
+          totalWeightNote: { type: Type.STRING, description: "Any specific grading formula mentioned." }
         },
-      },
+        required: ["breakdown"]
+      }
     },
-    required: ["breakdown"],
+    required: ["syllabus"]
   };
 
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3-flash-preview",
       contents: {
         parts: [
           {
@@ -69,27 +81,24 @@ export const parseSyllabus = async (
             },
           },
           {
-            text: "Analyze this syllabus and extract the grading breakdown structure.",
+            text: "Analyze this syllabus image/document. Extract the full hierarchical grading breakdown. Pay attention to sub-assignments and the final weight formula.",
           },
         ],
       },
       config: {
-        systemInstruction: systemInstruction,
+        systemInstruction,
         responseMimeType: "application/json",
-        responseSchema: responseSchema,
-        temperature: 0.1, // Low temperature for factual extraction
+        responseSchema,
+        temperature: 0.1,
       },
     });
 
     const text = response.text;
-    if (!text) {
-      throw new Error("No response text received from Gemini.");
-    }
-
+    if (!text) throw new Error("No response from Gemini.");
+    
     return JSON.parse(text) as ParsedResponse;
-
   } catch (error) {
-    console.error("Error parsing syllabus with Gemini:", error);
+    console.error("Gemini Parsing Error:", error);
     throw error;
   }
 };

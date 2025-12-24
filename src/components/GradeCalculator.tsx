@@ -1,217 +1,187 @@
+// import React, { useState, useEffect } from 'react';
+// import type { GradeItem } from '../hooks/types';
+// import { X } from 'lucide-react';
+// import { Input } from './ui/input';
+// import { Button } from './ui/button';
+// import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+
+
 import React, { useState, useEffect } from 'react';
-import type { GradeItem } from '../hooks/types';
-import { X } from 'lucide-react';
-import { Input } from './ui/input';
-import { Button } from './ui/button';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import type { SyllabusData } from '../hooks/types';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
 interface GradeCalculatorProps {
-  initialItems: GradeItem[];
+  data: SyllabusData;
 }
 
-export const GradeCalculator: React.FC<GradeCalculatorProps> = ({ initialItems }) => {
-  const [items, setItems] = useState<GradeItem[]>(initialItems);
+export const GradeCalculator: React.FC<GradeCalculatorProps> = ({ data }) => {
+  // Store scores for each sub-item
+  // Key: "CategoryIndex-SubItemIndex" -> value (0-100)
+  const [scores, setScores] = useState<Record<string, number>>({});
+  const [finalGrade, setFinalGrade] = useState<number>(0);
 
-  // Sync state if initialItems change (e.g., after parsing)
   useEffect(() => {
-    if (initialItems.length > 0) {
-      setItems(initialItems);
-    }
-  }, [initialItems]);
+    let totalWeightedScore = 0;
+    
+    data.breakdown.forEach((category, catIdx) => {
+      let categoryScore = 0;
+      
+      if (category.subItems && category.subItems.length > 0) {
+        // If there are sub-items, we calculate the average or weighted average within the category
+        // Many syllabi use "points" within a category. We'll assume the sub-item weights are their contribution to the category's max.
+        const totalSubWeight = category.subItems.reduce((acc, sub) => acc + sub.weight, 0);
+        let earnedSubWeight = 0;
+        
+        category.subItems.forEach((_, subIdx) => {
+          const score = scores[`${catIdx}-${subIdx}`] || 0;
+          const weight = category.subItems![subIdx].weight;
+          // score is percentage (0-100)
+          earnedSubWeight += (score / 100) * weight;
+        });
 
-  const handleUpdate = (id: string, field: keyof GradeItem, value: string | number) => {
-    setItems(prev => prev.map(item => {
-      if (item.id === id) {
-        return { ...item, [field]: value };
+        categoryScore = (earnedSubWeight / totalSubWeight) * 100;
+      } else {
+        // Direct category input if no sub-items
+        categoryScore = scores[`${catIdx}-main`] || 0;
       }
-      return item;
-    }));
+
+      totalWeightedScore += (categoryScore / 100) * category.overallWeight;
+    });
+
+    setFinalGrade(totalWeightedScore);
+  }, [scores, data]);
+
+  const handleScoreChange = (key: string, value: string) => {
+    const numValue = Math.min(100, Math.max(0, parseFloat(value) || 0));
+    setScores(prev => ({ ...prev, [key]: numValue }));
   };
 
-  const handleAddItem = () => {
-    setItems([
-      ...items,
-      { id: `manual-${Date.now()}`, category: 'New Assignment', weight: 0 }
-    ]);
-  };
-
-  const handleDelete = (id: string) => {
-    setItems(items.filter(i => i.id !== id));
-  };
-
-  // Calculations
-  const totalWeight = items.reduce((sum, item) => sum + (Number(item.weight) || 0), 0);
-  
-  // Calculate current grade based on weights that have scores entered
-  const earnedWeight = items.reduce((sum, item) => {
-    if (item.score !== undefined && item.score !== null && String(item.score) !== '') {
-      return sum + ((Number(item.score) / 100) * Number(item.weight));
-    }
-    return sum;
-  }, 0);
-
-  const weightConsidered = items.reduce((sum, item) => {
-    if (item.score !== undefined && item.score !== null && String(item.score) !== '') {
-      return sum + Number(item.weight);
-    }
-    return sum;
-  }, 0);
-
-  const currentPercentage = weightConsidered > 0 
-    ? (earnedWeight / weightConsidered) * 100 
-    : 100;
-
-  // Chart Data Preparation
-  const chartData = items.map(item => ({
-    name: item.category,
-    Score: Number(item.score) || 0,
-    Weight: Number(item.weight) || 0,
+  const chartData = data.breakdown.map(cat => ({
+    name: cat.name,
+    value: cat.overallWeight
   }));
 
+  const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
+
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      
-      {/* Left Column: List of Assessments */}
-      <div className="flex flex-col space-y-6">
-        <div className="bg-card rounded-xl shadow-sm border border-foreground overflow-hidden">
-          <div className="px-4 py-4 border-b border-foreground flex justify-between items-center">
-            <h3 className="text-base sm:text-xl font-semibold text-foreground">Grade Breakdown</h3>
-            <span className={`text-sm px-3 py-1 rounded-full font-medium ${totalWeight === 100 ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
-              Total Weight: {totalWeight}%
-            </span>
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {/* Inputs Column */}
+      <div className="lg:col-span-2 space-y-6">
+        <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+          <i className="fas fa-calculator mr-3 text-blue-600"></i>
+          Calculate Your Grade
+        </h2>
+        
+        {data.courseName && (
+          <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
+            <span className="text-sm text-blue-600 font-semibold uppercase tracking-wider">Course</span>
+            <p className="text-lg font-bold text-blue-900">{data.courseName}</p>
           </div>
-          
-          <div className="p-4">
-            <div className="space-y-4">
-              {items.map((item) => (
-                <div key={item.id} className="flex flex-col sm:flex-row gap-4 items-start sm:items-center bg-card p-4 rounded-lg border border-foreground">
-                  <div className="flex-grow w-full sm:w-auto">
-                    <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1">Category</label>
-                    <Input
-                      type="text"
-                      value={item.category}
-                      onChange={(e) => handleUpdate(item.id, 'category', e.target.value)}
-                      className="w-full px-3 py-2 bg-input border border-foreground text-foreground font-medium"
-                    />
-                  </div>
-                  
-                  <div className="w-full sm:w-24">
-                    <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1">Weight %</label>
-                    <Input
-                      type="number"
-                      value={item.weight}
-                      onChange={(e) => handleUpdate(item.id, 'weight', parseFloat(e.target.value))}
-                      className="w-full px-3 py-2 bg-input border border-foreground text-foreground"
-                    />
-                  </div>
+        )}
 
-                  <div className="w-full sm:w-24">
-                    <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1">My Score</label>
-                    <Input
-                      type="number"
-                      placeholder="-"
-                      value={item.score ?? ''}
-                      onChange={(e) => handleUpdate(item.id, 'score', parseFloat(e.target.value))}
-                      className="w-full px-3 py-2 bg-input border border-foreground text-foreground"
-                    />
-                  </div>
-                  
-                  <Button 
-                    onClick={() => handleDelete(item.id)}
-                    className="px-2 py-1 text-destructive-foreground hidden sm:block"
-                    title="Remove item"
-                    size="sm"
-                    type="button"
-                    variant="destructive"
-                  >
-                    <X size={16} />
-                  </Button>
+        {data.breakdown.map((category, catIdx) => (
+          <div key={catIdx} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            <div className="flex justify-between items-center mb-4">
+              <div>
+                <h3 className="text-lg font-bold text-gray-800">{category.name}</h3>
+                <span className="text-sm text-gray-500">Weight: {category.overallWeight}% of final grade</span>
+              </div>
+              {!category.subItems?.length && (
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="number"
+                    placeholder="Score"
+                    className="w-24 p-2 border border-gray-200 rounded-lg text-center font-bold focus:ring-2 focus:ring-blue-500 outline-none"
+                    value={scores[`${catIdx}-main`] || ''}
+                    onChange={(e) => handleScoreChange(`${catIdx}-main`, e.target.value)}
+                  />
+                  <span className="text-gray-400 font-medium">%</span>
+                </div>
+              )}
+            </div>
 
-                  <Button 
-                    onClick={() => handleDelete(item.id)}
-                    className="w-full px-3 py-2 text-destructive-foreground sm:hidden"
-                    title="Remove item"
-                    size="sm"
-                    type="button"
-                    variant="destructive"
+            {category.subItems && category.subItems.length > 0 && (
+              <div className="space-y-3 mt-4 border-t pt-4">
+                {category.subItems.map((sub, subIdx) => (
+                  <div key={subIdx} className="flex items-center justify-between group">
+                    <div className="flex-1 pr-4">
+                      <p className="text-sm font-medium text-gray-700">{sub.name}</p>
+                      {sub.description && <p className="text-xs text-gray-400">{sub.description}</p>}
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <span className="text-xs text-gray-400">({sub.weight} pts)</span>
+                      <input
+                        type="number"
+                        placeholder="%"
+                        className="w-20 p-1.5 border border-gray-100 rounded bg-gray-50 text-center text-sm focus:bg-white focus:border-blue-300 outline-none"
+                        value={scores[`${catIdx}-${subIdx}`] || ''}
+                        onChange={(e) => handleScoreChange(`${catIdx}-${subIdx}`, e.target.value)}
+                      />
+                      <span className="text-gray-300">%</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Summary Column */}
+      <div className="lg:col-span-1">
+        <div className="sticky top-8 space-y-6">
+          <div className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 text-center overflow-hidden relative">
+            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
+            <h3 className="text-gray-500 font-medium uppercase text-xs tracking-widest mb-2">Estimated Final Grade</h3>
+            <div className="text-6xl font-black text-gray-900 mb-2">
+              {finalGrade.toFixed(1)}%
+            </div>
+            <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden mb-6">
+              <div 
+                className="h-full bg-blue-600 transition-all duration-500" 
+                style={{ width: `${Math.min(100, finalGrade)}%` }}
+              ></div>
+            </div>
+            
+            <p className="text-sm text-gray-400 italic">
+              {data.totalWeightNote || "Calculated based on extracted syllabus weights."}
+            </p>
+          </div>
+
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <h4 className="font-bold text-gray-800 mb-4">Weight Distribution</h4>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={chartData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    paddingAngle={5}
+                    dataKey="value"
                   >
-                    Remove
-                  </Button>
+                    {chartData.map((_, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="mt-4 space-y-2">
+              {data.breakdown.map((cat, idx) => (
+                <div key={idx} className="flex items-center text-sm">
+                  <div className="w-3 h-3 rounded-full mr-2" style={{ backgroundColor: COLORS[idx % COLORS.length] }}></div>
+                  <span className="flex-1 text-gray-600">{cat.name}</span>
+                  <span className="font-bold text-gray-800">{cat.overallWeight}%</span>
                 </div>
               ))}
             </div>
-
-            <Button
-              onClick={handleAddItem}
-              variant="outline"
-              size="sm"
-              className="mt-6 w-full border-dashed border-foreground rounded-lg text-foreground font-medium bg-muted hover:bg-accent transition-all flex items-center justify-center gap-2"
-            >
-              + Add Assigment
-            </Button>
           </div>
         </div>
       </div>
-
-      {/* Right Column: Results & Visualization */}
-      <div className="space-y-6 sticky top-6 h-fit">
-        {/* Grade Summary Card */}
-        <div className="bg-card rounded-xl shadow-lg p-4 text-foreground border border-foreground overflow-hidden relative">
-          <div className="relative z-10">
-            <h3 className="text-brand-200 text-sm font-semibold uppercase tracking-wider mb-1">Current Grade</h3>
-            <div className="flex items-baseline gap-2">
-              <span className="text-5xl font-bold tracking-tight">{currentPercentage.toFixed(1)}%</span>
-              <span className="text-brand-300 font-medium">
-                {currentPercentage >= 90 ? 'A' : 
-                 currentPercentage >= 80 ? 'B' : 
-                 currentPercentage >= 70 ? 'C' : 
-                 currentPercentage >= 60 ? 'D' : 'F'}
-              </span>
-            </div>
-            
-            <div className="mt-6 space-y-2">
-               <div className="flex justify-between text-sm text-brand-200">
-                 <span>Points Earned</span>
-                 <span>{earnedWeight.toFixed(1)} / {weightConsidered}</span>
-               </div>
-               <div className="w-full bg-brand-800 rounded-full h-2">
-                 <div 
-                    className="bg-brand-400 h-2 rounded-full transition-all duration-500" 
-                    style={{ width: `${currentPercentage}%` }}
-                 ></div>
-               </div>
-            </div>
-          </div>
-          
-          {/* Decorative background circle */}
-          <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-brand-800 rounded-full opacity-50 blur-2xl"></div>
-        </div>
-
-        {/* Chart Card */}
-        <div className="bg-card rounded-xl shadow-sm border border-foreground p-6">
-          <h3 className="font-semibold text-foreground mb-6">Performance Visualizer</h3>
-          <div className="h-64 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} margin={{ top: 5, right: 5, bottom: 5, left: -20 }}>
-                <XAxis dataKey="name" tick={{fontSize: 10}} interval={0} />
-                <YAxis domain={[0, 100]} tick={{fontSize: 10}} />
-                <Tooltip 
-                  contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                  cursor={{ fill: '#f8fafc' }}
-                />
-                <Bar dataKey="Score" radius={[4, 4, 0, 0]}>
-                  {chartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.Score >= 90 ? '#16a34a' : entry.Score < 60 ? '#dc2626' : '#0ea5e9'} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
-
     </div>
   );
 };
-
-export default GradeCalculator;

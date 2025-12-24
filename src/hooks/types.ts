@@ -1,15 +1,27 @@
-export interface GradeItem {
-  id: string;
-  category: string;
-  weight: number; // 0-100
-  score?: number; // 0-100, user input
+
+export interface SubItem {
+  name: string;
+  weight: number; // Percentage within the parent category or absolute points
+  description?: string;
 }
 
-export interface ParsingResult {
-  category: string;
-  weight: number;
+export interface GradingCategory {
+  name: string;
+  overallWeight: number; // Percentage of the total course (0-100)
+  subItems?: SubItem[];
+  maxPoints?: number;
+}
+
+export interface SyllabusData {
+  courseName: string;
+  gradingScale?: {
+    letter: string;
+    minPercent: number;
+  }[];
+  breakdown: GradingCategory[];
+  totalWeightNote?: string;
 }
 
 export interface ParsedResponse {
-  breakdown: ParsingResult[];
+  syllabus: SyllabusData;
 }

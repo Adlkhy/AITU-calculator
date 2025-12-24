@@ -62,6 +62,7 @@ export default function Profile() {
       setIsEditing(false);
       // Optional: Refresh page or show success toast
     } catch (error) {
+      console.error("Error updating profile:", error);
       alert("Error updating profile");
     }
   };

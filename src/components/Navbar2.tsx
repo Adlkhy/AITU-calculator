@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { useEffect, useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
+import { GlowEffect } from './ui/glow-button';
 import { ModeToggle } from '@/components/mode-toggle';
 import { useTheme } from "@/lib/useTheme"
 import { useUser } from '@/hooks/useUser';
@@ -335,15 +336,25 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
             <div className="flex flex-1 items-center justify-end gap-2">
               {/* User menu - UPDATED */}
               <ModeToggle />
+              <div className='relative'>
+              <GlowEffect 
+              colors={['#FF5733', '#33FF57', '#3357FF', '#F1C40F']}
+              mode='colorShift'
+              blur='soft'
+              duration={3}
+              scale={0.9}
+              className='-z-10'
+              />
               <Button 
-                variant="outline"
+                variant="secondary"
                 onClick={() => navigate('/ai')}
                 size="sm"
-                className='w-16 h-9 px-4 flex items-center justify-around'
+                className='w-16 h-9 bg-background px-4 flex items-center justify-around'
                 >
                 <Sparkles className="h-4 w-4" />
                 AI
               </Button>
+              </div>
               {!user || !loading || (
                 <Button 
                   variant="secondary" 
