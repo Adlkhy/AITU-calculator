@@ -1,13 +1,13 @@
 // import React, { useState, useEffect } from 'react';
 // import type { GradeItem } from '../hooks/types';
 // import { X } from 'lucide-react';
-// import { Input } from './ui/input';
-// import { Button } from './ui/button';
 // import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 
 import React, { useState, useEffect } from 'react';
 import type { SyllabusData } from '../hooks/types';
+import { Card, CardTitle, CardContent, CardDescription, CardHeader} from './ui/card';
+import { Input } from './ui/input';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
 interface GradeCalculatorProps {
@@ -15,8 +15,6 @@ interface GradeCalculatorProps {
 }
 
 export const GradeCalculator: React.FC<GradeCalculatorProps> = ({ data }) => {
-  // Store scores for each sub-item
-  // Key: "CategoryIndex-SubItemIndex" -> value (0-100)
   const [scores, setScores] = useState<Record<string, number>>({});
   const [finalGrade, setFinalGrade] = useState<number>(0);
 
@@ -67,89 +65,92 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({ data }) => {
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
       {/* Inputs Column */}
       <div className="lg:col-span-2 space-y-6">
-        <h2 className="text-2xl font-bold text-gray-800 flex items-center">
-          <i className="fas fa-calculator mr-3 text-blue-600"></i>
+        <h2 className="text-2xl font-bold text-foreground flex items-center">
           Calculate Your Grade
         </h2>
         
         {data.courseName && (
-          <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
-            <span className="text-sm text-blue-600 font-semibold uppercase tracking-wider">Course</span>
-            <p className="text-lg font-bold text-blue-900">{data.courseName}</p>
-          </div>
+          <Card className="border-2 border-accent">
+            <CardContent>
+            <CardTitle className="text-sm text-accent-foreground font-semibold uppercase tracking-wider">Course</CardTitle>
+            <CardDescription className="text-lg font-bold text-primary">{data.courseName}</CardDescription>
+            </CardContent>
+          </Card>
         )}
 
         {data.breakdown.map((category, catIdx) => (
-          <div key={catIdx} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-            <div className="flex justify-between items-center mb-4">
-              <div>
-                <h3 className="text-lg font-bold text-gray-800">{category.name}</h3>
-                <span className="text-sm text-gray-500">Weight: {category.overallWeight}% of final grade</span>
-              </div>
-              {!category.subItems?.length && (
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="number"
-                    placeholder="Score"
-                    className="w-24 p-2 border border-gray-200 rounded-lg text-center font-bold focus:ring-2 focus:ring-blue-500 outline-none"
-                    value={scores[`${catIdx}-main`] || ''}
-                    onChange={(e) => handleScoreChange(`${catIdx}-main`, e.target.value)}
-                  />
-                  <span className="text-gray-400 font-medium">%</span>
-                </div>
-              )}
-            </div>
-
+          <Card key={catIdx} className="shadow-md hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="text-lg font-bold text-foreground">{category.name}</CardTitle>
+              <CardDescription className="text-sm text-foreground/80">Weight: {category.overallWeight}% of final grade</CardDescription>
+            </CardHeader>
+            {!category.subItems?.length && (
+              <CardContent className="flex items-center space-x-2">
+                <Input
+                  type="number"
+                  placeholder="Score"
+                  className="w-24 p-2 text-center font-bold"
+                  value={scores[`${catIdx}-main`] || ''}
+                  onChange={(e) => handleScoreChange(`${catIdx}-main`, e.target.value)}
+                />
+                <span className="text-foreground/80 font-medium">%</span>
+              </CardContent>
+            )}
+            
             {category.subItems && category.subItems.length > 0 && (
-              <div className="space-y-3 mt-4 border-t pt-4">
+              <CardContent className="space-y-2 border-t pt-4">
                 {category.subItems.map((sub, subIdx) => (
                   <div key={subIdx} className="flex items-center justify-between group">
                     <div className="flex-1 pr-4">
-                      <p className="text-sm font-medium text-gray-700">{sub.name}</p>
-                      {sub.description && <p className="text-xs text-gray-400">{sub.description}</p>}
+                      <p className="text-sm font-medium text-foreground">{sub.name}</p>
+                      {sub.description && <p className="text-xs text-foreground">{sub.description}</p>}
                     </div>
                     <div className="flex items-center space-x-2">
-                      <span className="text-xs text-gray-400">({sub.weight} pts)</span>
-                      <input
+                      <span className="text-xs">({sub.weight} pts)</span>
+                      <Input
                         type="number"
-                        placeholder="%"
-                        className="w-20 p-1.5 border border-gray-100 rounded bg-gray-50 text-center text-sm focus:bg-white focus:border-blue-300 outline-none"
+                        placeholder="0-100"
+                        className="w-20 p-1.5 text-center text-sm"
                         value={scores[`${catIdx}-${subIdx}`] || ''}
                         onChange={(e) => handleScoreChange(`${catIdx}-${subIdx}`, e.target.value)}
                       />
-                      <span className="text-gray-300">%</span>
+                      <span className="text-foreground">%</span>
                     </div>
                   </div>
                 ))}
-              </div>
+              </CardContent>
             )}
-          </div>
+          </Card>
         ))}
       </div>
 
       {/* Summary Column */}
       <div className="lg:col-span-1">
-        <div className="sticky top-8 space-y-6">
-          <div className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 text-center overflow-hidden relative">
-            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
-            <h3 className="text-gray-500 font-medium uppercase text-xs tracking-widest mb-2">Estimated Final Grade</h3>
-            <div className="text-6xl font-black text-gray-900 mb-2">
-              {finalGrade.toFixed(1)}%
-            </div>
-            <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden mb-6">
-              <div 
-                className="h-full bg-blue-600 transition-all duration-500" 
-                style={{ width: `${Math.min(100, finalGrade)}%` }}
-              ></div>
-            </div>
-            
-            <p className="text-sm text-gray-400 italic">
-              {data.totalWeightNote || "Calculated based on extracted syllabus weights."}
-            </p>
-          </div>
+        <div className="sticky pt-14 top-8 space-y-6">
+          <Card className="shadow-md hover:shadow-lg text-center overflow-hidden relative">
+            <CardHeader className="">
+              <CardTitle className="text-lg font-bold">Your Estimated Final Grade</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-6xl font-black text-gray-900 mb-2">
+                {finalGrade.toFixed(1)}%
+              </div>
+              <div className="h-2 w-full rounded-full overflow-hidden mb-6">
+                <div 
+                  className="h-full transition-all duration-500" 
+                  style={{ width: `${Math.min(100, finalGrade)}%` }}
+                ></div>
+              </div>
 
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <h4 className="font-bold text-gray-800 mb-4">Weight Distribution</h4>
+              <p className="text-sm text-foreground italic">
+                {data.totalWeightNote || "Calculated based on extracted syllabus weights."}
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="shadow-md hover:shadow-lg">
+            <CardContent>
+            <CardTitle className="font-bold text-foreground mb-4">Weight Distribution</CardTitle>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -174,12 +175,13 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({ data }) => {
               {data.breakdown.map((cat, idx) => (
                 <div key={idx} className="flex items-center text-sm">
                   <div className="w-3 h-3 rounded-full mr-2" style={{ backgroundColor: COLORS[idx % COLORS.length] }}></div>
-                  <span className="flex-1 text-gray-600">{cat.name}</span>
-                  <span className="font-bold text-gray-800">{cat.overallWeight}%</span>
+                  <span className="flex-1 text-foreground">{cat.name}</span>
+                  <span className="font-bold text-foreground">{cat.overallWeight}%</span>
                 </div>
               ))}
             </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
