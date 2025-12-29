@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import { UserProvider } from './contexts/UserContext.tsx'
+import { GeminiProvider } from './contexts/GeminiContext.tsx'
 
 const GA_ID = import.meta.env.VITE_GA_ID; 
 
@@ -27,8 +28,10 @@ if (GA_ID) {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <UserProvider>
-      <App />
-    </UserProvider>
+    <GeminiProvider>
+      <UserProvider>
+        <App />
+      </UserProvider>
+    </GeminiProvider>
   </React.StrictMode>
 )

@@ -2,16 +2,21 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import type { ParsedResponse } from "../hooks/types";
 
-const apiKey = import.meta.env.VITE_API_KEY;
-if (!apiKey) {
-  throw new Error("VITE_API_KEY is not defined in environment variables.");
-}
-const ai = new GoogleGenAI({ apiKey });
+const defaultApiKey = import.meta.env.VITE_API_KEY;
 
 export const parseSyllabus = async (
   base64Data: string,
-  mimeType: string
+  mimeType: string,
+  userApiKey?: string | null
 ): Promise<ParsedResponse> => {
+  const apiKey = userApiKey || defaultApiKey;
+  
+  if (!apiKey) {
+    throw new Error("Gemini API Key is not provided.");
+  }
+
+  const ai = new GoogleGenAI({ apiKey });
+
   const systemInstruction = `
     You are a world-class academic assistant specializing in extracting grading structures from complex university syllabi.
     

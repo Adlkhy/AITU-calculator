@@ -5,6 +5,9 @@ import { GradeCalculator } from '../components/GradeCalculator';
 import { parseSyllabus } from '../services/geminiService';
 import { Navbar08 } from '../components/Navbar2';
 import Footer from '../components/Footer';
+import { ApiKeyInput } from '@/components/ApiKeyInput';
+import { useGemini } from '@/hooks/useGemini';
+import { useGeminiClient } from '../lib/GeminiClient';
 import type { SyllabusData } from '../hooks/types';
 import { SlidersHorizontal, ChartLine, WandSparkles, BadgeAlert, CircleArrowLeft} from 'lucide-react';
 
@@ -12,15 +15,23 @@ const App: React.FC = () => {
   const [syllabusData, setSyllabusData] = useState<SyllabusData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { apiKey } = useGemini();
+  const { clearKey } = useGeminiClient();
 
   const handleFileUpload = async (base64: string, mimeType: string) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await parseSyllabus(base64, mimeType);
+      const response = await parseSyllabus(base64, mimeType, apiKey);
       setSyllabusData(response.syllabus);
-    } catch (err) {
-      setError("Failed to parse the syllabus. Please ensure the image is clear and contains a grading table.");
+    } catch (err: unknown) {
+      // If the error code indicates an API key issue:
+      if ((err instanceof Error && err.message?.includes('API_KEY_INVALID')) || (err instanceof Error && err.message?.includes('401')) || (err && typeof err === 'object' && 'status' in err && (err as { status: number }).status === 401)) {
+        alert("Your API Key seems to be invalid or expired. Please re-enter it.");
+        clearKey(); // This triggers the UI to show the Input Modal again via Context
+      } else {
+        setError("Failed to parse the syllabus. Please ensure the image is clear and contains a grading table.");
+      }
       console.error(err);
     } finally {
       setLoading(false);
@@ -49,7 +60,11 @@ const App: React.FC = () => {
       <main>
         {!syllabusData ? (
           <div className="animate-in px-4 md:px-8 fade-in slide-in-from-bottom-4 duration-700">
-            <FileUpload onFileSelect={handleFileUpload} isLoading={loading} />
+            { !apiKey ? (
+              <ApiKeyInput />
+            ) : (
+              <FileUpload onFileSelect={handleFileUpload} isLoading={loading} />
+            )}
             
             {error &&  (
               <div className="mt-6 p-4 bg-destructive-foreground text-destructive rounded-xl text-center flex items-center justify-center">

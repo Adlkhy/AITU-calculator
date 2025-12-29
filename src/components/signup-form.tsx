@@ -12,6 +12,8 @@ import {
 import { Input } from "@/components/ui/input"
 
 interface SignupFormProps extends React.ComponentProps<"div"> {
+  fullName: string;
+  setFullName: (fullName: string) => void;
   email: string;
   setEmail: (email: string) => void;
   password: string;
@@ -25,6 +27,8 @@ interface SignupFormProps extends React.ComponentProps<"div"> {
 
 export function SignupForm({
   className,
+  fullName,
+  setFullName,
   email,
   setEmail,
   password,
@@ -52,6 +56,16 @@ export function SignupForm({
                 ) }
               </div>
               
+                <Field>
+                  <FieldLabel htmlFor="name">Name</FieldLabel>
+                  <Input 
+                    id="name" 
+                    value={fullName} 
+                    onChange={(e) => setFullName(e.target.value)} 
+                    placeholder="John Doe"
+                    required
+                    />
+                </Field>
                 <Field>
                   <FieldLabel htmlFor="email">Email</FieldLabel>
                   <Input

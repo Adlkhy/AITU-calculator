@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { CloudUpload, Loader } from 'lucide-react';
 
@@ -31,7 +30,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect, isLoading 
         </div>
         <div className="text-center">
           <h3 className="text-xl font-semibold text-foreground">Upload Syllabus</h3>
-          <p className="text-foreground/80 mt-1">Upload a photo or PDF of your grading table</p>
+          <p className="text-foreground/80 mt-1">Upload a photo of your grading table</p>
         </div>
         <button
           onClick={() => fileInputRef.current?.click()}
@@ -53,9 +52,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect, isLoading 
           ref={fileInputRef}
           onChange={handleFileChange}
           className="hidden"
-          accept="image/*,application/pdf"
+          accept="image/*"
         />
-        <p className="text-xs text-foreground/80">Supported: JPG, PNG, WEBP, PDF</p>
+        <p className="text-xs text-foreground/80">Supported: JPG, PNG, WEBP</p>
       </div>
     </div>
   );

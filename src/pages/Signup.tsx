@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function SignupPage() {
   const navigate = useNavigate();
 
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -32,6 +33,11 @@ export default function SignupPage() {
     const { error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          full_name: fullName,
+        }
+      }
     });
     if (error) {
       setError(error.message);
@@ -45,6 +51,8 @@ export default function SignupPage() {
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm md:max-w-4xl">
         <SignupForm 
+          fullName={fullName}
+          setFullName={setFullName}
           email={email}
           setEmail={setEmail}
           password={password}
