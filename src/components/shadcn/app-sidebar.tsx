@@ -35,7 +35,7 @@ const data = {
     // },
     {
       title: "AITU Map",
-      url: "https://yuujiso.github.io/aitumap/",
+      url: "https://aitumap.webspace.cat/",
       icon: IconMap,
     },
     {
@@ -57,12 +57,12 @@ const data = {
   navSecondary: [
     {
       title: "Settings",
-      url: "https://youtu.be/dQw4w9WgXcQ?si=cs98hgCR45G0Vjlb",
+      url: "#",
       icon: IconSettings,
     },
     {
       title: "Get Help",
-      url: "https://www.gofundme.com/c/blog/how-to-ask-for-help-with-money",
+      url: "#",
       icon: IconHelp,
     },
     {

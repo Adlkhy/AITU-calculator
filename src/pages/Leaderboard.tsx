@@ -6,6 +6,7 @@ import { useUser } from '@/hooks/useUser'
 import { DataTable } from '@/components/shadcn/data-table'
 import { AppSidebar } from "@/components/shadcn/app-sidebar"
 import { DotLoader } from '@/components/shadcn/gsap/dot-loader'
+import { fetchGroupData, getGroupName } from '@/services/groupService'
 // import { ChartAreaInteractive } from "@/components/shadcn/chart-area-interactive"
 // import { SectionCards } from "@/components/shadcn/section-cards"
 import { SiteHeader } from "@/components/shadcn/site-header"
@@ -37,6 +38,9 @@ export default function Leaderboard() {
 
   const fetchLeaderboardData = useCallback(async () => {
     try {
+      // Fetch group data first
+      const groupMap = await fetchGroupData();
+
       // Fetch all final grades with user profiles
       const { data: gradesData, error: gradesError } = await supabase
         .from('final_grades')
@@ -46,7 +50,8 @@ export default function Leaderboard() {
           profiles (
             id,
             full_name,
-            avatar_url
+            avatar_url,
+            email
           )
         `)
         .eq('semester', 'Fall 2025');
@@ -60,6 +65,7 @@ export default function Leaderboard() {
         full_name: string;
         avatar_url: string;
         user_id: string;
+        email: string;
       }> = {};
 
       gradesData?.forEach(item => {
@@ -73,7 +79,8 @@ export default function Leaderboard() {
             count: 0,
             full_name: profile?.full_name || 'NPC'+userId.slice(0, 5),
             avatar_url: profile?.avatar_url || '',
-            user_id: userId
+            user_id: userId,
+            email: profile?.email || '',
           };
         }
         userAverages[userId].total += item.final_grade ?? 0;
@@ -97,7 +104,7 @@ export default function Leaderboard() {
           return {
             id: 0, // Temporary ID, will be set after sorting
             name: userData.full_name,
-            group: 'None', // You can make this dynamic
+            group: getGroupName(userData.email, groupMap),
             performance: status,
             subjects: `${userData.count} subjects`, // Number of subjects completed
             limit: 'Fall 2025',

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Input } from "@/components/ui/input" // Assuming shadcn
+import { Input } from "@/components/ui/input" 
 import { Button } from "@/components/ui/button"
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { useGemini } from "@/hooks/useGemini"
@@ -12,7 +12,6 @@ export function ApiKeyInput() {
   const [status, setStatus] = useState<'idle' | 'checking' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Load key on mount
   useEffect(() => {
     const storedKey = localStorage.getItem("user_gemini_key")
     if (storedKey) setInputValue(storedKey)

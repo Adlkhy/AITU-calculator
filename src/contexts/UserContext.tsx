@@ -20,7 +20,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const mountedRef = useRef(true);
   const fetchProfileTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const fetchProfile = async (userId: string) => {
+  const fetchProfile = async (user: User) => {
+    const userId = user.id;
     // Clear any existing timeout
     if (fetchProfileTimeoutRef.current) {
       clearTimeout(fetchProfileTimeoutRef.current);
@@ -48,7 +49,27 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         clearTimeout(fetchProfileTimeoutRef.current);
       }
 
-      if (error) {
+      if (error && error.code === 'PGRST116') {
+        // Profile doesn't exist, create one
+        console.log('Creating profile for user...');
+        const { data: newProfile, error: insertError } = await supabase
+          .from('profiles')
+          .insert([{ 
+            id: userId, 
+            full_name: user.user_metadata?.full_name || user.user_metadata?.name || user.email,
+            avatar_url: user.user_metadata?.avatar_url,
+            email: user.email
+          }])
+          .select()
+          .single();
+          
+        if (insertError) {
+          console.error('Failed to create profile:', insertError);
+        } else if (newProfile && mountedRef.current) {
+          setProfile(newProfile);
+        }
+        return;
+      } else if (error) {
         console.error('Error fetching profile:', error);
         if (mountedRef.current) {
           setProfile(null);
@@ -57,7 +78,23 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       if (data && mountedRef.current) {
-        setProfile(data);
+        // If profile exists but email is missing, update it
+        if (!data.email && user.email) {
+          const { data: updatedProfile, error: updateError } = await supabase
+            .from('profiles')
+            .update({ email: user.email })
+            .eq('id', userId)
+            .select()
+            .single();
+          
+          if (!updateError && updatedProfile) {
+            setProfile(updatedProfile);
+          } else {
+            setProfile(data);
+          }
+        } else {
+          setProfile(data);
+        }
       }
     } catch (error) {
       console.error('Error fetching profile:', error);
@@ -102,7 +139,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         // Fetch profile in background (non-blocking)
         if (initialUser) {
-          fetchProfile(initialUser.id);
+          fetchProfile(initialUser);
         }
       } catch (error) {
         console.error('Error initializing auth:', error);
@@ -132,7 +169,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         // Handle profile fetch based on auth state
         if (currentSession?.user) {
           // Fetch profile in background (non-blocking)
-          fetchProfile(currentSession.user.id);
+          fetchProfile(currentSession.user);
         } else {
           setProfile(null);
           setProfileLoading(false);

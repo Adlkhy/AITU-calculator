@@ -1,9 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/components/ui/dropdown-menu';
-import { X, House, Banana, Bus, Hospital, CreditCard, UtensilsCrossed, Gamepad2, ShoppingBag, Palette, Plane, Goal, User} from 'lucide-react'; //icons from lucide https://lucide.dev/icons/
+import { X, Plus, Wallet, TrendingUp, Landmark, ArrowUpRight, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from './ui/input';
+import { Badge } from './ui/badge';
+import { 
+  PieChart, 
+  Pie, 
+  Cell, 
+  Tooltip as RechartsTooltip,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from 'recharts';
+import { ChartContainer, type ChartConfig } from '@/components/ui/chart';
+import { ChartTooltipContent } from '@/components/ui/chart';
+
 // --- BUDGET TYPE DEFINITIONS ---
 interface IncomeSource {
   id: string;
@@ -24,6 +39,17 @@ interface BudgetRule {
   };
 }
 
+const budgetConfig = {
+  needs: { label: "Needs", color: "var(--chart-1)" },
+  wants: { label: "Wants", color: "var(--chart-2)" },
+  savings: { label: "Savings", color: "var(--chart-3)" },
+} satisfies ChartConfig;
+
+const incomeChartConfig = {
+  amount: { label: "Amount", color: "var(--chart-1)" },
+} satisfies ChartConfig;
+
+
 // --- BUDGET COMPONENTS ---
 const IncomeSourceInput = ({ 
   source, 
@@ -34,222 +60,197 @@ const IncomeSourceInput = ({
   onUpdate: (id: string, field: string, value: string) => void; 
   onRemove: (id: string) => void;
 }) => (
-  <div className="flex flex-col sm:flex-row items-center gap-2 mb-3">
-    <Input
-      type="text"
-      value={source.name}
-      onChange={(e) => onUpdate(source.id, 'name', e.target.value)}
-      placeholder="Income source (e.g., Grant, Job)"
-      className="w-full flex-grow text-foreground p-2 rounded-md"
-    />
-    <div className="flex w-full items-center gap-2">
+  <div className="group relative flex flex-col sm:flex-row items-center gap-3 p-4 rounded-xl border border-muted-foreground/10 bg-muted/5 hover:bg-muted/10 transition-all">
+    <div className="w-full space-y-1">
+      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Source Name</label>
       <Input
-        type="number"
-        value={source.amount}
-        onChange={(e) => onUpdate(source.id, 'amount', e.target.value)}
-        placeholder="Amount"
-        min="0"
-        step="0.01"
-        className="w-full text-accent-foreground p-2 rounded-md"
+        type="text"
+        value={source.name}
+        onChange={(e) => onUpdate(source.id, 'name', e.target.value)}
+        placeholder="e.g., Monthly Grant"
+        className="h-10 bg-background border-muted-foreground/20"
       />
-      <span className="text-foreground font-bold">₸</span>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button className="w-32 bg-accent text-foreground hover:text-background p-2 rounded-md ">
-            {source.type === 'grant' ? 'Grant' : 'Personal'}
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem 
-            onClick={() => onUpdate(source.id, 'type', 'grant')}
-            className="cursor-pointer"
-          >
-            Grant
-          </DropdownMenuItem>
-          <DropdownMenuItem 
-            onClick={() => onUpdate(source.id, 'type', 'personal')}
-            className="cursor-pointer"
-          >
-            Personal
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
     </div>
+    
+    <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-3">
+      <div className="sm:w-32 space-y-1">
+        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Amount (₸)</label>
+        <Input
+          type="number"
+          value={source.amount}
+          onChange={(e) => onUpdate(source.id, 'amount', e.target.value)}
+          placeholder="0"
+          min="0"
+          step="0.01"
+          className="h-10 bg-background border-muted-foreground/20 font-mono"
+        />
+      </div>
+      <div className='flex justify-between gap-2'>
+      <div className="flex items-end justify-between space-y-1">
+        <div className='flex flex-col'>
+          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Type</label>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="h-10 w-28 justify-between border-muted-foreground/20">
+                {source.type === 'grant' ? <Landmark className="w-3 h-3 mr-2" /> : <User className="w-3 h-3 mr-2" />}
+                {source.type === 'grant' ? 'Grant' : 'Personal'}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => onUpdate(source.id, 'type', 'grant')} className="gap-2">
+                <Landmark className="w-4 h-4" /> Grant
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onUpdate(source.id, 'type', 'personal')} className="gap-2">
+                <User className="w-4 h-4" /> Personal
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
 
-    <Button
-      size={'icon'}
-      variant="destructive"
-      onClick={() => onRemove(source.id)}
-      className="w-full sm:w-10 hidden sm:flex items-center justify-center"
-      aria-label="Remove Income Source"
-    >
-      <X className="text-card" />
-    </Button>
-    {/* mobile */}
-    <Button
-      size={'icon'}
-      variant="destructive"
-      onClick={() => onRemove(source.id)}
-      className="w-full sm:w-10 sm:hidden flex items-center justify-center"
-      aria-label="Remove Income Source"
-    >
-      Remove
-    </Button>
+      <Button
+        variant="destructive"
+        size="icon"
+        onClick={() => onRemove(source.id)}
+        className="h-10 w-10 mt-5 text-destructive-foreground hover:text-destructive hover:bg-destructive/10"
+      >
+        <X className="w-4 h-4" />
+      </Button>
+      </div>
+    </div>
   </div>
 );
 
 const BudgetRuleDisplay = ({ 
   rule, 
-  totalIncome 
+  totalIncome,
+  isActive,
+  onSelect
 } : { 
   rule: BudgetRule; 
   totalIncome: number;
+  isActive: boolean;
+  onSelect: () => void;
 }) => {
   const needsAmount = (totalIncome * rule.needs) / 100;
   const wantsAmount = (totalIncome * rule.wants) / 100;
   const savingsAmount = (totalIncome * rule.savings) / 100;
 
+  const chartData = [
+    { name: 'Needs', value: rule.needs, amount: needsAmount, color: 'var(--chart-1)' },
+    { name: 'Wants', value: rule.wants, amount: wantsAmount, color: 'var(--chart-2)' },
+    { name: 'Savings', value: rule.savings, amount: savingsAmount, color: 'var(--chart-3)' },
+  ];
+
   return (
-    <Card className="p-4 hover:shadow-lg transition-shadow">
-      <CardContent className="space-y-3 mb-4 px-0">
-      <CardTitle className="text-xl font-bold mb-4 text-center">{rule.name} Rule</CardTitle>
+    <Card 
+      className={`relative overflow-hidden transition-all cursor-pointer hover:shadow-md ${isActive ? 'ring-2 ring-primary border-transparent' : 'border-muted-foreground/20'}`}
+      onClick={onSelect}
+    >
+      {isActive && (
+        <div className="absolute top-2 right-2">
+          <Badge className="bg-primary text-primary-foreground text-[10px] uppercase tracking-tighter">Active</Badge>
+        </div>
+      )}
       
-      {/* Budget Breakdown */}
-        <div className="flex justify-between items-center">
-          <span className="font-semibold">Needs ({rule.needs}%)</span>
-          <span className="font-bold">{needsAmount.toFixed(2)}₸</span>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-lg font-black tracking-tight">{rule.name} Strategy</CardTitle>
+        <CardDescription className="text-xs">Standard allocation for students</CardDescription>
+      </CardHeader>
+
+      <CardContent className="space-y-4">
+        <div className="h-32 w-full">
+          <ChartContainer config={budgetConfig}>
+            <PieChart>
+              <Pie
+                data={chartData}
+                cx="50%"
+                cy="50%"
+                innerRadius={35}
+                outerRadius={50}
+                paddingAngle={5}
+                dataKey="value"
+              >
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <RechartsTooltip 
+                content={({ active, payload }) => {
+                  if (active && payload && payload.length) {
+                    return (
+                      <div className="bg-background border border-muted-foreground/20 p-2 rounded-lg shadow-xl text-[10px] font-bold uppercase tracking-widest">
+                        <p style={{ color: payload[0].payload.color }}>{payload[0].name}: {payload[0].value}%</p>
+                        <p className="text-muted-foreground">{payload[0].payload.amount.toFixed(0)}₸</p>
+                      </div>
+                    );
+                  }
+                  return null;
+                }}
+              />
+            </PieChart>
+          </ChartContainer>
         </div>
-        <div className="flex justify-between items-center">
-          <span className="font-semibold">Wants ({rule.wants}%)</span>
-          <span className="font-bold">{wantsAmount.toFixed(2)}₸</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="font-semibold">Savings ({rule.savings}%)</span>
-          <span className="font-bold">{savingsAmount.toFixed(2)}₸</span>
+
+        <div className="space-y-2">
+          {chartData.map((item) => (
+            <div key={item.name} className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
+                <span className="font-medium text-muted-foreground">{item.name}</span>
+              </div>
+              <span className="font-bold">{item.amount.toLocaleString()}₸</span>
+            </div>
+          ))}
         </div>
       </CardContent>
-
-      {/* Visual Budget Bar */}
-      <div className="w-full h-6 rounded-full overflow-hidden flex">
-        <div 
-          className="h-full transition-all duration-300"
-          style={{ 
-            width: `${rule.needs}%`,
-            backgroundColor: `var(${rule.colors.needs})`
-          }}
-          title={`Needs: ${rule.needs}%`}
-        />
-        <div 
-          className="h-full transition-all duration-300"
-          style={{ 
-            width: `${rule.wants}%`,
-            backgroundColor: `var(${rule.colors.wants})`
-          }}
-          title={`Wants: ${rule.wants}%`}
-        />
-        <div 
-          className="h-full transition-all duration-300"
-          style={{ 
-            width: `${rule.savings}%`,
-            backgroundColor: `var(${rule.colors.savings})`
-          }}
-          title={`Savings: ${rule.savings}%`}
-        />
-      </div>
-
-      {/* Legend */}
-      <div className="flex justify-center gap-4 mt-3 text-xs">
-        <div className="flex items-center gap-1">
-          <div 
-            className="w-3 h-3 rounded"
-            style={{ backgroundColor: `var(${rule.colors.needs})`}}
-          />
-          <span>Needs</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <div 
-            className="w-3 h-3 rounded"
-            style={{ backgroundColor: `var(${rule.colors.wants})`}}
-          />
-          <span>Wants</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <div 
-            className="w-3 h-3 rounded"
-            style={{ backgroundColor: `var(${rule.colors.savings})`}}
-          />
-          <span>Savings</span>
-        </div>
-      </div>
     </Card>
   );
 };
 
 export default function BudgetPlanner() {
-  const [incomeSources, setIncomeSources] = useState<IncomeSource[]>([
-    {
-      id: '1',
-      name: 'Monthly Grant',
-      amount: '',
-      type: 'grant'
-    }
-  ]);
+  const [incomeSources, setIncomeSources] = useState<IncomeSource[]>(() => {
+    const saved = localStorage.getItem('student_income_sources');
+    return saved ? JSON.parse(saved) : [
+      { id: '1', name: 'Monthly Grant', amount: '', type: 'grant' }
+    ];
+  });
 
-  const [totalIncome, setTotalIncome] = useState(0);
+  const [activeRuleIndex, setActiveRuleIndex] = useState(0);
 
-  // Budget rules configuration
+  useEffect(() => {
+    localStorage.setItem('student_income_sources', JSON.stringify(incomeSources));
+  }, [incomeSources]);
+
+  const totalIncome = useMemo(() => {
+    return incomeSources.reduce((sum, source) => sum + (parseFloat(source.amount) || 0), 0);
+  }, [incomeSources]);
+
   const budgetRules: BudgetRule[] = [
-    {
-      name: '50/30/20',
-      needs: 50,
-      wants: 30,
-      savings: 20,
-      colors: {
-        needs: '--chart-1',
-        wants: '--chart-2',
-        savings: '--chart-3'
-      }
-    },
-    {
-      name: '60/20/20',
-      needs: 60,
-      wants: 20,
-      savings: 20,
-      colors: {
-        needs: '--chart-1',
-        wants: '--chart-2',
-        savings: '--chart-3'
-      }
-    },
-    {
-      name: '70/20/10',
-      needs: 70,
-      wants: 20,
-      savings: 10,
-      colors: {
-        needs: '--chart-1',
-        wants: '--chart-2',
-        savings: '--chart-3'
-      }
-    }
+    { name: '50/30/20', needs: 50, wants: 30, savings: 20, colors: { needs: '--chart-1', wants: '--chart-2', savings: '--chart-3' } },
+    { name: '60/20/20', needs: 60, wants: 20, savings: 20, colors: { needs: '--chart-1', wants: '--chart-2', savings: '--chart-3' } },
+    { name: '70/20/10', needs: 70, wants: 20, savings: 10, colors: { needs: '--chart-1', wants: '--chart-2', savings: '--chart-3' } }
   ];
 
-  // Calculate total income
-  useEffect(() => {
-    const total = incomeSources.reduce((sum, source) => {
-      return sum + (parseFloat(source.amount) || 0);
-    }, 0);
-    setTotalIncome(total);
+  const activeRule = budgetRules[activeRuleIndex];
+
+  const incomeChartData = useMemo(() => {
+    return incomeSources
+      .filter(s => parseFloat(s.amount) > 0)
+      .map(s => ({
+        name: s.name.length > 10 ? s.name.substring(0, 10) + '...' : s.name,
+        amount: parseFloat(s.amount) || 0,
+        fill: s.type === 'grant' ? 'var(--chart-1)' : 'var(--chart-2)'
+      }));
   }, [incomeSources]);
 
   const addIncomeSource = () => {
-    const newSource: IncomeSource = {
+    setIncomeSources([...incomeSources, {
       id: crypto.randomUUID(),
-      name: `Income Source ${incomeSources.length + 1}`,
+      name: `Source ${incomeSources.length + 1}`,
       amount: '',
       type: 'personal'
-    };
-    setIncomeSources([...incomeSources, newSource]);
+    }]);
   };
 
   const updateIncomeSource = (id: string, field: string, value: string) => {
@@ -265,111 +266,130 @@ export default function BudgetPlanner() {
   };
 
   return (
-    <div className="px-4 pt-4 sm:px-8 sm:pt-8">
-      <Card className="p-6 mb-8">
-        <CardContent className='px-0'>
-        <CardTitle className="text-2xl text-center">
-          Student Budget Planner
-        </CardTitle>
-        <CardDescription className="text-xl text-center">
-          Total Monthly Income: <span className="text-xl font-bold text-primary">{totalIncome.toFixed(2)}₸</span>
-        </CardDescription>
-        
-        <div className="mt-4">
-          <h3 className="font-semibold text-foreground mb-2">Income Breakdown:</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {incomeSources.map(source => {
-              const amount = parseFloat(source.amount) || 0;
-              return amount > 0 ? (
-                <div key={source.id} className="flex flex-col justify-between text-sm">
-                  <span>{source.name} ({source.type})</span>
-                  <span className="font-semibold text-accent-foreground">{amount.toFixed(2)}₸</span>
-                </div>
-              ) : null;
-            })}
-          </div>
+    <div className="px-4 py-6 md:px-8 md:py-10 max-w-6xl mx-auto w-full space-y-8">
+      {/* HEADER */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div className="space-y-1">
+          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-foreground">
+            Budget <span className="text-primary">Planner</span>
+          </h1>
+          <p className="text-muted-foreground font-medium">
+            Manage your grants and personal income with smart rules.
+          </p>
         </div>
-        </CardContent>
-      </Card>
-
-      <Card className="p-6 mb-8">
-        <CardContent className='px-0'>
-          <CardTitle className="text-2xl font-bold text-center">Income Sources</CardTitle>
-          <CardDescription className="text-center mb-4">
-            Add all your monthly income sources (grants, job, savings, etc.)
-          </CardDescription>
-            
-          <div className="space-y-3">
-            {incomeSources.map(source => (
-              <IncomeSourceInput
-                key={source.id}
-                source={source}
-                onUpdate={updateIncomeSource}
-                onRemove={removeIncomeSource}
-              />
-            ))}
+        
+        <div className="flex items-center gap-3 bg-muted/30 p-2 rounded-2xl border border-muted-foreground/10">
+          <div className="p-3 bg-primary/10 rounded-xl">
+            <Wallet className="w-6 h-6 text-primary" />
           </div>
-          
-          <Button
-            onClick={addIncomeSource}
-            variant="default"
-            className="text-accent-foreground bg-accent hover:bg-accent-foreground hover:text-accent w-full sm:w-44 text-sm font-semibold"
-          >
-            + Add Income Source
-          </Button>
-        </CardContent>
-      </Card>
-
-      <div className="mb-8">
-        <h3 className="text-2xl font-bold text-center mb-6">Recommended Budget Plans</h3>
-        <div className="grid grid-cols-1 gap-6">
-          {budgetRules.map(rule => (
-            <BudgetRuleDisplay
-              key={rule.name}
-              rule={rule}
-              totalIncome={totalIncome}
-            />
-          ))}
+          <div className="pr-4">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Total Monthly</p>
+            <p className="text-2xl font-black text-primary">{totalIncome.toLocaleString()}₸</p>
+          </div>
         </div>
       </div>
 
-      <Card className="p-4">
-        <CardContent className="px-0">
-        <CardTitle className="mb-4">Budget Categories Guide</CardTitle>
-          <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-            <div>
-              <h4 className="font-semibold text-chart-1 mb-2">Needs (50-70%)</h4>
-              <ul className="text-foreground text-sm space-y-1">
-                <li className='flex items-center gap-2 hover:text-chart-1'><House className='w-5 h-5'/>Rent & Utilities</li>
-                <li className='flex items-center gap-2 hover:text-chart-1'><Banana className='w-5 h-5'/>Groceries</li>
-                <li className='flex items-center gap-2 hover:text-chart-1'><Bus className='w-5 h-5'/>Transportation</li>
-                <li className='flex items-center gap-2 hover:text-chart-1'><Hospital className='w-5 h-5'/>Healthcare</li>
-                <li className='flex items-center gap-2 hover:text-chart-1'><CreditCard className='w-5 h-5'/>Minimum debt payments</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-chart-2 mb-2">Wants (20-30%)</h4>
-              <ul className="text-foreground text-sm space-y-1">
-                <li className='flex items-center gap-2 hover:text-chart-2'><UtensilsCrossed className='w-5 h-5'/>Dining out</li>
-                <li className='flex items-center gap-2 hover:text-chart-2'><Gamepad2 className='w-5 h-5'/>Entertainment</li>
-                <li className='flex items-center gap-2 hover:text-chart-2'><ShoppingBag className='w-5 h-5'/>Shopping</li>
-                <li className='flex items-center gap-2 hover:text-chart-2'><Palette className='w-5 h-5'/>Hobbies</li>
-                <li className='flex items-center gap-2 hover:text-chart-2'><Plane className='w-5 h-5'/>Travel</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-chart-3 mb-2">Savings (10-20%)</h4>
-              <ul className="text-foreground text-sm space-y-1">
-                <li className='flex items-center gap-2 hover:text-chart-3'><Hospital className='w-5 h-5'/>Emergency fund</li>
-                <li className='flex items-center gap-2 hover:text-chart-3'><CreditCard className='w-5 h-5'/>Investments</li>
-                <li className='flex items-center gap-2 hover:text-chart-3'><CreditCard className='w-5 h-5'/>Debt repayment</li>
-                <li className='flex items-center gap-2 hover:text-chart-3'><Goal className='w-5 h-5'/>Future goals</li>
-                <li className='flex items-center gap-2 hover:text-chart-3'><User className='w-5 h-5'/>Retirement</li>
-              </ul>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* LEFT COLUMN: INPUTS */}
+        <div className="lg:col-span-2 space-y-6">
+          <Card className="border-muted-foreground/20 shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+              <div>
+                <CardTitle className="text-xl font-black tracking-tight">Income Sources</CardTitle>
+                <CardDescription>Add your grants, jobs, or allowances</CardDescription>
+              </div>
+              <Button onClick={addIncomeSource} size="sm" className="h-8 gap-1">
+                <Plus className="w-4 h-4" /> Add
+              </Button>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {incomeSources.map(source => (
+                <IncomeSourceInput
+                  key={source.id}
+                  source={source}
+                  onUpdate={updateIncomeSource}
+                  onRemove={removeIncomeSource}
+                />
+              ))}
+            </CardContent>
+          </Card>
+
+          {/* INCOME CHART */}
+          {incomeChartData.length > 0 && (
+            <Card className="border-muted-foreground/20 shadow-sm overflow-hidden">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Income Distribution</CardTitle>
+              </CardHeader>
+              <CardContent className="px-4">
+                <ChartContainer className='' config={incomeChartConfig}>
+                  <BarChart data={incomeChartData}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--muted-foreground)" opacity={0.1} />
+                    <XAxis 
+                      dataKey="name" 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{ fontSize: 10, fontWeight: 600 }}
+                      dy={10}
+                    />
+                    <YAxis hide />
+                    <RechartsTooltip 
+                      cursor={{ fill: 'var(--muted)', opacity: 0.4 }}
+                      content={<ChartTooltipContent hideLabel />}
+                    />
+                    <Bar 
+                      dataKey="amount" 
+                      radius={[6, 6, 0, 0]} 
+                      barSize={40}
+                    />
+                  </BarChart>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+
+        {/* RIGHT COLUMN: RULES & SUMMARY */}
+        <div className="space-y-6">
+          <div className="space-y-4">
+            <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/60 px-1">Budgeting Strategies</h3>
+            <div className="grid grid-cols-1 gap-4">
+              {budgetRules.map((rule, idx) => (
+                <BudgetRuleDisplay
+                  key={rule.name}
+                  rule={rule}
+                  totalIncome={totalIncome}
+                  isActive={activeRuleIndex === idx}
+                  onSelect={() => setActiveRuleIndex(idx)}
+                />
+              ))}
             </div>
           </div>
-        </CardContent>
-      </Card>
+
+          {/* FINAL SUMMARY CARD */}
+          <Card className="bg-primary text-primary-foreground border-none shadow-xl shadow-primary/20 overflow-hidden relative">
+            <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-3xl" />
+            <CardHeader>
+              <CardTitle className="text-lg font-black tracking-tight flex items-center gap-2">
+                <TrendingUp className="w-5 h-5" />
+                Monthly Goal
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 relative z-10">
+              <div className="p-4 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/10">
+                <p className="text-[10px] font-bold uppercase tracking-widest opacity-70 mb-1">Target Savings</p>
+                <p className="text-3xl font-black">
+                  {((totalIncome * activeRule.savings) / 100).toLocaleString()}₸
+                </p>
+              </div>
+              
+              <div className="flex items-center gap-2 text-xs font-medium opacity-80">
+                <ArrowUpRight className="w-4 h-4" />
+                <span>Based on {activeRule.name} strategy</span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }

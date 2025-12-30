@@ -226,7 +226,7 @@ export default function GpaCalculator() {
                           size="sm"
                           disabled={rows.length === 1}
                           type="button"
-                          className="px-2 py-1 text-destructive-foreground"
+                          className="px-2 py-1 text-destructive-foreground hover:text-destructive hover:bg-destructive/10"
                         >
                           Remove
                         </Button>
