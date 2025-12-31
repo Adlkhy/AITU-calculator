@@ -7,7 +7,9 @@ import { DotLoader } from '@/components/shadcn/gsap/dot-loader';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Navbar08 } from '@/components/Navbar2';
-
+import { toast, Toaster } from 'sonner';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { Trash, Loader2 } from 'lucide-react';
 // List of available subjects
 const AVAILABLE_SUBJECTS = [
   "Programming C++",
@@ -39,6 +41,7 @@ export default function FinalGrades() {
   const [editingGrades, setEditingGrades] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Load saved grades when component mounts
   useEffect(() => {
@@ -108,7 +111,7 @@ export default function FinalGrades() {
     const gradeValue = parseFloat(gradeInput);
 
     if (isNaN(gradeValue) || gradeValue < 0 || gradeValue > 100) {
-      alert('Please enter a valid grade between 0 and 100');
+      toast.error('Please enter a valid grade between 0 and 100');
       return;
     }
 
@@ -117,7 +120,7 @@ export default function FinalGrades() {
       await saveGrade(subject, gradeValue);
     } catch (error) {
       console.error('Error saving grade:', error);
-      alert('Error saving grade');
+      toast.error('Error saving grade');
     } finally {
       setIsSaving(false);
     }
@@ -133,13 +136,13 @@ export default function FinalGrades() {
   const handleDeleteGrade = async (subject: string) => {
   if (!user) return;
   
-  if (window.confirm(`Delete your ${subject} grade?`)) {
+  setIsDeleting(true);
     try {
       const { error } = await supabase
         .from('final_grades')
         .delete()
         .eq('user_id', user.id)
-        .eq('subject', subject)
+        .eq('subject', subject);
 
       if (error) throw error;
       
@@ -149,12 +152,14 @@ export default function FinalGrades() {
         delete newGrades[subject];
         return newGrades;
       });
+      toast.success(`${subject} grade deleted`);
     } catch (error) {
       console.error('Error deleting grade:', error);
-      alert('Error deleting grade');
+      toast.error('Error deleting grade');
+    } finally {
+      setIsDeleting(false);
     }
-  }
-};
+  };
 
   const calculateAverage = () => {
     const grades = Object.values(savedGrades);
@@ -226,6 +231,7 @@ export default function FinalGrades() {
   return (
     <>
     <Navbar08 />
+    <Toaster position="top-center" richColors />
     <div className="text-foreground min-h-screen font-sans">
       <div className="text-foreground font-sans px-4 py-4 sm:px-8 sm:py-8">
         <div className="max-w-4xl mx-auto">
@@ -313,13 +319,37 @@ export default function FinalGrades() {
                           >
                             Edit Grade
                           </Button>
-                          <Button 
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button 
+                                disabled={isDeleting}
+                                className="flex gap-2 w-full sm:w-auto"
+                                variant={'destructive'}
+                              >
+                                {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash className="h-4 w-4" />}
+                                {isDeleting ? "Deleting..." : "Delete Saved"}
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Delete Saved Grade</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Are you sure you want to delete your {subject} grade? This action cannot be undone.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => handleDeleteGrade(subject)}>Delete</AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                          {/* <Button 
                             variant="destructive" 
                             className="w-32"
                             onClick={() => handleDeleteGrade(subject)}
                           >
                             Delete Grade
-                          </Button>
+                          </Button> */}
                         </div>
                       </div>
                     ) : (

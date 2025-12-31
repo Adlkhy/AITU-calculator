@@ -18,7 +18,6 @@ interface Category {
   items: GradeItem[];
   totalWeight: number; // total weight of this category in final grade (e.g., 30 for 30%)
 }
-
 // --- REUSABLE COMPONENTS ---
 
 const GradeCategory = ({

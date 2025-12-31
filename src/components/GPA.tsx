@@ -125,7 +125,7 @@ export default function GpaCalculator() {
   }, [addRow, rows.length]);
 
   return (
-    <div className="px-4 pt-4 md:px-8 md:pt-8 max-w-4xl mx-auto w-full">
+    <div className="px-4 pt-4 md:px-8 md:pt-8 max-w-5xl mx-auto w-full">
       <Card className="p-4 md:p-6">
         <CardContent className="px-0">
           <CardTitle className="text-xl text-foreground mb-4">
