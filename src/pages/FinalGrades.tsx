@@ -323,7 +323,7 @@ export default function FinalGrades() {
                             <AlertDialogTrigger asChild>
                               <Button 
                                 disabled={isDeleting}
-                                className="flex gap-2 w-full sm:w-auto"
+                                className="flex gap-2 w-32"
                                 variant={'destructive'}
                               >
                                 {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash className="h-4 w-4" />}
@@ -339,7 +339,7 @@ export default function FinalGrades() {
                               </AlertDialogHeader>
                               <AlertDialogFooter>
                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => handleDeleteGrade(subject)}>Delete</AlertDialogAction>
+                                <AlertDialogAction className='bg-destructive' onClick={() => handleDeleteGrade(subject)}>Delete</AlertDialogAction>
                               </AlertDialogFooter>
                             </AlertDialogContent>
                           </AlertDialog>
