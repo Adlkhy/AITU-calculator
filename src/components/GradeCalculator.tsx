@@ -22,6 +22,7 @@ import {
 import { supabase } from '@/lib/supabaseClient';
 import { useUser } from '../hooks/useUser';
 import { Loader2, Save, Trash, Pencil } from 'lucide-react';
+import { Separator } from './ui/separator';
 
 interface GradeCalculatorProps {
   data: SyllabusData;
@@ -72,7 +73,8 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
         name: category.name,
         earned: parseFloat(earnedPoints.toFixed(2)),
         missing: parseFloat(missingPoints.toFixed(2)),
-        total: category.overallWeight
+        total: category.overallWeight,
+        percentage: parseFloat(rawPercentage.toFixed(2))
       };
     });
   }, [data.breakdown, scores]);
@@ -82,7 +84,33 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
     return performanceData.reduce((acc, curr) => acc + curr.earned, 0);
   }, [performanceData]);
 
-  // 3. Pie Chart Data
+  // 3. Category Percentages for Attestations
+  const att1 = useMemo(() => {
+    const item = performanceData.find(d => 
+      d.name.toLowerCase().includes('1st') || 
+      d.name.toLowerCase().includes('first') || 
+      d.name.toLowerCase().includes('attestation 1')
+    );
+    return item ? item.percentage : null;
+  }, [performanceData]);
+
+  const att2 = useMemo(() => {
+    const item = performanceData.find(d => 
+      d.name.toLowerCase().includes('2nd') || 
+      d.name.toLowerCase().includes('second') || 
+      d.name.toLowerCase().includes('attestation 2')
+    );
+    return item ? item.percentage : null;
+  }, [performanceData]);
+
+  const finalScore = useMemo(() => {
+    const item = performanceData.find(d => 
+      d.name.toLowerCase().includes('final')
+    );
+    return item ? item.percentage : null;
+  }, [performanceData]);
+
+  // 4. Pie Chart Data
   const pieData = useMemo(() => {
     return data.breakdown.map((category) => ({
       name: category.name,
@@ -342,6 +370,28 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
                   className={`h-full transition-all duration-500 ${finalGrade >= 90 ? 'bg-green-500' : finalGrade >= 70 ? 'bg-blue-500' : 'bg-red-500'}`}
                   style={{ width: `${Math.min(100, finalGrade)}%` }}
                 ></div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* New Attestation Scores Display */}
+          <Card className="shadow-md hover:shadow-lg">
+            <CardContent className="pt-6">
+              <div className="flex justify-between items-center text-center">
+                <div className="flex-1">
+                  <p className="text-[10px] font-bold uppercase text-muted-foreground mb-1">1st Att.</p>
+                  <p className="text-xl font-black text-primary">{att1 !== null ? `${att1}%` : '—'}</p>
+                </div>
+                <Separator orientation="vertical" className="h-10 mx-2" />
+                <div className="flex-1">
+                  <p className="text-[10px] font-bold uppercase text-muted-foreground mb-1">2nd Att.</p>
+                  <p className="text-xl font-black text-primary">{att2 !== null ? `${att2}%` : '—'}</p>
+                </div>
+                <Separator orientation="vertical" className="h-10 mx-2" />
+                <div className="flex-1">
+                  <p className="text-[10px] font-bold uppercase text-muted-foreground mb-1">Final</p>
+                  <p className="text-xl font-black text-primary">{finalScore !== null ? `${finalScore}%` : '—'}</p>
+                </div>
               </div>
             </CardContent>
           </Card>
