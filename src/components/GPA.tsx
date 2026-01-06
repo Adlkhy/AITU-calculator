@@ -126,14 +126,19 @@ export default function GpaCalculator() {
 
   return (
     <div className="px-4 pt-4 md:px-8 md:pt-8 max-w-5xl mx-auto w-full">
+      <div className="mb-6 space-y-1 ">
+          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-foreground">
+            GPA Calculator
+          </h1>
+          <p className="text-muted-foreground font-medium">
+            Calculate your GPA easily by entering your subjects, percentages, and credits.
+          </p>
+        </div>
       <Card className="p-4 md:p-6">
         <CardContent className="px-0">
-          <CardTitle className="text-xl text-foreground mb-4">
-            GPA Calculator
-          </CardTitle>
 
           {/* BUTTONS */}
-          <CardDescription className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
+          <CardDescription className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
             <Button
               onClick={addRow}
               variant="default"

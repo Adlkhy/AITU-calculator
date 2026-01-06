@@ -1,4 +1,4 @@
-import { Moon, Sun, Flame, TreePine } from "lucide-react" //icons
+import { Moon, Sun, TreePine } from "lucide-react" //icons
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -35,14 +35,7 @@ export function ModeToggle() {
               ? "scale-100 rotate-0" 
               : "scale-0 rotate-90"
           }`} />
-          
-          {/* Amber themes icon */}
-          <Flame className={`absolute h-[1.2rem] w-[1.2rem] transition-all ${
-            theme === "amethyst" 
-              ? "scale-100 rotate-0" 
-              : "scale-0 rotate-90"
-          }`} />
-          
+
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
@@ -55,9 +48,6 @@ export function ModeToggle() {
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("nature")}>
           Nature
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("amethyst")}>
-          Amethyst
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
           System

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Card, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import { Input } from "./ui/input";
 
 const totalWeeks = 10;
@@ -43,10 +43,16 @@ export default function AttendanceTracker() {
 
   return (
     <div className="px-4 pt-4 sm:px-8 sm:pt-8">
+      <div className="mb-6 space-y-1">
+          <h1 className="text-3xl md:text-4xl font-black text-foreground">
+            Attendance Tracker
+          </h1>
+          <p className="text-muted-foreground font-medium">
+            Calculate and monitor your attendance percentage easily.
+          </p>
+        </div>
       <Card className="p-6">
         <CardContent className="px-0">
-        <CardTitle className="text-xl font-bold text-foreground mb-3">Attendance Tracker</CardTitle>
-
           <div className="flex flex-col sm:flex-row sm:gap-4 gap-2 mb-6">
             <div className="flex flex-col sm:flex-1">
               <label className="text-foreground font-semibold mb-1">
