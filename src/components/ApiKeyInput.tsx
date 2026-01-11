@@ -66,6 +66,9 @@ export function ApiKeyInput() {
         Enter your Gemini API key to use your own quota. 
         It is stored locally in your browser and never saved to our database.
       </CardDescription>
+        {status === 'error' && (
+          <p className="text-sm text-destructive self-center">{errorMessage}</p>
+        )}
       <div className="flex gap-2">
         <Input 
           type="password" 
@@ -73,9 +76,6 @@ export function ApiKeyInput() {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
         />
-        {status === 'error' && (
-          <p className="text-sm text-destructive self-center">{errorMessage}</p>
-        )}
         <Button onClick={handleValidateAndSave} disabled={status === 'checking' || !inputValue}>Save</Button>
         <Button variant="outline" onClick={handleClear}>Clear</Button>
       </div>

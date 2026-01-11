@@ -376,21 +376,21 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
 
           {/* New Attestation Scores Display */}
           <Card className="shadow-md hover:shadow-lg">
-            <CardContent className="pt-6">
+            <CardContent className="px-2">
               <div className="flex justify-between items-center text-center">
                 <div className="flex-1">
-                  <p className="text-[10px] font-bold uppercase text-muted-foreground mb-1">1st Att.</p>
-                  <p className="text-xl font-black text-primary">{att1 !== null ? `${att1}%` : '—'}</p>
+                  <p className="text-[12px] font-bold uppercase text-muted-foreground mb-1">1st Att.</p>
+                  <p className="text-lg font-black text-primary">{att1 !== null ? `${att1}%` : '—'}</p>
                 </div>
                 <Separator orientation="vertical" className="h-10 mx-2" />
                 <div className="flex-1">
-                  <p className="text-[10px] font-bold uppercase text-muted-foreground mb-1">2nd Att.</p>
-                  <p className="text-xl font-black text-primary">{att2 !== null ? `${att2}%` : '—'}</p>
+                  <p className="text-[12px] font-bold uppercase text-muted-foreground mb-1">2nd Att.</p>
+                  <p className="text-lg font-black text-primary">{att2 !== null ? `${att2}%` : '—'}</p>
                 </div>
                 <Separator orientation="vertical" className="h-10 mx-2" />
                 <div className="flex-1">
-                  <p className="text-[10px] font-bold uppercase text-muted-foreground mb-1">Final</p>
-                  <p className="text-xl font-black text-primary">{finalScore !== null ? `${finalScore}%` : '—'}</p>
+                  <p className="text-[12px] font-bold uppercase text-muted-foreground mb-1">Final</p>
+                  <p className="text-lg font-black text-primary">{finalScore !== null ? `${finalScore}%` : '—'}</p>
                 </div>
               </div>
             </CardContent>

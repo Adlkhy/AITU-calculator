@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { FileUpload } from '../components/FileUpload';
 import { GradeCalculator } from '../components/GradeCalculator';
 import { parseSyllabus } from '../services/geminiService';
+import RotatingText from '@/components/shadcn/gsap/RotatingText';
 import { Navbar08 } from '../components/Navbar2';
-import Footer from '../components/Footer';
 import { ApiKeyInput } from '@/components/ApiKeyInput';
 import { useGemini } from '@/hooks/useGemini';
 import { useGeminiClient } from '../lib/GeminiClient';
@@ -48,10 +48,22 @@ const App: React.FC = () => {
     <Navbar08 />
     <div className="max-w-4xl mx-auto px-4 md:px-8">
       {/* Header */}
-      <header className="text-center mb-16 px-4 md:px-8 mt-6">
-        <h1 className="text-4xl md:text-5xl font-black text-foreground tracking-tight mb-4">
-          SmartSyllabus <span className="text-primary">Calculator</span>
-        </h1>
+      <header className="mb-16 px-4 md:px-8 mt-6">
+        {/* <h1 className="text-4xl md:text-5xl font-black text-foreground tracking-tight mb-4">
+          We Asked AI. <br className='md:hidden'/>It Said <span className="text-primary">‘Sure’</span>
+        </h1> */}
+        <RotatingText
+          texts={["We Asked AI. It Said 'Sure'", "Yes, This Could’ve Been a Normal Calculator (But It’s AI)", "We Put AI in It. You’re Welcome. Or Sorry.", "AI-Powered (Because Apparently Everything Is Now)", "An Overengineered Solution to a Simple Problem", "Because Someone Said ‘What If You Add AI?’", "Yep, I Trained a Model Instead of Writing Logic", "Big Model, Small Problem"]}
+          mainClassName='text-4xl md:text-5xl text-center font-black text-foreground tracking-tight mb-4'
+          staggerFrom={"first"}
+          initial={{ y: "100%", opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: "-120%", opacity: 0 }}
+          staggerDuration={0.25}
+          splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
+          transition={{ type: "spring"}}
+          rotationInterval={6500}
+          splitBy='lines'/>
         <p className="text-lg text-foreground max-w-2xl mx-auto">
           Don't guess your grades. Upload your syllabus and let AI build your custom grade tracker instantly.
         </p>
@@ -59,19 +71,19 @@ const App: React.FC = () => {
 
       <main>
         {!syllabusData ? (
-          <div className="animate-in px-4 md:px-8 fade-in slide-in-from-bottom-4 duration-700">
+          <div className="animate-in  px-4 md:px-8 fade-in slide-in-from-bottom-4 duration-700">
+            {error &&  (
+              <div className="my-6 p-4 bg-card text-destructive rounded-xl text-center flex items-center justify-center">
+                <BadgeAlert className="w-6 h-6 mr-2 text-destructive" />
+                {error} Error
+              </div>
+            )}
             { !apiKey ? (
               <ApiKeyInput />
             ) : (
               <FileUpload onFileSelect={handleFileUpload} isLoading={loading} />
             )}
             
-            {error &&  (
-              <div className="mt-6 p-4 bg-destructive-foreground text-destructive rounded-xl text-center flex items-center justify-center">
-                <BadgeAlert className="w-6 h-6 mr-2 text-destructive" />
-                {error}
-              </div>
-            )}
 
             <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
               <div className="p-6">
@@ -117,7 +129,6 @@ const App: React.FC = () => {
         )}
       </main>
 
-      <Footer />
     </div>
     </>
   );

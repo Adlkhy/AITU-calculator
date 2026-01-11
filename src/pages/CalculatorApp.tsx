@@ -62,10 +62,10 @@ export default function MainCalculator() {
         onSelectSubject={setSelectedSubject}
       />
       <div className="text-foreground min-h-screen font-sans">
-        <div className="max-w-5xl mx-auto p-4 sm:p-8">
+        <div className="max-w-5xl mx-auto min-h-screen p-4 sm:p-8">
           <main className="">{renderCalculator()}</main>
-          <Footer />
         </div>
+        <Footer />
       </div>
     </>
   );
