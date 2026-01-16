@@ -1,0 +1,74 @@
+{
+  "courseName": "Algorithms and Data Structures",
+  "key": "ads_template",
+  "breakdown": [
+    {
+      "name": "1st attestation",
+      "subItems": [
+        {
+          "name": "Assignment 1 (Recursive functions and algorithms)",
+          "weight": 20,
+          "description": "Practical tasks, oral defence"
+        },
+        {
+          "name": "Assignment 2 (Physical and Logical Data Structures)",
+          "weight": 20,
+          "description": "Practical tasks, oral defence"
+        },
+        {
+          "name": "Quiz 1 (Recursion and Big-O notation)",
+          "weight": 20,
+          "description": "Quiz"
+        },
+        {
+          "name": "Midterm Quiz",
+          "weight": 40,
+          "description": "Quiz"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 30
+    },
+    {
+      "name": "2nd attestation",
+      "subItems": [
+        {
+          "name": "Assignment 3 (Sorting and Searching algorithms)",
+          "weight": 20,
+          "description": "Practical tasks, oral defence"
+        },
+        {
+          "name": "Assignment 4 (Graph, BFS and DFS algorithms)",
+          "weight": 20,
+          "description": "Practical tasks, oral defence"
+        },
+        {
+          "name": "Quiz 2 (BFS, DFS and Dynamic Programming)",
+          "weight": 20,
+          "description": "Quiz"
+        },
+        {
+          "name": "Midterm Quiz",
+          "weight": 40,
+          "description": "Quiz"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 30
+    },
+    {
+      "name": "Final exam",
+      "subItems": [
+        {
+          "name": "Final Project Defense",
+          "weight": 100,
+          "description": "Quiz"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 40
+    }
+  ],
+  "courseName": "Algorithms and Data Structures",
+  "totalWeightNote": "0.3 * 1st Att + 0.3 * 2nd Att + 0.4 * Final"
+}

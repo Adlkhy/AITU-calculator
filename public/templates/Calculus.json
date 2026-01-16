@@ -1,0 +1,31 @@
+{
+  "courseName": "Calculus I",
+  "key": "calculus_template",
+  "breakdown": [
+    {
+      "name": "1st Attestation",
+      "overallWeight": 30,
+      "subItems": [
+        { "name": "Assignment 1", "weight": 10 },
+        { "name": "Assignment 2", "weight": 10 },
+        { "name": "Quiz 1", "weight": 30 },
+        { "name": "Midterm", "weight": 50 }
+      ]
+    },
+    {
+      "name": "2nd Attestation",
+      "overallWeight": 30,
+      "subItems": [
+        { "name": "Assignment 3", "weight": 10 },
+        { "name": "Assignment 4", "weight": 10 },
+        { "name": "Quiz 2", "weight": 30 },
+        { "name": "Endterm", "weight": 50 }
+      ]
+    },
+    {
+      "name": "Final Exam",
+      "overallWeight": 40,
+      "subItems": []
+    }
+  ]
+}

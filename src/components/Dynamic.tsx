@@ -92,6 +92,7 @@ const GradeCategory = ({
           <div className="flex-1 w-full">
             <Input
               type="text"
+              name="categoryName"
               placeholder="Category Name (e.g. Midterm)"
               value={category.name}
               onChange={(e) => onUpdateCategory(category.id, {
@@ -105,6 +106,7 @@ const GradeCategory = ({
             <div className="flex items-center gap-2">
               <Input
                 type="number"
+                name="categoryWeight"
                 value={category.totalWeight}
                 onChange={(e) => updateCategoryWeight(Number(e.target.value))}
                 min="0"
@@ -142,6 +144,7 @@ const GradeCategory = ({
                       value={item.name}
                       onChange={(e) => updateItem(item.id, 'name', e.target.value)}
                       placeholder="Item name"
+                      name='Assignment name'
                       className=" border-muted-foreground/20"
                     />
                   </td>
@@ -151,6 +154,7 @@ const GradeCategory = ({
                       value={item.score}
                       onChange={(e) => updateItem(item.id, 'score', e.target.value)}
                       placeholder="0"
+                      name='Assignment score'
                       min="0"
                       max="100"
                       className="text-center border-muted-foreground/20"
@@ -162,6 +166,7 @@ const GradeCategory = ({
                       value={item.weight}
                       onChange={(e) => updateItem(item.id, 'weight', e.target.value)}
                       placeholder="1"
+                      name='Assignment weight'
                       min="0"
                       step="0.1"
                       className="text-center border-muted-foreground/20"
@@ -206,6 +211,7 @@ const GradeCategory = ({
                 <Input
                   value={item.name}
                   placeholder="Assignment name"
+                  name='Assignment name'
                   className="h-10 bg-background border-muted-foreground/20"
                   onChange={(e) => updateItem(item.id, 'name', e.target.value)}
                 />
@@ -218,6 +224,7 @@ const GradeCategory = ({
                     type="number"
                     value={item.score}
                     placeholder="0"
+                    name='Assignment score'
                     className="h-10 bg-background border-muted-foreground/20 text-center"
                     onChange={(e) => updateItem(item.id, 'score', e.target.value)}
                   />
@@ -227,6 +234,7 @@ const GradeCategory = ({
                   <Input
                     type="number"
                     value={item.weight}
+                    name='Assignment weight'
                     placeholder="1"
                     className="h-10 bg-background border-muted-foreground/20 text-center"
                     onChange={(e) => updateItem(item.id, 'weight', e.target.value)}

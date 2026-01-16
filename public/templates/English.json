@@ -1,0 +1,29 @@
+{
+  "courseName": "Academic English",
+  "key": "english_template",
+  "breakdown": [
+    {
+      "name": "1st Attestation",
+      "overallWeight": 30,
+      "subItems": [
+        { "name": "Writing Assignment 1", "weight": 30 },
+        { "name": "Speaking Task 1", "weight": 30 },
+        { "name": "Presentation", "weight": 40 }
+      ]
+    },
+    {
+      "name": "2nd Attestation",
+      "overallWeight": 30,
+      "subItems": [
+        { "name": "Writing Assignment 2", "weight": 30 },
+        { "name": "Speaking Task 2", "weight": 30 },
+        { "name": "Listening Test", "weight": 40 }
+      ]
+    },
+    {
+      "name": "Final Exam",
+      "overallWeight": 40,
+      "subItems": []
+    }
+  ]
+}

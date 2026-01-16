@@ -1,0 +1,64 @@
+{
+  "courseName": "English B2",
+  "key": "english2_template",
+  "breakdown": [
+    {
+      "name": "1st attestation",
+      "subItems": [
+        {
+          "name": "Technology review with article analysis (individual)",
+          "weight": 10,
+          "description": "Write a short review of a new tech product/technology(a paragraph of 70-100 words/at least one article)"
+        },
+        {
+          "name": "Digital literacy: navigating a tech tool (individual)",
+          "weight": 10,
+          "description": "Educational ORAL tutorial based on a chosen technology."
+        },
+        {
+          "name": "Midterm test",
+          "weight": 10,
+          "description": "Vocabulary, Grammar, APA"
+        }
+      ],
+      "maxPoints": 30,
+      "overallWeight": 30
+    },
+    {
+      "name": "2nd attestation",
+      "subItems": [
+        {
+          "name": "Tech Diary (individual)",
+          "weight": 10,
+          "description": "Write a short report on a current technological trend (the rise of AI tutors, blockchain in technology/agriculture). (250-300 words)."
+        },
+        {
+          "name": "Redesign It (presentation in pairs)",
+          "weight": 10,
+          "description": "Write a product concept + presentation. Duration: 5-7 min"
+        },
+        {
+          "name": "Endterm test",
+          "weight": 10,
+          "description": "Vocabulary, Grammar, APA, Writing and speaking essentials"
+        }
+      ],
+      "maxPoints": 30,
+      "overallWeight": 30
+    },
+    {
+      "name": "Final exam",
+      "subItems": [
+        {
+          "name": "Presentation of Comparative analysis of Tech A and Tech B (individual)",
+          "weight": 40,
+          "description": "Create a ppt/Canva presentation and present your report."
+        }
+      ],
+      "maxPoints": 40,
+      "overallWeight": 40
+    }
+  ],
+  "courseName": "English B2",
+  "totalWeightNote": "0.3 * 1st Att + 0.3 * 2nd Att + 0.4 * Final"
+}

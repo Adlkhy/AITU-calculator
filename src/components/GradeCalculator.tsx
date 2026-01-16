@@ -110,13 +110,14 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
     return item ? item.percentage : null;
   }, [performanceData]);
 
-  // 4. Pie Chart Data
-  const pieData = useMemo(() => {
-    return data.breakdown.map((category) => ({
-      name: category.name,
-      value: category.overallWeight
-    }));
-  }, [data.breakdown]);
+  // 4. Attestation Pie Data
+  const attestationPieData = useMemo(() => {
+    const data = [];
+    if (att1 !== null) data.push({ name: '1st Attestation', value: att1 });
+    if (att2 !== null) data.push({ name: '2nd Attestation', value: att2 });
+    if (finalScore !== null) data.push({ name: 'Final Exam', value: finalScore });
+    return data;
+  }, [att1, att2, finalScore]);
 
   // --- PERSISTENCE ---
 
@@ -240,7 +241,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
   return (
     <>
     <Toaster position="top-center"/>
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div className="px-4 pt-4 md:px-8 md:pt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
       {/* Inputs Column */}
       <div className="lg:col-span-2 space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -288,16 +289,17 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
         </div>
         
         {/* EDITABLE COURSE NAME CARD */}
-        <Card className="border-2 border-accent">
-          <CardContent className="pt-6">
+        <Card className="">
+          <CardContent className="">
             <CardTitle className="text-sm text-accent-foreground font-semibold uppercase tracking-wider mb-2">
               Course Name
             </CardTitle>
             <div className="relative flex items-center">
                <Input 
                  value={courseName}
+                 name='Course Name'
                  onChange={(e) => setCourseName(e.target.value)}
-                 className="text-lg font-bold text-primary pr-10 border-transparent hover:border-input focus:border-input transition-colors"
+                 className="sm:text-lg font-bold text-primary pr-10 border-transparent hover:border-input focus:border-input transition-colors"
                />
                <Pencil className="h-4 w-4 absolute right-3 text-muted-foreground pointer-events-none" />
             </div>
@@ -316,6 +318,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
                 <Input
                   type="number"
                   placeholder="Score"
+                  name="Assignment Score"
                   className="w-24 p-2 text-center font-bold"
                   value={scores[`${catIdx}-main`] || ''}
                   onChange={(e) => handleScoreChange(`${catIdx}-main`, e.target.value)}
@@ -337,6 +340,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
                       <Input
                         type="number"
                         placeholder="0-100"
+                        name="Assignment Weight"
                         className="w-20 p-1.5 text-center text-sm"
                         value={scores[`${catIdx}-${subIdx}`] || ''}
                         onChange={(e) => handleScoreChange(`${catIdx}-${subIdx}`, e.target.value)}
@@ -419,15 +423,15 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
              </CardContent>
           </Card>
 
-          {/* Weight Distribution Pie Chart */}
+          {/* Score Performance Pie Chart */}
           <Card className="shadow-md hover:shadow-lg">
              <CardContent className="pt-6">
-             <CardTitle className="font-bold text-foreground mb-4 text-sm uppercase">Course Structure</CardTitle>
+             <CardTitle className="font-bold text-foreground mb-4 text-sm uppercase">Score Distribution</CardTitle>
              <div className="h-48">
                <ResponsiveContainer width="100%" height="100%">
                  <PieChart>
                    <Pie
-                     data={pieData}
+                     data={attestationPieData}
                      cx="50%"
                      cy="50%"
                      innerRadius={40}
@@ -435,22 +439,26 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
                      paddingAngle={3}
                      dataKey="value"
                    >
-                     {pieData.map((_, index) => (
-                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                     ))}
+                      {attestationPieData.map((_, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
                    </Pie>
-                   <RechartsTooltip formatter={(value) => `${value}%`} />
+                   <RechartsTooltip formatter={(val) => `${val}%`} />
                  </PieChart>
                </ResponsiveContainer>
              </div>
              <div className="mt-2 space-y-1">
-               {pieData.map((cat, idx) => (
-                 <div key={idx} className="flex items-center text-xs">
-                   <div className="w-2 h-2 rounded-full mr-2" style={{ backgroundColor: COLORS[idx % COLORS.length] }}></div>
-                   <span className="flex-1 text-foreground">{cat.name}</span>
-                   <span className="font-bold text-foreground">{cat.value}%</span>
-                 </div>
-               ))}
+               {attestationPieData.length > 0 ? (
+                 attestationPieData.map((cat, idx) => (
+                   <div key={idx} className="flex items-center text-xs">
+                     <div className="w-2 h-2 rounded-full mr-2" style={{ backgroundColor: COLORS[idx % COLORS.length] }}></div>
+                     <span className="flex-1 text-foreground">{cat.name}</span>
+                     <span className="font-bold text-foreground">{cat.value}%</span>
+                   </div>
+                 ))
+               ) : (
+                 <p className="text-center text-xs text-muted-foreground mt-4">Enter scores to see distribution</p>
+               )}
              </div>
              </CardContent>
           </Card>

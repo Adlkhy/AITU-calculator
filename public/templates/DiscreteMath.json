@@ -1,0 +1,33 @@
+{
+  "courseName": "Discrete Math",
+  "key": "discrete_math_template",
+  "breakdown": [
+    {
+      "name": "1st Attestation",
+      "overallWeight": 30,
+      "subItems": [
+        { "name": "Quiz", "weight": 20 },
+        { "name": "Classwork", "weight": 10 },
+        { "name": "Homework", "weight": 10 },
+        { "name": "Lecture Quizzes (avg)", "weight": 20 },
+        { "name": "Midterm Exam", "weight": 40 }
+      ]
+    },
+    {
+      "name": "2nd Attestation",
+      "overallWeight": 30,
+      "subItems": [
+        { "name": "Quiz 2", "weight": 20 },
+        { "name": "Classwork 2", "weight": 10 },
+        { "name": "Homework 2", "weight": 10 },
+        { "name": "Lecture Quizzes 2 (avg)", "weight": 20 },
+        { "name": "Endterm Exam", "weight": 40 }
+      ]
+    },
+    {
+      "name": "Final Exam",
+      "overallWeight": 40,
+      "subItems": []
+    }
+  ]
+}

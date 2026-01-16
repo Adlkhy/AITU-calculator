@@ -120,7 +120,7 @@ export default function Profile() {
         
         {/* PROFILE INFO CARD (Previous logic) */}
         <Card className="my-8 bg-card">
-          <CardContent className="pt-6">
+          <CardContent className="">
              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div className="flex items-center gap-4">
                     <Avatar className="h-20 w-20 border-2 border-primary">

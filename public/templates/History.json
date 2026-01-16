@@ -1,0 +1,85 @@
+{
+  "courseName": "History",
+  "key": "history_template",
+  "breakdown": [
+    {
+      "name": "1st attestation",
+      "subItems": [
+        {
+          "name": "Listening to lectures and completing MCQ (1-5 weeks)",
+          "weight": 20,
+          "description": "4 points per week for 5 weeks"
+        },
+        {
+          "name": "Activity on seminar sessions 1",
+          "weight": 10
+        },
+        {
+          "name": "Activity on seminar sessions 2",
+          "weight": 10
+        },
+        {
+          "name": "Activity on seminar sessions 3",
+          "weight": 10
+        },
+        {
+          "name": "Activity on seminar sessions 4",
+          "weight": 10
+        },
+        {
+          "name": "Mid Term: Research project defense",
+          "weight": 40,
+          "description": "Preparation and defense of the research project on a chosen topic (1-5 weeks)"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 30
+    },
+    {
+      "name": "2nd attestation",
+      "subItems": [
+        {
+          "name": "Listening to lectures and answering test tasks (6-10 weeks)",
+          "weight": 20,
+          "description": "4 points per week for 5 weeks"
+        },
+        {
+          "name": "Activity on seminar sessions 6",
+          "weight": 10
+        },
+        {
+          "name": "Activity on seminar sessions 7",
+          "weight": 10
+        },
+        {
+          "name": "Activity on seminar sessions 8",
+          "weight": 10
+        },
+        {
+          "name": "Activity on seminar sessions 9",
+          "weight": 10
+        },
+        {
+          "name": "End Term: Project presentation defense",
+          "weight": 40,
+          "description": "Preparation and defense of project presentation on a chosen topic (6-10 weeks)"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 30
+    },
+    {
+      "name": "Final exam",
+      "subItems": [
+        {
+          "name": "State examination (MCQ)",
+          "weight": 100
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 40
+    }
+  ],
+  "courseName": "History",
+  "totalWeightNote": "0,3 * 1st Att + 0,3 * 2nd Att + 0,4 * Final. Attendance requirement: at least 70% for attestations."
+}

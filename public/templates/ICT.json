@@ -1,0 +1,35 @@
+{
+  "courseName": "Information and Communication Technologies",
+  "key": "ict_template",
+  "breakdown": [
+    {
+      "name": "1st Attestation",
+      "overallWeight": 30,
+      "subItems": [
+        { "name": "Assignment 1", "weight": 19.23 },
+        { "name": "Assignment 2", "weight": 19.23 },
+        { "name": "Quiz", "weight": 7.69 },
+        { "name": "Learn Platform", "weight": 7.69 },
+        { "name": "Midterm Quiz", "weight": 46.15 }
+      ]
+    },
+    {
+      "name": "2nd Attestation",
+      "overallWeight": 30,
+      "subItems": [
+        { "name": "Assignment 3", "weight": 19.23 },
+        { "name": "Assignment 4", "weight": 19.23 },
+        { "name": "Quiz 2", "weight": 7.69 },
+        { "name": "Learn Platform 2", "weight": 7.69 },
+        { "name": "Endterm Quiz", "weight": 46.15 }
+      ]
+    },
+    {
+      "name": "Final Exam",
+      "overallWeight": 40,
+      "subItems": [
+        { "name": "MCQ Exam", "weight": 100 }
+      ]
+    }
+  ]
+}

@@ -53,8 +53,8 @@ const App: React.FC = () => {
           We Asked AI. <br className='md:hidden'/>It Said <span className="text-primary">‘Sure’</span>
         </h1> */}
         <RotatingText
-          texts={["We Asked AI. It Said 'Sure'", "Yes, This Could’ve Been a Normal Calculator (But It’s AI)", "We Put AI in It. You’re Welcome. Or Sorry.", "AI-Powered (Because Apparently Everything Is Now)", "An Overengineered Solution to a Simple Problem", "Because Someone Said ‘What If You Add AI?’", "Yep, I Trained a Model Instead of Writing Logic", "Big Model, Small Problem"]}
-          mainClassName='text-4xl md:text-5xl text-center font-black text-foreground tracking-tight mb-4'
+          texts={["We Asked AI. It Said 'Sure'", "We Put AI in It. You’re Welcome. Or Sorry.", "An Overengineered Solution to a Simple Problem", "Because Someone Said ‘What If You Add AI?’", "Yep, I Trained a Model Instead of Writing Logic"]}
+          mainClassName='text-4xl justify-center flex items-center md:text-5xl text-center font-black text-foreground tracking-tight mb-4'
           staggerFrom={"first"}
           initial={{ y: "100%", opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}

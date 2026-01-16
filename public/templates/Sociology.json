@@ -1,0 +1,33 @@
+{
+  "courseName": "Sociology",
+  "key": "sociology_template",
+  "breakdown": [
+    {
+      "name": "1st Attestation",
+      "overallWeight": 30,
+      "subItems": [
+        { "name": "Assignment 1", "weight": 20 },
+        { "name": "Assignment 2", "weight": 20 },
+        { "name": "Quiz", "weight": 10 },
+        { "name": "SIS", "weight": 10 },
+        { "name": "Midterm Exam", "weight": 40 }
+      ]
+    },
+    {
+      "name": "2nd Attestation",
+      "overallWeight": 30,
+      "subItems": [
+        { "name": "Assignment 3", "weight": 20 },
+        { "name": "Assignment 4", "weight": 20 },
+        { "name": "Quiz", "weight": 10 },
+        { "name": "SIS", "weight": 10 },
+        { "name": "Endterm Exam", "weight": 40 }
+      ]
+    },
+    {
+      "name": "Final Exam",
+      "overallWeight": 40,
+      "subItems": []
+    }
+  ]
+}
