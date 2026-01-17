@@ -46,7 +46,7 @@ export function NavUser({
       } else if (item === 'profile') {
         navigate('/profile', { replace: true });
       } else if (item === 'calculator') {
-        navigate('/', { replace: true });
+        navigate('/calculator', { replace: true });
       } else if (item === 'final-grades') {
         navigate('/final-grades', { replace: true });
       } else {

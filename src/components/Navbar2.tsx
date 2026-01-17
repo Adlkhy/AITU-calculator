@@ -8,7 +8,7 @@ import { useTheme } from "@/lib/useTheme"
 import { useUser } from '@/hooks/useUser';
 import { supabase } from '@/lib/supabaseClient';
 import { useNavigate } from 'react-router-dom';
-import { Sparkles } from 'lucide-react';
+import { Menu, Sparkles} from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -20,12 +20,13 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ChevronDownIcon } from 'lucide-react';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+// import {
+//   Popover,
+//   PopoverContent,
+//   PopoverTrigger,
+// } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
 
 // Simple logo component for the navbar
 const Logo = (props: React.SVGAttributes<SVGElement>) => {
@@ -284,40 +285,50 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
             <div className="flex flex-1 items-center gap-2">
               {/* Mobile menu trigger */}
               {isMobile && (
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      className="group hover:bg-accent hover:text-accent-foreground"
-                      variant="outline"
-                      size="icon"
-                    >
-                      <HamburgerIcon />
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <Button variant="ghost" size="icon" className="md:hidden">
+                      <Menu className="h-6 w-6" />
+                      <span className="sr-only">Toggle menu</span>
                     </Button>
-                  </PopoverTrigger>
-                  <PopoverContent align="start" className="w-80 p-2">
-                    <nav className="grid grid-cols-2 gap-2">
-                      {subjects.map((subject) => (
-                        <li key={subject} className='list-none mx-5'>
-                        <button
-                          onClick={() => onSelectSubject?.(subject)}
-                          className={`text-sm font-semibold transition-colors ${
-                            selectedSubject === subject 
-                              ? 'text-primary underline underline-offset-4 decoration-2' 
-                              : 'text-foreground'
-                          }`}
-                        >
-                        {subject}
-                        </button>
-                        </li>
-                      ))}
-                    </nav>
-                  </PopoverContent>
-                </Popover>
+                  </SheetTrigger>
+                  <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+                    <SheetHeader>
+                      <SheetTitle className="flex items-center gap-2">
+                        <Logo className="h-6 w-6 text-primary" />
+                        <span>Evalis</span>
+                        {theme === 'dark' || theme === 'system' ?
+                          <img src="/white.png" alt="logo" className="h-5 sm:h-6 ms-2 " /> : <img src="/dark.png" alt="logo" className="h-5 sm:h-6 ms-2" />
+                        }
+                      </SheetTitle>
+                    </SheetHeader>
+                    <div className="flex px-4 flex-col">
+                      <nav className="grid grid-cols-1 gap-2">
+                        {subjects.map((subject) => (
+                          <li key={subject} className='list-none'> 
+                          <Button
+                            onClick={() => onSelectSubject?.(subject)}
+                            variant="ghost"
+                            size="sm"
+                            className={`text-sm font-semibold transition-colors ${
+                              selectedSubject === subject 
+                                ? 'text-primary underline underline-offset-4 decoration-2' 
+                                : 'text-foreground'
+                            }`}
+                          >
+                          {subject}
+                          </Button>
+                          </li>
+                        ))}
+                      </nav>
+                    </div>
+                  </SheetContent>
+                </Sheet>
               )}
               {/* Logo */}
               <div className="flex items-center">
                 <button
-                  onClick={() => logoHome('/')}
+                  onClick={() => logoHome('/calculator')}
                   className="flex items-center space-x-2 text-primary hover:text-primary/90 transition-colors cursor-pointer"
                 >
                   <div className="text-2xl">

@@ -33,7 +33,10 @@ export default function Footer() {
             <h4 className="font-semibold mb-6">Navigation</h4>
             <ul className="space-y-4 text-sm text-muted-foreground">
               <li>
-                <Link to="/" className="hover:text-foreground transition-colors">Calculator</Link>
+                <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
+              </li>
+              <li>
+                <Link to="/calculator" className="hover:text-foreground transition-colors">Calculator</Link>
               </li>
               <li>
                 <Link to="/ai" className="hover:text-foreground transition-colors">AI Tool</Link>

@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './components/theme-provider';
 import MainCalculator from './pages/CalculatorApp'; // We'll create this
+import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import AuthCallback from './pages/AuthCallback';
@@ -28,7 +29,8 @@ function App() {
     <ThemeProvider defaultTheme='light' storageKey='vite-ui-theme'>
       <Router>
         <Routes>
-          <Route path="/" element={<MainCalculator />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/calculator" element={<MainCalculator />} />
           <Route path="/login" element={<Login />} />
           <Route path='/signup' element={<Signup />} />
           <Route path="/term-of-service" element={<TermOfService />} />
