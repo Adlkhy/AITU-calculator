@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useTheme } from "@/lib/useTheme"
+import Plasma from '@/components/shadcn/gsap/Plasma';
 import { 
   Trophy, 
   Sparkles, 
@@ -144,11 +145,30 @@ export default function LandingPage() {
         </div>
       </header>
 
-      <main className="flex-1">
+      <main className="flex-1 relative overflow-hidden">
         {/* Hero Section */}
-        <section className="py-20 lg:py-32 container mx-auto px-4">
+        <div className="absolute inset-0 w-full h-[680px] sm:h-[540px] lg:h-[690px] z-0 pointer-events-none">
+          {theme === 'dark' || theme === 'system' ?
+            <Plasma 
+            color="#79c0ff"
+            speed={1}
+            direction="forward"
+            scale={1}
+            opacity={1}
+            mouseInteractive={false} 
+            /> : <Plasma 
+            color="#e2ebff"
+            speed={1}
+            direction="forward"
+            scale={1}
+            opacity={1}
+            mouseInteractive={false} 
+            />
+          } 
+        </div>
+        <section className="relative py-20 z-10 lg:py-32 container mx-auto px-4">
           <div className="flex flex-col items-center text-center space-y-8">
-            <Badge variant="outline" className="px-4 py-1 text-sm font-medium">
+            <Badge variant="outline" className="px-4 py-1 text-sm bg-background/60 backdrop-blur supports-[backdrop-filter]:bg-background/20 font-medium">
               <Sparkles className="mr-2 h-3.5 w-3.5 text-primary" />
               Now with AI-Powered Insights
             </Badge>
@@ -160,7 +180,7 @@ export default function LandingPage() {
               Everything a student needs in one minimal, powerful platform.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="h-12 px-8 text-base" onClick={() => navigate(user ? '/calculator' : '/signup')}>
+              <Button size="lg" className="h-12 px-8 text-base" onClick={() => navigate('/calculator')}>
                 Get Started
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -172,7 +192,7 @@ export default function LandingPage() {
         </section>
 
         {/* Feature Grid */}
-        <section className="py-20 bg-muted/30">
+        <section className="relative z-10 py-20 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 space-y-4">
               <h2 className="text-3xl font-bold tracking-tight">Everything You Need</h2>
@@ -325,6 +345,9 @@ export default function LandingPage() {
               <div className="flex flex-col sm:flex-row gap-4 shrink-0">
                 <Button variant="secondary" size="lg" className="h-12 px-8" onClick={() => navigate('/signup')}>
                   Get Started Now
+                </Button>
+                <Button variant="outline" size="lg" className="h-12 px-8 text-foreground" onClick={() => navigate('/calculator')}>
+                  Go to Calculator
                 </Button>
               </div>
             </CardContent>

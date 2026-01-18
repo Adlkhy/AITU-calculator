@@ -20,16 +20,15 @@ export default function Profile() {
               <li>Calculate their final grades based on provided inputs.</li>
               <li>Access personalized features such as saved grade data.</li>
               <li>Participate in leaderboards that compare performance between users.</li>
-              <li>Log in using a GitHub account for a secure and streamlined authentication process.</li>
             </ul>
           </section>
 
           <section>
             <h2 className="text-xl font-bold mb-3">3. User Accounts</h2>
-            <p>By signing in with your GitHub account, you grant Evalis permission to:</p>
+            <p>To use certain features of Evalis, you may need to create a user account.</p>
             <ul className="list-disc list-inside ml-4 mt-2 space-y-1">
-              <li>Access basic public GitHub profile information (such as username, profile picture, and email if authorized).</li>
-              <li>Store this information solely for identification and account functionality.</li>
+              <li>You must provide accurate and complete information when creating an account.</li>
+              <li>You are responsible for maintaining the confidentiality of your account credentials.</li>
             </ul>
           </section>
 
@@ -37,7 +36,7 @@ export default function Profile() {
             <h2 className="text-xl font-bold mb-3">4. What We Collect</h2>
             <p>We collect the following, but are not limited to:</p>
             <ul className="list-disc list-inside ml-4 mt-2 space-y-1">
-              <li>GitHub username, ID and Email address</li>
+              <li>Your email address, username</li>
               <li>Your final grades (the core currency of my website)</li>
               <li>Your existential dread when you input that grade (we have a special algorithm for this)</li>
               <li>Your soul. Ha-ha-ha.. I am just kidding, or was I?</li>
@@ -71,13 +70,13 @@ export default function Profile() {
             <ul className="list-disc list-inside ml-4 mt-2 space-y-1">
               <li>Inaccurate calculations (did <span className="font-semibold">you</span> put in the right numbers?)</li>
               <li>Existential crises triggered by seeing your classmate at the top of the leaderboard</li>
-              <li>Any third-party actions (e.g., GitHub issues affecting login)</li>
+              <li>Any third-party actions</li>
             </ul>
           </section>
 
           <section>
             <h2 className="text-xl font-bold mb-3">9. The Fine Print</h2>
-            <p>By clicking "Login", you hereby:</p>
+            <p>By clicking "Login" or "Sign Up", you hereby:</p>
             <ul className="list-disc list-inside ml-4 mt-2 space-y-1">
               <li>Grant me perpetual, irrevocable rights to use your grade data to create sick graphs and charts for my portfolio</li>
             </ul>
