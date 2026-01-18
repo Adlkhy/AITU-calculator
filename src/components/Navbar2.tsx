@@ -295,8 +295,7 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
                   <SheetContent side="left" className="w-[300px] sm:w-[400px]">
                     <SheetHeader>
                       <SheetTitle className="flex items-center gap-2">
-                        <Logo className="h-6 w-6 text-primary" />
-                        <span>Evalis</span>
+                        <img src="/logo.png" alt="logo" className="h-5 sm:h-6" />
                         {theme === 'dark' || theme === 'system' ?
                           <img src="/white.png" alt="logo" className="h-5 sm:h-6 ms-2 " /> : <img src="/dark.png" alt="logo" className="h-5 sm:h-6 ms-2" />
                         }
@@ -329,12 +328,12 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
               <div className="flex items-center">
                 <button
                   onClick={() => logoHome('/calculator')}
-                  className="flex items-center space-x-2 text-primary hover:text-primary/90 transition-colors cursor-pointer"
+                  className="flex items-center space-x-2 cursor-pointer"
                 >
-                  <div className="text-2xl">
+                  <div className="text-2xl md:hidden">
                     {logo}
                   </div>
-                  <span className="font-bold text-xl sm:inline-block hidden">Evalis</span>
+                  <img src="/logo.png" alt="logo" className="h-6 hidden md:inline" />
                   {theme === 'dark' || theme === 'system' ?
                   <img src="/white.png" alt="logo" className="h-6 ms-2 hidden md:inline" /> : <img src="/dark.png" alt="logo" className="h-6 ms-2 hidden md:inline" />
                   }

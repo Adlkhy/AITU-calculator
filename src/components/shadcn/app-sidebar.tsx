@@ -14,11 +14,11 @@ import {
 // import { NavDocuments } from "@/components/nav-documents"
 import { NavMain } from "@/components/shadcn/nav-main"
 import { NavSecondary } from "@/components/shadcn/nav-secondary"
-import { NavUser } from "@/components/shadcn/nav-user"
+// import { NavUser } from "@/components/shadcn/nav-user"
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
+  // SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -40,7 +40,7 @@ const data = {
     },
     {
       title: "AITU Connect",
-      url: "https://uni-hub.kz/",
+      url: "https://t.me/astanait_forum",
       icon: IconUsersGroup,
     },
     {
@@ -103,10 +103,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <div onClick={() => navigate("/", { replace: true })}>
-              <span className="text-base font-semibold">Evalis</span>
+              <div onClick={() => navigate("/calculator", { replace: true })}>
+              <img src="/logo.png" alt="logo" className="h-5 sm:h-6" />
               {theme === 'dark' || theme === 'system' ?
-                <img src="/white.png" alt="logo" className="h-6 ms-2" /> : <img src="/dark.png" alt="logo" className="h-6 ms-2" />
+                <img src="/white.png" alt="logo" className="h-5 sm:h-6 ms-2" /> : <img src="/dark.png" alt="logo" className="h-5 sm:h-6 ms-2" />
               }</div>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -117,9 +117,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* <NavDocuments items={data.documents} /> */}
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
-      <SidebarFooter>
+      {/* <SidebarFooter>
         <NavUser />
-      </SidebarFooter>
+      </SidebarFooter> */}
     </Sidebar>
   )
 }

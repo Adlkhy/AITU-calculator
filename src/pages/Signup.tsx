@@ -42,7 +42,7 @@ export default function SignupPage() {
     if (error) {
       setError(error.message);
     } else {
-      navigate("/");
+      navigate("/calculator", { replace: true });
     }
     setLoading(false);
   };

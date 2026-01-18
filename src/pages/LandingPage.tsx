@@ -18,7 +18,6 @@ import {
 import { ModeToggle } from '@/components/mode-toggle';
 import { useUser } from '@/hooks/useUser';
 import Footer from '@/components/Footer';
-import { Logo } from '@/components/Navbar2';
 import {
   Sheet,
   SheetContent,
@@ -68,8 +67,7 @@ export default function LandingPage() {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between mx-auto px-4">
           <div className="flex items-center gap-2">
-            <Logo className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold tracking-tight">Evalis</span>
+            <img src="/logo.png" alt="logo" className="h-5 sm:h-6" />
             {theme === 'dark' || theme === 'system' ?
               <img src="/white.png" alt="logo" className="h-5 sm:h-6 ms-2 " /> : <img src="/dark.png" alt="logo" className="h-5 sm:h-6 ms-2" />
             }
@@ -107,8 +105,7 @@ export default function LandingPage() {
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                 <SheetHeader>
                   <SheetTitle className="flex items-center gap-2">
-                    <Logo className="h-6 w-6 text-primary" />
-                    <span>Evalis</span>
+                    <img src="/logo.png" alt="logo" className="h-5 sm:h-6" />
                     {theme === 'dark' || theme === 'system' ?
                       <img src="/white.png" alt="logo" className="h-5 sm:h-6 ms-2 " /> : <img src="/dark.png" alt="logo" className="h-5 sm:h-6 ms-2" />
                     }
