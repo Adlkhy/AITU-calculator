@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabaseClient'
 import { useEffect, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Card_14 } from '@/components/ui/card-14'
 // import type { User } from '@supabase/supabase-js'
 import { useUser } from '@/hooks/useUser'
 import { DataTable } from '@/components/shadcn/data-table'
@@ -236,31 +237,8 @@ export default function Leaderboard() {
               {/* Enhanced: Current User Stats */}
               {currentUserRank > 0 && (
                 <div className="px-4 lg:px-6">
-                  <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg p-6 text-white">
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                      <div>
-                        <h2 className="text-xl font-bold mb-2">Your Ranking</h2>
-                        <p className="text-blue-100">
-                          You are ranked <span className="font-bold text-2xl">#{currentUserRank}</span> out of {leaderboardData.length} students
-                        </p>
-                        <p className="text-blue-100">
-                          Average Grade: <span className="font-bold text-xl">{currentUserAverage}</span>
-                        </p>
-                      </div>
-                      <div className="mt-4 md:mt-0">
-                        <div className="flex items-center gap-4">
-                          <div className="text-center">
-                            <div className="text-3xl font-bold">{currentUserRank}</div>
-                            <div className="text-blue-200 text-sm">Rank</div>
-                          </div>
-                          <div className="text-center">
-                            <div className="text-3xl font-bold">{currentUserAverage}</div>
-                            <div className="text-blue-200 text-sm">Average</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <Card_14 
+                    currentUserRank={currentUserRank} currentUserAverage={currentUserAverage} leaderboardData={leaderboardData} />
                 </div>
               )}
 

@@ -33,22 +33,22 @@ export default function Footer() {
             <h4 className="font-semibold mb-6">Navigation</h4>
             <ul className="space-y-4 text-sm text-muted-foreground">
               <li>
-                <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
+                <Link to="/" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Home</Link>
               </li>
               <li>
-                <Link to="/calculator" className="hover:text-foreground transition-colors">Calculator</Link>
+                <Link to="/calculator" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Calculator</Link>
               </li>
               <li>
-                <Link to="/ai" className="hover:text-foreground transition-colors">AI Tool</Link>
+                <Link to="/ai" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">AI Tool</Link>
               </li>
               <li>
-                <Link to="/leaderboard" className="hover:text-foreground transition-colors">Leaderboard</Link>
+                <Link to="/leaderboard" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Leaderboard</Link>
               </li>
               <li>
-                <Link to="/final-grades" className="hover:text-foreground transition-colors">Final Grades</Link>
+                <Link to="/final-grades" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Final Grades</Link>
               </li>
               <li>
-                <Link to="/profile" className="hover:text-foreground transition-colors">My Profile</Link>
+                <Link to="/profile" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">My Profile</Link>
               </li>
             </ul>
           </div>
@@ -62,7 +62,7 @@ export default function Footer() {
                   href="https://t.me/Adlkhy" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex gap-2 hover:text-foreground transition-colors md:justify-start"
+                  className="flex gap-2 hover:text-foreground hover:pl-1.5 transition-all duration-300 md:justify-start"
                 >
                   <Send className="h-4 w-4" />
                   Telegram
@@ -76,10 +76,10 @@ export default function Footer() {
             <h4 className="font-semibold mb-6">Legal</h4>
             <ul className="space-y-4 text-sm text-muted-foreground">
               <li>
-                <Link to="/term-of-service" className="hover:text-foreground transition-colors">Terms of Service</Link>
+                <Link to="/term-of-service" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Terms of Service</Link>
               </li>
               <li>
-                <Link to="/term-of-service" className="hover:text-foreground transition-colors">Rights & Privacy</Link>
+                <Link to="/term-of-service" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Rights & Privacy</Link>
               </li>
             </ul>
           </div>

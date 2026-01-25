@@ -2,6 +2,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card_3 } from '@/components/ui/card-3';
 import { Badge } from '@/components/ui/badge';
 import { useTheme } from "@/lib/useTheme"
 import Plasma from '@/components/shadcn/gsap/Plasma';
@@ -192,14 +193,14 @@ export default function LandingPage() {
         <section className="relative z-10 py-20 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 space-y-4">
-              <h2 className="text-3xl font-bold tracking-tight">Everything You Need</h2>
+              <h2 className="text-4xl font-bold tracking-tight">Everything You Need</h2>
               <p className="text-muted-foreground max-w-xl mx-auto">
                 No more confusing spreadsheets. Evalis provides the tools you need to stay on top of your academic life.
               </p>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {features.map((feature, index) => (
-                <Card key={index} className="border-none shadow-sm bg-card hover:shadow-md transition-shadow">
+                <Card key={index} className="border-primary/80 bg-transparent hover:bg-primary/5 transition-colors">
                   <CardHeader>
                     <div className="mb-2 p-3 w-fit rounded-lg bg-primary/10">
                       {feature.icon}
@@ -250,7 +251,7 @@ export default function LandingPage() {
               </Button>
             </div>
 
-            <Card className="shadow-xl border-primary/10 bg-card overflow-hidden">
+            {/* <Card className="shadow-xl border-primary/10 bg-card overflow-hidden">
               <CardHeader className="bg-primary/5 py-2">
                 <CardTitle className="text-lg flex justify-between items-center text-foreground">
                   Weekly Top Performers
@@ -285,7 +286,8 @@ export default function LandingPage() {
                   <span className="text-sm text-muted-foreground italic">Join {user ? 'thousands of' : 'more'} students already tracking their progress</span>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
+            <Card_3 topPlayers={topPlayers} user={user} />
           </div>
         </section>
 
