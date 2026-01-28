@@ -4,7 +4,7 @@ import App from './App.tsx'
 import './index.css'
 import { UserProvider } from './contexts/UserContext.tsx'
 import { GeminiProvider } from './contexts/GeminiContext.tsx'
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const GA_ID = import.meta.env.VITE_GA_ID; 
 
