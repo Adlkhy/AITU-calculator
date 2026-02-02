@@ -81,6 +81,11 @@ export default function Profile() {
   }, [user, loading, navigate, fetchUserCalculators]);
 
   const handleSaveProfile = async () => {
+    if (!user || !user.id) {
+      console.error("No user logged in");
+      return;
+    }
+
     try {
       const { error } = await supabase.auth.updateUser({
         data: { 
@@ -90,6 +95,15 @@ export default function Profile() {
         }
       });
       if (error) throw error;
+
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({
+          full_name: formData.full_name,
+          avatar_url: formData.avatar_url
+        })
+        .eq('id', user?.id);
+      if (profileError) throw profileError;
 
       console.log("Saved Data:", formData);
       setIsEditing(false);
@@ -115,6 +129,7 @@ export default function Profile() {
 
   return (
     <>
+    {/* subjects={["▶︎ •၊၊||၊|။||||။‌‌‌‌‌၊|• 0:10", "ᯓ★", "⋆.˚✮🎧✮˚.⋆"] */}
       <Navbar08 />
       <div className="text-foreground min-h-screen font-sans px-4 sm:px-8 pb-20 max-w-6xl mx-auto">
         

@@ -9,8 +9,8 @@ export default function Footer() {
       <div className="container mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:text-left">
           {/* Brand & CTA Section */}
-          <div className="space-y-4 flex flex-col md:items-start">
-            <h3 className="text-xl font-bold tracking-tight">Evalis</h3>
+          <div className="space-y-4 md:items-start">
+            <img src="/logo.png" alt="Evalis Logo" className="h-8 w-auto" />
             <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
               Unlock your full academic potential! Create an account to save your grades, 
               track progress over time, and access our advanced AI assistant.
@@ -20,7 +20,7 @@ export default function Footer() {
                 to="/signup"
                 className="w-full md:w-auto"
               ><Button 
-              variant="default" 
+              variant="outline" 
               size="default" 
               className="w-full md:w-auto"
               >

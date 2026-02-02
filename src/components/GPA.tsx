@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardTitle, CardDescription } from './ui/card';
 import { Input } from './ui/input';
+import { X } from "lucide-react";
 
 export type SubjectRow = {
   id: number;
@@ -224,16 +225,16 @@ export default function GpaCalculator() {
                         />
                       </td>
                       <td className="py-2">{g.toFixed(2)}</td>
-                      <td className="py-2">
+                      <td className="py-2 flex items-center justify-center">
                         <Button
                           onClick={() => removeRow(r.id)}
-                          variant="destructive"
+                          variant="ghost"
                           size="sm"
                           disabled={rows.length === 1}
                           type="button"
-                          className="px-2 py-1 text-destructive-foreground hover:text-destructive hover:bg-destructive/10"
+                          className="h-8 w-8 text-destructive hover:text-destructive-foreground hover:bg-destructive! border! border-destructive! transition-colors"
                         >
-                          Remove
+                          <X className="w-4 h-4" />
                         </Button>
                       </td>
                     </tr>
@@ -296,13 +297,13 @@ export default function GpaCalculator() {
 
                     <Button
                       onClick={() => removeRow(r.id)}
-                      variant="destructive"
+                      variant="ghost"
                       size="sm"
                       disabled={rows.length === 1}
                       type="button"
-                      className="w-full px-3 py-2 text-secondary"
+                      className="w-full px-3 py-2 text-destructive hover:text-destructive-foreground hover:bg-destructive! border! border-destructive! transition-colors"
                     >
-                      Remove
+                      Delete
                     </Button>
                   </div>
                 </div>

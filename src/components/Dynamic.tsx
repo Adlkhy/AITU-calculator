@@ -2,7 +2,11 @@ import { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { X } from 'lucide-react';
-import { Card, CardContent, CardHeader } from './ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { 
+  PieChart, Pie, Cell, Tooltip as RechartsTooltip
+} from 'recharts';
+import { ChartContainer, type ChartConfig } from './ui/chart';
 
 // --- TYPE DEFINITIONS ---
 interface GradeItem {
@@ -87,7 +91,7 @@ const GradeCategory = ({
 
   return (
     <Card className="mb-6 overflow-hidden border-muted-foreground/20 shadow-sm hover:shadow-md transition-shadow">
-      <CardHeader className="border-b border-muted-foreground/10">
+      <CardHeader className="border-b px-4 border-muted-foreground/10">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex-1 w-full">
             <Input
@@ -124,7 +128,7 @@ const GradeCategory = ({
         </div>
       </CardHeader>
 
-      <CardContent className="p-4">
+      <CardContent className="px-4">
         {/* DESKTOP TABLE */}
         <div className="hidden sm:block overflow-x-auto mb-4">
           <table className="w-full border-collapse text-sm">
@@ -175,10 +179,10 @@ const GradeCategory = ({
                   <td className="py-3 text-right">
                     <Button
                       onClick={() => removeItem(item.id)}
-                      variant="destructive"
+                      variant="ghost"
                       size="icon"
                       type="button"
-                      className="h-8 w-8 text-destructive-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+                      className="h-8 w-8 text-destructive hover:text-destructive-foreground hover:bg-destructive! border! border-destructive! transition-colors"
                     >
                       <X className="w-4 h-4" />
                     </Button>
@@ -201,7 +205,7 @@ const GradeCategory = ({
                 variant="ghost"
                 size="icon"
                 type="button"
-                className="absolute top-2 right-2 h-8 w-8 text-destructive hover:text-destructive"
+                className="absolute top-2 right-2 h-8 w-8 text-destructive hover:text-destructive-foreground hover:bg-destructive!"
               >
                 <X className="w-4 h-4"/>
               </Button>
@@ -249,7 +253,7 @@ const GradeCategory = ({
           <Button
             size='sm'
             onClick={addItem}
-            variant='secondary'
+            variant='outline'
             type="button"
             className="w-full sm:w-auto font-medium"
           >
@@ -258,10 +262,10 @@ const GradeCategory = ({
           
           <Button
             size='sm'
-            variant='destructive'
+            variant='ghost'
             type="button"
             onClick={() => onRemoveCategory(category.id)}
-            className="w-full sm:w-auto text-destructive-foreground hover:text-destructive hover:bg-destructive/10"
+            className="w-full sm:w-auto text-destructive hover:text-destructive-foreground hover:bg-destructive!"
           >
             Delete Category
           </Button>
@@ -332,7 +336,7 @@ export default function DynamicGradeCalculator() {
   const [categories, setCategories] = useState<Category[]>([
     {
       id: '1',
-      name: 'Mid Term',
+      name: '1st Term',
       items: [
         { id: '1-1', name: 'Assignment', score: '', weight: '4' },
         { id: '1-2', name: 'Assignment2', score: '', weight: '4' },
@@ -342,7 +346,7 @@ export default function DynamicGradeCalculator() {
     },
     {
       id: '2',
-      name: 'End Term',
+      name: '2nd Term',
       items: [
         { id: '2-1', name: 'Assignment', score: '', weight: '4' },
         { id: '2-2', name: 'Assignment2', score: '', weight: '4' },
@@ -438,6 +442,20 @@ export default function DynamicGradeCalculator() {
 
   const finalGpa = percentToGpa(finalGrade);
 
+  const chartConfig = categories.reduce((acc, cat, idx) => {
+    acc[cat.id] = {
+      label: cat.name || `Category ${idx + 1}`,
+      color: `var(--chart-${(idx % 5) + 1})`
+    };
+    return acc;
+  }, {} as ChartConfig);
+
+  const attestationPieData = categories.map((cat, idx) => ({
+    name: cat.name || `Category ${idx + 1}`,
+    value: categoryScores[cat.id] || 0,
+    color: `var(--chart-${(idx % 5) + 1})`
+  }));
+
   return (
     <div className="px-4 py-6 md:px-8 md:py-10 max-w-5xl mx-auto w-full space-y-8">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -461,7 +479,100 @@ export default function DynamicGradeCalculator() {
         </Button>
       </div>
 
-      {/* SUMMARY CARDS */}
+      {/* CATEGORIES LIST */}
+      <div className="space-y-2">
+        <div className="flex items-center gap-2 px-2 mb-4">
+          <div className="h-px flex-1 bg-muted-foreground/10" />
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">Grading Structure</span>
+          <div className="h-px flex-1 bg-muted-foreground/10" />
+        </div>
+        
+        <div className="space-y-6">
+          {categories.map(category => (
+            <GradeCategory
+              key={category.id}
+              category={category}
+              onUpdateCategory={updateCategory}
+              onRemoveCategory={removeCategory}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* FOOTER STATS */}
+      <Card className="p-0 shadow-sm border-muted-foreground/20">
+        <CardContent className="p-6">
+          <CardTitle className="text-[12px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60 mb-6 text-center md:text-left">
+            Score Distribution
+          </CardTitle>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="w-full md:w-1/2 aspect-square max-h-[220px]">
+              <ChartContainer
+                config={chartConfig}
+                className="mx-auto aspect-square h-full"
+              >
+                <PieChart>
+                  <Pie
+                    data={attestationPieData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {attestationPieData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <RechartsTooltip
+                    content={({ active, payload }) => {
+                      if (active && payload && payload.length) {
+                        return (
+                          <div className="bg-background border border-muted-foreground/20 p-2 rounded-lg shadow-xl text-[10px] font-bold uppercase tracking-widest">
+                            <p style={{ color: payload[0].payload.color }}>
+                              {payload[0].name}: {Number(payload[0].value ?? 0).toFixed(1)}%
+                            </p>
+                          </div>
+                        );
+                      }
+                      return null;
+                    }}
+                  />
+                </PieChart>
+              </ChartContainer>
+            </div>
+            
+            <div className="w-full md:w-1/2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-3">
+              {attestationPieData.length > 0 ? (
+                attestationPieData.map((item, idx) => (
+                  <div 
+                    key={idx} 
+                    className="flex items-center justify-between p-3 rounded-xl bg-muted/5 border border-muted-foreground/5 hover:bg-muted/10 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div 
+                        className="w-3 h-3 rounded-full shadow-sm" 
+                        style={{ backgroundColor: item.color }} 
+                      />
+                      <span className="font-semibold text-xs text-muted-foreground uppercase tracking-tight">
+                        {item.name}
+                      </span>
+                    </div>
+                    <span className="font-bold text-sm tabular-nums">
+                      {item.value.toFixed(1)}%
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <p className="text-center text-xs text-muted-foreground mt-4 uppercase tracking-widest font-bold opacity-50 col-span-full">
+                  Enter scores to see distribution
+                </p>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card className="bg-primary text-primary-foreground border-none shadow-xl shadow-primary/10 overflow-hidden relative">
           <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-2xl" />
@@ -501,44 +612,6 @@ export default function DynamicGradeCalculator() {
           </CardContent>
         </Card>
       </div>
-
-      {/* CATEGORIES LIST */}
-      <div className="space-y-2">
-        <div className="flex items-center gap-2 px-2 mb-4">
-          <div className="h-px flex-1 bg-muted-foreground/10" />
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">Grading Structure</span>
-          <div className="h-px flex-1 bg-muted-foreground/10" />
-        </div>
-        
-        <div className="space-y-6">
-          {categories.map(category => (
-            <GradeCategory
-              key={category.id}
-              category={category}
-              onUpdateCategory={updateCategory}
-              onRemoveCategory={removeCategory}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* FOOTER STATS */}
-      {categories.length > 0 && (
-        <div className="pt-8 border-t border-muted-foreground/10">
-          <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">Category Breakdown</h4>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {categories.map(category => (
-              <div key={category.id} className="p-3 rounded-xl border border-muted-foreground/10 bg-muted/5">
-                <p className="text-[10px] font-bold uppercase tracking-tight text-muted-foreground truncate mb-1">{category.name || 'Untitled'}</p>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-lg font-bold">{categoryScores[category.id]?.toFixed(1) || '0.0'}%</span>
-                  <span className="text-[10px] text-muted-foreground">({category.totalWeight}%)</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

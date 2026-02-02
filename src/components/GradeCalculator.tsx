@@ -23,12 +23,19 @@ import { supabase } from '@/lib/supabaseClient';
 import { useUser } from '../hooks/useUser';
 import { Loader2, Save, Trash, Pencil } from 'lucide-react';
 import { Separator } from './ui/separator';
+import { ChartContainer, type ChartConfig } from './ui/chart';
 
 interface GradeCalculatorProps {
   data: SyllabusData;
   initialScores?: Record<string, number>;
   initialId?: string | null; // Optional: if editing an existing record
 }
+
+const chartConfig = {
+  att1: { label: "1st Attestation", color: "var(--chart-1)" },
+  att2: { label: "2nd Attestation", color: "var(--chart-2)" },
+  final: { label: "Final Exam", color: "var(--chart-3)" },
+} satisfies ChartConfig;
 
 export const GradeCalculator: React.FC<GradeCalculatorProps> = ({ 
   data, 
@@ -113,9 +120,9 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
   // 4. Attestation Pie Data
   const attestationPieData = useMemo(() => {
     const data = [];
-    if (att1 !== null) data.push({ name: '1st Attestation', value: att1 });
-    if (att2 !== null) data.push({ name: '2nd Attestation', value: att2 });
-    if (finalScore !== null) data.push({ name: 'Final Exam', value: finalScore });
+    if (att1 !== null) data.push({ name: '1st Attestation', value: att1, color: 'var(--chart-1)' });
+    if (att2 !== null) data.push({ name: '2nd Attestation', value: att2, color: 'var(--chart-2)' });
+    if (finalScore !== null) data.push({ name: 'Final Exam', value: finalScore, color: 'var(--chart-3)' });
     return data;
   }, [att1, att2, finalScore]);
 
@@ -236,8 +243,6 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
     }
   };
 
-  const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
-
   return (
     <>
     <Toaster position="top-center"/>
@@ -264,8 +269,8 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
                 <AlertDialogTrigger asChild>
                   <Button 
                     disabled={isDeleting}
-                    className="flex gap-2 w-full sm:w-auto"
-                    variant={'destructive'}
+                    className="flex gap-2 w-full text-destructive hover:text-destructive-foreground border border-destructive! hover:bg-destructive! sm:w-auto"
+                    variant={'ghost'}
                   >
                     {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash className="h-4 w-4" />}
                     {isDeleting ? "Deleting..." : "Delete Saved"}
@@ -402,7 +407,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
 
           {/* NEW CHART: Earned vs Potential */}
           <Card className="shadow-md hover:shadow-lg">
-             <CardContent className="pt-6">
+             <CardContent className="">
              <CardTitle className="font-bold text-foreground mb-4 text-sm uppercase">Points Earned Breakdown</CardTitle>
              <div className="h-64 text-xs">
                <ResponsiveContainer width="100%" height="100%">
@@ -415,49 +420,62 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
                       formatter={(value: number, name: string) => [`${value}%`, name === 'earned' ? 'Earned' : 'Potential Remaining']}
                    />
                    <Legend />
-                   <Bar dataKey="earned" stackId="a" fill="var(--color-primary)" name="Earned" radius={[0, 0, 0, 0]} />
-                   <Bar dataKey="missing" stackId="a" fill="var(--color-accent)" name="Possible" radius={[0, 4, 4, 0]} />
+                   <Bar dataKey="earned" stackId="a" fill="var(--color-chart-1)" name="Earned" radius={[0, 0, 0, 0]} />
+                   <Bar dataKey="missing" stackId="a" fill="var(--color-foreground)" name="Possible" radius={[0, 4, 4, 0]} />
                  </BarChart>
                </ResponsiveContainer>
              </div>
              </CardContent>
           </Card>
 
-          {/* Score Performance Pie Chart */}
-          <Card className="shadow-md hover:shadow-lg">
-             <CardContent className="pt-6">
-             <CardTitle className="font-bold text-foreground mb-4 text-sm uppercase">Score Distribution</CardTitle>
-             <div className="h-48">
-               <ResponsiveContainer width="100%" height="100%">
+          {/* Score Distribution Pie Chart - Redesigned to match Budget style */}
+          <Card className="shadow-sm border-muted-foreground/20">
+             <CardContent className="">
+             <CardTitle className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60 mb-4">Score Distribution</CardTitle>
+             <div className="h-40">
+               <ChartContainer config={chartConfig}>
                  <PieChart>
                    <Pie
                      data={attestationPieData}
                      cx="50%"
                      cy="50%"
-                     innerRadius={40}
-                     outerRadius={60}
-                     paddingAngle={3}
+                     innerRadius={35}
+                     outerRadius={50}
+                     paddingAngle={5}
                      dataKey="value"
                    >
-                      {attestationPieData.map((_, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      {attestationPieData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                    </Pie>
-                   <RechartsTooltip formatter={(val) => `${val}%`} />
+                   <RechartsTooltip 
+                      content={({ active, payload }) => {
+                        if (active && payload && payload.length) {
+                          return (
+                            <div className="bg-background border border-muted-foreground/20 p-2 rounded-lg shadow-xl text-[10px] font-bold uppercase tracking-widest">
+                              <p style={{ color: payload[0].payload.color }}>{payload[0].name}: {payload[0].value}%</p>
+                            </div>
+                          );
+                        }
+                        return null;
+                      }}
+                    />
                  </PieChart>
-               </ResponsiveContainer>
+               </ChartContainer>
              </div>
-             <div className="mt-2 space-y-1">
+             <div className="mt-4 space-y-2">
                {attestationPieData.length > 0 ? (
-                 attestationPieData.map((cat, idx) => (
-                   <div key={idx} className="flex items-center text-xs">
-                     <div className="w-2 h-2 rounded-full mr-2" style={{ backgroundColor: COLORS[idx % COLORS.length] }}></div>
-                     <span className="flex-1 text-foreground">{cat.name}</span>
-                     <span className="font-bold text-foreground">{cat.value}%</span>
+                 attestationPieData.map((item, idx) => (
+                   <div key={idx} className="flex items-center justify-between text-xs">
+                     <div className="flex items-center gap-2">
+                       <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
+                       <span className="font-medium text-muted-foreground">{item.name}</span>
+                     </div>
+                     <span className="font-bold">{item.value}%</span>
                    </div>
                  ))
                ) : (
-                 <p className="text-center text-xs text-muted-foreground mt-4">Enter scores to see distribution</p>
+                 <p className="text-center text-xs text-muted-foreground mt-4 uppercase tracking-widest font-bold opacity-50">Enter scores to see distribution</p>
                )}
              </div>
              </CardContent>

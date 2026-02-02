@@ -85,9 +85,8 @@ const IncomeSourceInput = ({
           className="h-10 bg-background border-muted-foreground/20 font-mono"
         />
       </div>
-      <div className='flex justify-between gap-2'>
-      <div className="flex items-end justify-between space-y-1">
-        <div className='flex flex-col'>
+      <div className='flex justify-between items-center gap-2'>
+        <div className='flex flex-col space-y-1'>
           <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Type</label>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -106,16 +105,15 @@ const IncomeSourceInput = ({
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-      </div>
 
-      <Button
-        variant="destructive"
-        size="icon"
-        onClick={() => onRemove(source.id)}
-        className="h-10 w-10 mt-5 text-destructive-foreground hover:text-destructive hover:bg-destructive/10"
-      >
-        <X className="w-4 h-4" />
-      </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => onRemove(source.id)}
+          className="h-8 w-8 mt-5 text-destructive hover:text-destructive-foreground hover:bg-destructive! border! border-destructive! transition-colors duration-200"
+        >
+          <X className="w-4 h-4" />
+        </Button>
       </div>
     </div>
   </div>

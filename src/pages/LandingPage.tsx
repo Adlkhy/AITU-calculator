@@ -62,6 +62,8 @@ export default function LandingPage() {
     { name: "Donald Trump", score: 96.8, rank: 3, avatar: "DT" },
   ];
 
+  const plasmaColor = (theme === 'dark' || theme === 'system') ? "#79c0ff" : "#e2ebff";
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       {/* Navigation */}
@@ -69,7 +71,7 @@ export default function LandingPage() {
         <div className="container flex h-16 items-center justify-between mx-auto px-4">
           <div className="flex items-center gap-2">
             <img src="/logo.png" alt="logo" className="h-5 sm:h-6" />
-            {theme === 'dark' || theme === 'system' ?
+            {(theme === 'dark' || theme === 'system') ?
               <img src="/white.png" alt="logo" className="h-5 sm:h-6 ms-2 " /> : <img src="/dark.png" alt="logo" className="h-5 sm:h-6 ms-2" />
             }
           </div>
@@ -146,23 +148,14 @@ export default function LandingPage() {
       <main className="flex-1 relative overflow-hidden">
         {/* Hero Section */}
         <div className="absolute inset-0 w-full h-[680px] sm:h-[540px] lg:h-[690px] z-0 pointer-events-none">
-          {theme === 'dark' || theme === 'system' ?
             <Plasma 
-            color="#79c0ff"
-            speed={1}
-            direction="forward"
-            scale={1}
-            opacity={1}
-            mouseInteractive={false} 
-            /> : <Plasma 
-            color="#e2ebff"
+            color={plasmaColor}
             speed={1}
             direction="forward"
             scale={1}
             opacity={1}
             mouseInteractive={false} 
             />
-          } 
         </div>
         <section className="relative py-20 z-10 lg:py-32 container mx-auto px-4">
           <div className="flex flex-col items-center text-center space-y-8">
