@@ -244,42 +244,7 @@ export default function LandingPage() {
               </Button>
             </div>
 
-            {/* <Card className="shadow-xl border-primary/10 bg-card overflow-hidden">
-              <CardHeader className="bg-primary/5 py-2">
-                <CardTitle className="text-lg flex justify-between items-center text-foreground">
-                  Weekly Top Performers
-                  <Badge variant="secondary">Global</Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="divide-y divide-border">
-                  {topPlayers.map((player) => (
-                    <div key={player.rank} className="flex items-center justify-between p-4 hover:bg-muted/50 transition-colors">
-                      <div className="flex items-center gap-4">
-                        <span className={`text-xl font-bold w-6 ${
-                          player.rank === 1 ? 'text-yellow-500' : 
-                          player.rank === 2 ? 'text-slate-400' : 
-                          'text-amber-600'
-                        }`}>
-                          {player.rank}
-                        </span>
-                        <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center font-semibold text-primary">
-                          {player.avatar}
-                        </div>
-                        <span className="font-medium text-foreground">{player.name}</span>
-                      </div>
-                      <div className="text-right">
-                        <div className="font-bold text-foreground">{player.score}%</div>
-                        <div className="text-xs text-muted-foreground">GPA Index</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="p-4 bg-muted/30 text-center">
-                  <span className="text-sm text-muted-foreground italic">Join {user ? 'thousands of' : 'more'} students already tracking their progress</span>
-                </div>
-              </CardContent>
-            </Card> */}
+            
             <Card_3 topPlayers={topPlayers} user={user} />
           </div>
         </section>

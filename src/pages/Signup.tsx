@@ -2,6 +2,7 @@ import { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { SignupForm } from "@/components/signup-form";
 import { useNavigate } from "react-router-dom";
+import { toast, Toaster } from 'sonner';
 
 export default function SignupPage() {
   const navigate = useNavigate();
@@ -18,14 +19,14 @@ export default function SignupPage() {
     setError(undefined);
     setLoading(true);
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      toast.warning("Passwords do not match");
       setLoading(false);
       return;
     }
 
     const uniEmailRegex = /^\d{6}@astanait\.edu\.kz$/;
     if (!uniEmailRegex.test(email)) {
-      setError("Please use your university email (ending with @astanait.edu.kz)");
+      toast.warning("Please use your university email (ending with @astanait.edu.kz)");
       setLoading(false);
       return;
     }
@@ -40,16 +41,18 @@ export default function SignupPage() {
       }
     });
     if (error) {
-      setError(error.message);
+      toast.error(error.message);
     } else {
+      toast.success("Account created successfully!");
       navigate("/calculator", { replace: true });
     }
     setLoading(false);
   };
 
   return (
-    <div className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
+    <div className="bg-background flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm md:max-w-4xl">
+        <Toaster position="top-center" theme="system" />
         <SignupForm 
           fullName={fullName}
           setFullName={setFullName}

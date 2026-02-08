@@ -2,6 +2,7 @@ import { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { LoginForm } from "@/components/login-form"
 import { useNavigate } from "react-router-dom";
+import { toast, Toaster } from 'sonner';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ export default function LoginPage() {
     });
 
     if (error) {
-      setError(error.message);
+      toast.error(error.message);
     } else {
       navigate("/calculator", { replace: true });
     }
@@ -28,8 +29,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
+    <div className="bg-background flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm md:max-w-4xl">
+        <Toaster position="top-center" theme="system" />
         <LoginForm 
           email={email}
           setEmail={setEmail}

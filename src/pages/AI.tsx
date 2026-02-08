@@ -9,7 +9,8 @@ import { ApiKeyInput } from '@/components/ApiKeyInput';
 import { useGemini } from '@/hooks/useGemini';
 import { useGeminiClient } from '../lib/GeminiClient';
 import type { SyllabusData } from '../hooks/types';
-import { SlidersHorizontal, ChartLine, WandSparkles, BadgeAlert, CircleArrowLeft} from 'lucide-react';
+import CircularGallery from '@/components/shadcn/gsap/CircularGallary';
+import { BadgeAlert, CircleArrowLeft} from 'lucide-react';
 
 const App: React.FC = () => {
   const [syllabusData, setSyllabusData] = useState<SyllabusData | null>(null);
@@ -43,12 +44,22 @@ const App: React.FC = () => {
     setError(null);
   };
 
+  const items = [
+    { image: '/quote1.jpeg', text: '' },
+    { image: '/quote2.jpeg', text: '' },
+    { image: '/quote4.jpeg', text: '' },
+    { image: '/quote5.jpeg', text: '' },
+    { image: '/quote3.jpeg', text: '' },
+    { image: '/quote6.jpeg', text: '' },
+
+  ];
+
   return (
     <>
     <Navbar08 />
     <div className="max-w-4xl mx-auto px-4 md:px-8">
       {/* Header */}
-      <header className="mb-16 px-4 md:px-8 mt-6">
+      <header className="mb-10 px-4 md:px-8 mt-6">
         {/* <h1 className="text-4xl md:text-5xl font-black text-foreground tracking-tight mb-4">
           We Asked AI. <br className='md:hidden'/>It Said <span className="text-primary">‘Sure’</span>
         </h1> */}
@@ -84,29 +95,14 @@ const App: React.FC = () => {
               <FileUpload onFileSelect={handleFileUpload} isLoading={loading} />
             )}
             
-
-            <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-              <div className="p-6">
-                <div className="w-12 h-12 bg-chart-1 text-accent rounded-full flex items-center justify-center mx-auto mb-4">
-                  <WandSparkles className="w-6 h-6" />
-                </div>
-                <h4 className="font-bold mb-2">Instant Extraction</h4>
-                <p className="text-sm text-foreground/80">Gemini AI reads complex tables and nested grading structures for you.</p>
-              </div>
-              <div className="p-6">
-                <div className="w-12 h-12 bg-chart-2 text-accent rounded-full flex items-center justify-center mx-auto mb-4">
-                  <SlidersHorizontal className="w-6 h-6" />
-                </div>
-                <h4 className="font-bold mb-2">Interactive Tracker</h4>
-                <p className="text-sm text-foreground/80">Enter your scores for assignments to see your weighted progress.</p>
-              </div>
-              <div className="p-6">
-                <div className="w-12 h-12 bg-chart-3 text-accent rounded-full flex items-center justify-center mx-auto mb-4">
-                  <ChartLine className="w-6 h-6" />
-                </div>
-                <h4 className="font-bold mb-2">Grade Visualization</h4>
-                <p className="text-sm text-foreground/80">See exactly which categories are pulling your GPA up or down.</p>
-              </div>
+            <div style={{ height: '40vh', width: '100%', position: 'relative' }}>
+              <CircularGallery 
+              items={items}
+              borderRadius={0.05} 
+              bend={-1}
+              scrollSpeed={2}
+              scrollEase={0.05}
+              />
             </div>
           </div>
         ) : (

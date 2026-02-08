@@ -62,7 +62,7 @@ export function SignupForm({
                     id="name" 
                     value={fullName} 
                     onChange={(e) => setFullName(e.target.value)} 
-                    placeholder="John Doe"
+                    placeholder="Jeffrey Epstein"
                     required
                     />
                 </Field>
@@ -73,7 +73,7 @@ export function SignupForm({
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="12345@astanait.edu.kz"
+                    placeholder="123456@astanait.edu.kz"
                     required
                   />
                 </Field>
@@ -148,9 +148,9 @@ export function SignupForm({
           </form>
           <div className="bg-muted relative hidden md:block">
             <img
-              src="/shape1.svg"
+              src="/why1.jpeg"
               alt="Image"
-              className="bg-secondary absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+              className="bg-secondary absolute inset-0 h-full w-full object-cover dark:brightness-[0.5]"
             />
           </div>
         </CardContent>
