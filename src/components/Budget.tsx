@@ -264,7 +264,7 @@ export default function BudgetPlanner() {
   };
 
   return (
-    <div className="px-4 py-6 md:px-8 md:py-10 max-w-6xl mx-auto w-full space-y-8">
+    <div className="px-4 md:px-8 max-w-6xl mx-auto w-full space-y-8">
       {/* HEADER */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="space-y-1">

@@ -1,4 +1,4 @@
-import { Moon, Sun, TreePine } from "lucide-react" //icons
+import { Moon, Sun, Heart } from "lucide-react" //icons
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -29,9 +29,9 @@ export function ModeToggle() {
               : "scale-0 rotate-90"
           }`} />
 
-          {/* Nature theme icon */}
-          <TreePine className={`absolute h-[1.2rem] w-[1.2rem] transition-all ${
-            theme === "nature" 
+          {/* Love theme icon */}
+          <Heart className={`absolute h-[1.2rem] w-[1.2rem] transition-all ${
+            theme === "love" 
               ? "scale-100 rotate-0" 
               : "scale-0 rotate-90"
           }`} />
@@ -41,13 +41,13 @@ export function ModeToggle() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme("light")}>
-          VioletBloom
+          Light
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("nature")}>
-          Nature
+        <DropdownMenuItem onClick={() => setTheme("love")}>
+          Love
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
           System

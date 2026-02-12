@@ -126,7 +126,7 @@ export default function GpaCalculator() {
   }, [addRow, rows.length]);
 
   return (
-    <div className="px-4 pt-4 md:px-8 md:pt-8 max-w-5xl mx-auto w-full">
+    <div className="px-4 md:px-8 max-w-5xl mx-auto w-full">
       <div className="mb-6 space-y-1 ">
           <h1 className="text-3xl md:text-4xl font-black tracking-tight text-foreground">
             GPA Calculator

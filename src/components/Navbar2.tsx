@@ -26,6 +26,15 @@ import { ChevronDownIcon } from 'lucide-react';
 // } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu"
 
 // Simple logo component for the navbar
 const Logo = (props: React.SVGAttributes<SVGElement>) => {
@@ -243,7 +252,7 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
       const checkWidth = () => {
         if (containerRef.current) {
           const width = containerRef.current.offsetWidth;
-          setIsMobile(width < 768);
+          setIsMobile(width < 880);
         }
       };
       checkWidth();
@@ -286,7 +295,7 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
               {isMobile && (
                 <Sheet>
                   <SheetTrigger asChild>
-                    <Button variant="ghost" size="icon" className="md:hidden">
+                    <Button variant="ghost" size="icon" className="lg:hidden">
                       <Menu className="h-6 w-6" />
                       <span className="sr-only">Toggle menu</span>
                     </Button>
@@ -300,25 +309,67 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
                         }
                       </SheetTitle>
                     </SheetHeader>
-                    <div className="flex px-4 flex-col">
-                      <nav className="grid grid-cols-1 gap-2">
-                        {subjects.map((subject) => (
-                          <li key={subject} className='list-none'> 
+                    <div className="flex px-2 flex-col gap-4 py-4 overflow-y-auto max-h-[80vh]">
+                      <div>
+                        <h3 className="text-xs font-semibold uppercase tracking-wider px-4 mb-1 text-primary border-b border-primary/40 pb-2">Subjects</h3>
+                        <div className="grid grid-cols-1 gap-1">
+                          {subjects
+                            .filter(s => !['Attendance', 'GPA', 'Budget'].includes(s))
+                            .map((subject) => (
+                              <Button
+                                key={subject}
+                                onClick={() => onSelectSubject?.(subject)}
+                                variant="ghost"
+                                size="sm"
+                                className={cn(
+                                  "justify-start font-medium h-9 px-4",
+                                  selectedSubject === subject ? "bg-accent text-primary" : "text-foreground/70"
+                                )}
+                              >
+                                {subject}
+                              </Button>
+                            ))}
+                        </div>
+                      </div>
+                      
+                      {subjects.includes('Budget') && (
+                        <div>
+                          <h3 className="text-xs font-semibold uppercase tracking-wider px-4 mb-1 text-primary border-b border-primary/40 pb-2">Finances</h3>
                           <Button
-                            onClick={() => onSelectSubject?.(subject)}
+                            onClick={() => onSelectSubject?.('Budget')}
                             variant="ghost"
                             size="sm"
-                            className={`text-sm font-semibold transition-colors ${
-                              selectedSubject === subject 
-                                ? 'text-primary underline underline-offset-4 decoration-2' 
-                                : 'text-foreground'
-                            }`}
+                            className={cn(
+                              "w-full justify-start font-medium h-9 px-4",
+                              selectedSubject === 'Budget' ? "bg-accent text-primary" : "text-foreground/70"
+                            )}
                           >
-                          {subject}
+                            Budget
                           </Button>
-                          </li>
-                        ))}
-                      </nav>
+                        </div>
+                      )}
+
+                      <div>
+                        <h3 className="text-xs font-semibold uppercase tracking-wider px-4 mb-1 text-primary border-b border-primary/40 pb-2">Tools</h3>
+                        <div className="grid grid-cols-1 gap-1">
+                          {subjects
+                            .filter(s => ['Attendance', 'GPA'].includes(s))
+                            .map((item) => (
+                              <Button
+                                key={item}
+                                onClick={() => onSelectSubject?.(item)}
+                                variant="ghost"
+                                size="sm"
+                                className={cn(
+                                  "justify-start font-medium h-9 px-4",
+                                  selectedSubject === item ? "bg-accent text-primary" : "text-foreground/70"
+                                )}
+                              >
+                                {item}
+                              </Button>
+                            ))}
+                        </div>
+                      </div>
                     </div>
                   </SheetContent>
                 </Sheet>
@@ -340,6 +391,95 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
                 </button>
               </div>
             </div>
+            {!isMobile && (
+              <div className="flex flex-1 items-center justify-end gap-2">
+                <NavigationMenu>
+                  <NavigationMenuList className="gap-2">
+                    {/* Subjects Dropdown */}
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger 
+                        className={cn(
+                          " font-semibold transition-all",
+                          subjects.filter(s => !['Attendance', 'GPA', 'Budget'].includes(s)).includes(selectedSubject) && "bg-accent"
+                        )}
+                      >
+                        Subjects
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <ul className="grid w-[300px] gap-2 md:grid-cols-2">
+                          {subjects
+                            .filter(s => !['Attendance', 'GPA', 'Budget'].includes(s))
+                            .map((subject) => (
+                              <li key={subject}>
+                                <NavigationMenuLink asChild>
+                                  <button
+                                    onClick={() => onSelectSubject?.(subject)}
+                                    className={cn(
+                                      "flex w-full select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+                                      selectedSubject === subject && "bg-accent"
+                                    )}
+                                  >
+                                    <div className="text-sm font-medium leading-none">{subject}</div>
+                                  </button>
+                                </NavigationMenuLink>
+                              </li>
+                            ))}
+                        </ul>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+
+                    {/* Budget Link */}
+                    {subjects.includes('Budget') && (
+                      <NavigationMenuItem>
+                        <button
+                          onClick={() => onSelectSubject?.('Budget')}
+                          className={cn(
+                            navigationMenuTriggerStyle(),
+                            "font-semibold",
+                            selectedSubject === 'Budget' && "bg-accent"
+                          )}
+                        >
+                          Budget
+                        </button>
+                      </NavigationMenuItem>
+                    )}
+
+                    {/* Other Dropdown */}
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger 
+                        className={cn(
+                          "font-semibold transition-all",
+                          ['Attendance', 'GPA'].includes(selectedSubject) && "bg-accent"
+                        )}
+                      >
+                        Other
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <ul className="grid w-[400px] gap-2 md:grid-cols-2">
+                          {subjects
+                            .filter(s => ['Attendance', 'GPA'].includes(s))
+                            .map((item) => (
+                              <li key={item}>
+                                <NavigationMenuLink asChild>
+                                  <button
+                                    onClick={() => onSelectSubject?.(item)}
+                                    className={cn(
+                                      "flex w-full select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+                                      selectedSubject === item && "bg-accent"
+                                    )}
+                                  >
+                                    <div className="text-sm font-medium leading-none">{item}</div>
+                                  </button>
+                                </NavigationMenuLink>
+                              </li>
+                            ))}
+                        </ul>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  </NavigationMenuList>
+                </NavigationMenu>
+              </div>
+            )}
 
             {/* Right side - Theme toggle */}
             <div className="flex flex-1 items-center justify-end gap-2">
@@ -366,32 +506,6 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
               <UserMenu onItemClick={onUserItemClick} />
             </div>
           </div>
-
-          {/* Bottom navigation - SUBJECT SELECTION (replaces old navbar) */}
-          {!isMobile && (
-            <div className="border-t py-2">
-              {/* Navigation menu */}
-              <nav className="flex justify-center items-center">
-                <ul className="flex flex-wrap gap-2 sm:gap-x-4 justify-center">
-                  {subjects.map((subject) => (
-                    <li key={subject}>
-                      <Button
-                        size={"sm"}
-                        onClick={() => onSelectSubject?.(subject)}
-                        className={`transition-all  md:text-sm text-xs font-semibold ${
-                          selectedSubject === subject 
-                            ? 'bg-accent-foreground border-0 text-secondary' 
-                            : 'bg-accent text-accent-foreground hover:bg-accent-foreground hover:text-secondary'
-                        }`}
-                      >
-                        {subject}
-                      </Button>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            </div>
-          )}
         </div>
       </header>
     );

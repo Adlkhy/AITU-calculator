@@ -1,9 +1,41 @@
 import { Link } from 'react-router-dom';
-import { Send } from 'lucide-react';
+import { Send, Heart } from 'lucide-react';
 import { Separator } from './ui/separator';
 import { Button } from './ui/button';
+import { useState, useEffect } from 'react';
+import { CopyButton } from './animate-ui/components/buttons/copy';
+import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 
 export default function Footer() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const cardNumber = "0000 0000 0000 0000"; 
+
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setTimeout(() => {
+        setIsOpen(false);
+        setCopied(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(cardNumber.replace(/\s/g, ''));
+    setCopied(true);
+    toast.success("Card number copied!");
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+
+
   return (
     <footer className="bg-background text-foreground border-t border-dashed border-border ">
       <div className="container mx-auto px-6 py-12">
@@ -67,6 +99,40 @@ export default function Footer() {
                   <Send className="h-4 w-4" />
                   Telegram
                 </a>
+              </li>
+              <li>
+                <Popover open={isOpen} onOpenChange={setIsOpen}>
+                  <PopoverTrigger asChild>
+                    <button 
+                      className="flex gap-2 text-muted-foreground hover:text-foreground hover:pl-1.5 transition-all duration-300 group"
+                    >
+                      <Heart className={cn("h-4 w-4 transition-colors", isOpen ? "fill-primary text-primary" : "")} />
+                      <span>Donate</span>
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent side="top" align="start" className="w-64 p-4 shadow-xl border-dashed">
+                    <div className="space-y-3">
+                      <div className="space-y-1">
+                        <p className="text-sm font-semibold flex items-center gap-2">
+                          Support Project
+                        </p>
+                        <p className="text-xs text-muted-foreground">Click to copy card number</p>
+                      </div>
+                      <button
+                        onClick={handleCopy}
+                        className="w-full flex items-center justify-between p-2 rounded-md bg-muted hover:bg-accent transition-colors border group/card"
+                      >
+                        <span className="font-mono text-sm">{cardNumber}</span>
+                        {copied ? (
+                          <CopyButton content={cardNumber} copied={copied} size="xs"/>
+                        ) : (
+                          <CopyButton content={cardNumber} copied={copied} size="xs"/>
+                        )}
+                      </button>
+                      <p className="text-[11px] italic text-center text-primary">Thanks for support!</p>
+                    </div>
+                  </PopoverContent>
+                </Popover>
               </li>
             </ul>
           </div>

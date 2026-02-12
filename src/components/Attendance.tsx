@@ -42,7 +42,7 @@ export default function AttendanceTracker() {
   }, [classesPerWeek, missedClasses]);
 
   return (
-    <div className="px-4 pt-4 sm:px-8 sm:pt-8">
+    <div className="px-4 sm:px-8 ">
       <div className="mb-6 space-y-1">
           <h1 className="text-3xl md:text-4xl font-black text-foreground">
             Attendance Tracker
