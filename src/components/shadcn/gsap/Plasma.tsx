@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
+import type { OGLRenderingContext } from 'ogl';
 
 interface PlasmaProps {
   color?: string;
@@ -9,6 +10,30 @@ interface PlasmaProps {
   opacity?: number;
   mouseInteractive?: boolean;
 }
+
+// Device capability detection
+interface DeviceCapabilities {
+  isLowPower: boolean;
+  dpr: number;
+  targetFps: number;
+  frameInterval: number;
+}
+
+const getDeviceCapabilities = (): DeviceCapabilities => {
+  const memory = (navigator as { deviceMemory?: number }).deviceMemory ?? 8;
+  const cores = navigator.hardwareConcurrency ?? 4;
+  const isMobile = window.innerWidth <= 768;
+  
+  // Consider low-power if: mobile, low memory (<4GB), or few cores (<4)
+  const isLowPower = isMobile || memory < 4 || cores < 4;
+  
+  return {
+    isLowPower,
+    dpr: isLowPower ? 0.5 : Math.min(window.devicePixelRatio || 1, 1.5),
+    targetFps: isLowPower ? 30 : 60,
+    frameInterval: isLowPower ? 1000 / 30 : 1000 / 60,
+  };
+};
 
 const hexToRgb = (hex: string): [number, number, number] => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -27,7 +52,8 @@ void main() {
 }
 `;
 
-const fragment = `#version 300 es
+// Full quality fragment shader
+const fragmentHigh = `#version 300 es
 precision highp float;
 uniform vec2 iResolution;
 uniform float iTime;
@@ -88,6 +114,62 @@ void main() {
   fragColor = vec4(finalColor, alpha);
 }`;
 
+// Lightweight fallback shader for low-power devices (fewer iterations, simpler math)
+const fragmentLow = `#version 300 es
+precision mediump float;
+uniform vec2 iResolution;
+uniform float iTime;
+uniform vec3 uCustomColor;
+uniform float uUseCustomColor;
+uniform float uSpeed;
+uniform float uDirection;
+uniform float uScale;
+uniform float uOpacity;
+uniform vec2 uMouse;
+uniform float uMouseInteractive;
+out vec4 fragColor;
+
+void main() {
+  vec2 uv = gl_FragCoord.xy / iResolution.xy;
+  vec2 center = vec2(0.5);
+  uv = (uv - center) / uScale + center;
+  
+  float T = iTime * uSpeed * uDirection;
+  
+  // Simplified plasma effect with fewer calculations
+  float x = uv.x * 10.0;
+  float y = uv.y * 10.0;
+  
+  float v1 = sin(x + T);
+  float v2 = sin(y + T * 0.5);
+  float v3 = sin(x + y + T * 0.3);
+  float v4 = sin(sqrt(x*x + y*y) + T * 0.7);
+  
+  float v = (v1 + v2 + v3 + v4) * 0.25;
+  
+  vec3 col = vec3(
+    sin(v * 3.14159 + T) * 0.5 + 0.5,
+    sin(v * 3.14159 + T + 2.094) * 0.5 + 0.5,
+    sin(v * 3.14159 + T + 4.188) * 0.5 + 0.5
+  );
+  
+  float intensity = (col.r + col.g + col.b) / 3.0;
+  vec3 customColor = intensity * uCustomColor;
+  vec3 finalColor = mix(col, customColor, step(0.5, uUseCustomColor));
+  
+  float alpha = length(col) * uOpacity * 0.5;
+  fragColor = vec4(finalColor, alpha);
+}`;
+
+// Debounce utility
+const debounce = <T extends (...args: unknown[]) => void>(fn: T, ms: number): T => {
+  let timeoutId: ReturnType<typeof setTimeout>;
+  return ((...args: unknown[]) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn(...args), ms);
+  }) as T;
+};
+
 export const Plasma: React.FC<PlasmaProps> = ({
   color = '#ffffff',
   speed = 1,
@@ -97,84 +179,149 @@ export const Plasma: React.FC<PlasmaProps> = ({
   mouseInteractive = true
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  // Reusable refs to avoid allocations each frame
   const mousePos = useRef({ x: 0, y: 0 });
+  const mousePending = useRef(false);
+  const isVisible = useRef(false);
+  const isPaused = useRef(false);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
+    const capabilities = getDeviceCapabilities();
     const useCustomColor = color ? 1.0 : 0.0;
     const customColorRgb = color ? hexToRgb(color) : [1, 1, 1];
-
     const directionMultiplier = direction === 'reverse' ? -1.0 : 1.0;
 
-    const isMobile = window.innerWidth <= 768;
-    const renderer = new Renderer({
-      webgl: 2,
-      alpha: true,
-      antialias: false,
-      dpr: isMobile ? 0.5 : Math.min(window.devicePixelRatio || 1, 2)
-    });
-    const gl = renderer.gl;
-    const canvas = gl.canvas as HTMLCanvasElement;
-    canvas.style.display = 'block';
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
-    container.appendChild(canvas);
+    // Pre-allocate uniform arrays (reused every frame)
+    const resolutionArray = new Float32Array([1, 1]);
+    const mouseArray = new Float32Array([0, 0]);
+    const colorArray = new Float32Array(customColorRgb);
 
-    const geometry = new Triangle(gl);
+    let renderer: Renderer | null = null;
+    let gl: OGLRenderingContext | null = null;
+    let canvas: HTMLCanvasElement | null = null;
+    let program: Program | null = null;
+    let mesh: Mesh | null = null;
+    let raf = 0;
+    let lastFrameTime = 0;
+    let t0 = 0;
+    let initialized = false;
 
-    const program = new Program(gl, {
-      vertex: vertex,
-      fragment: fragment,
-      uniforms: {
-        iTime: { value: 0 },
-        iResolution: { value: new Float32Array([1, 1]) },
-        uCustomColor: { value: new Float32Array(customColorRgb) },
-        uUseCustomColor: { value: useCustomColor },
-        uSpeed: { value: speed * 0.4 },
-        uDirection: { value: directionMultiplier },
-        uScale: { value: scale },
-        uOpacity: { value: opacity },
-        uMouse: { value: new Float32Array([0, 0]) },
-        uMouseInteractive: { value: mouseInteractive ? 1.0 : 0.0 }
+    const initWebGL = () => {
+      if (initialized) return;
+      initialized = true;
+
+      renderer = new Renderer({
+        webgl: 2,
+        alpha: true,
+        antialias: false,
+        dpr: capabilities.dpr
+      });
+      gl = renderer.gl;
+      canvas = gl.canvas as HTMLCanvasElement;
+      canvas.style.display = 'block';
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      container.appendChild(canvas);
+
+      const geometry = new Triangle(gl);
+
+      // Use lightweight shader for low-power devices
+      const fragmentShader = capabilities.isLowPower ? fragmentLow : fragmentHigh;
+
+      program = new Program(gl, {
+        vertex: vertex,
+        fragment: fragmentShader,
+        uniforms: {
+          iTime: { value: 0 },
+          iResolution: { value: resolutionArray },
+          uCustomColor: { value: colorArray },
+          uUseCustomColor: { value: useCustomColor },
+          uSpeed: { value: speed * 0.4 },
+          uDirection: { value: directionMultiplier },
+          uScale: { value: scale },
+          uOpacity: { value: opacity },
+          uMouse: { value: mouseArray },
+          uMouseInteractive: { value: mouseInteractive ? 1.0 : 0.0 }
+        }
+      });
+
+      mesh = new Mesh(gl, { geometry, program });
+
+      setSize();
+      t0 = performance.now();
+      startLoop();
+    };
+
+    const destroyWebGL = () => {
+      if (!initialized) return;
+      cancelAnimationFrame(raf);
+      raf = 0;
+      if (canvas && container.contains(canvas)) {
+        try {
+          container.removeChild(canvas);
+        } catch { /* empty */ }
       }
-    });
+      renderer = null;
+      gl = null;
+      canvas = null;
+      program = null;
+      mesh = null;
+      initialized = false;
+    };
 
-    const mesh = new Mesh(gl, { geometry, program });
-
+    // Throttled mouse handler using rAF
     const handleMouseMove = (e: MouseEvent) => {
-      if (!mouseInteractive) return;
+      if (!mouseInteractive || !program) return;
       const rect = container.getBoundingClientRect();
       mousePos.current.x = e.clientX - rect.left;
       mousePos.current.y = e.clientY - rect.top;
-      const mouseUniform = program.uniforms.uMouse.value as Float32Array;
-      mouseUniform[0] = mousePos.current.x;
-      mouseUniform[1] = mousePos.current.y;
+      
+      // Throttle mouse updates to next animation frame
+      if (!mousePending.current) {
+        mousePending.current = true;
+        requestAnimationFrame(() => {
+          if (program) {
+            mouseArray[0] = mousePos.current.x;
+            mouseArray[1] = mousePos.current.y;
+          }
+          mousePending.current = false;
+        });
+      }
     };
 
-    if (mouseInteractive) {
-      container.addEventListener('mousemove', handleMouseMove);
-    }
-
+    // Debounced resize handler
     const setSize = () => {
+      if (!renderer || !gl || !program) return;
       const rect = container.getBoundingClientRect();
       const width = Math.max(1, Math.floor(rect.width));
       const height = Math.max(1, Math.floor(rect.height));
       renderer.setSize(width, height);
-      const res = program.uniforms.iResolution.value as Float32Array;
-      res[0] = gl.drawingBufferWidth;
-      res[1] = gl.drawingBufferHeight;
+      // Reuse pre-allocated array
+      resolutionArray[0] = gl.drawingBufferWidth;
+      resolutionArray[1] = gl.drawingBufferHeight;
     };
 
-    const ro = new ResizeObserver(setSize);
-    ro.observe(container);
-    setSize();
+    const debouncedSetSize = debounce(setSize, 100);
 
-    let raf = 0;
-    const t0 = performance.now();
     const loop = (t: number) => {
+      if (isPaused.current || !isVisible.current || !renderer || !program || !mesh) {
+        raf = requestAnimationFrame(loop);
+        return;
+      }
+
+      // Frame rate capping
+      const elapsed = t - lastFrameTime;
+      if (elapsed < capabilities.frameInterval) {
+        raf = requestAnimationFrame(loop);
+        return;
+      }
+      lastFrameTime = t - (elapsed % capabilities.frameInterval);
+
       const timeValue = (t - t0) * 0.001;
+      
       if (direction === 'pingpong') {
         const pingpongDuration = 10;
         const segmentTime = timeValue % pingpongDuration;
@@ -187,20 +334,64 @@ export const Plasma: React.FC<PlasmaProps> = ({
       } else {
         (program.uniforms.iTime as { value: number }).value = timeValue;
       }
+      
       renderer.render({ scene: mesh });
       raf = requestAnimationFrame(loop);
     };
-    raf = requestAnimationFrame(loop);
+
+    const startLoop = () => {
+      if (raf) return;
+      lastFrameTime = performance.now();
+      raf = requestAnimationFrame(loop);
+    };
+
+    // Visibility change handler - pause when document hidden
+    const handleVisibilityChange = () => {
+      isPaused.current = document.hidden;
+      if (!document.hidden && isVisible.current && initialized) {
+        // Reset timing to avoid time jumps
+        t0 = performance.now();
+        lastFrameTime = performance.now();
+      }
+    };
+
+    // IntersectionObserver - only render when visible
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        isVisible.current = entry.isIntersecting;
+        
+        if (entry.isIntersecting) {
+          initWebGL();
+        } else {
+          // Optionally destroy WebGL when out of view to save memory
+          // destroyWebGL();
+        }
+      },
+      { threshold: 0.01 }
+    );
+
+    observer.observe(container);
+
+    // ResizeObserver with debounced callback
+    const ro = new ResizeObserver(debouncedSetSize);
+    ro.observe(container);
+
+    // Event listeners
+    if (mouseInteractive) {
+      container.addEventListener('mousemove', handleMouseMove, { passive: true });
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
       cancelAnimationFrame(raf);
+      observer.disconnect();
       ro.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       if (mouseInteractive) {
         container.removeEventListener('mousemove', handleMouseMove);
       }
-      try {
-        container.removeChild(canvas);
-      } catch { /* empty */ }
+      destroyWebGL();
     };
   }, [color, speed, direction, scale, opacity, mouseInteractive]);
 
