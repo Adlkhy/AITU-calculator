@@ -341,7 +341,7 @@ export default function FinalGrades() {
               const isEditing = editingGrade !== undefined;
 
               return (
-                <Card key={subject} className="hover:shadow-md p-2 transition-all border-muted/20">
+                <Card key={subject} className="hover:shadow-md hover:ring-1 hover:ring-primary/70 p-2 transition-all  border-muted/20">
                   <CardHeader className="px-4 pt-4">
                     <CardTitle className="text-base flex items-center justify-between">
                       <span className="truncate pr-2">{subject}</span>

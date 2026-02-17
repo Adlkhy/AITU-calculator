@@ -2,7 +2,7 @@ import * as React from "react"
 import { useTheme } from "@/lib/useTheme"
 import {
   IconAppWindow,
-  // IconBrandTelegram,
+  IconBrandTelegram,
   IconHelp,
   IconMap,
   // IconMoodTongueWink,
@@ -34,19 +34,29 @@ const data = {
     //   icon: IconMoodTongueWink,
     // },
     {
-      title: "AITU Map",
-      url: "https://aitumap.webspace.cat/",
-      icon: IconMap,
-    },
-    {
       title: "AITU Connect",
       url: "https://t.me/astanait_forum",
       icon: IconUsersGroup,
     },
     {
-      title: "Here could be your project",
-      url: "https://youtu.be/dQw4w9WgXcQ?si=cs98hgCR45G0Vjlb",
+      title: "AITU Map",
+      url: "https://aitumap.webspace.cat/",
+      icon: IconMap,
+    },
+    {
+      title: "Prof Ratings",
+      url: "https://teacherratings.vercel.app/",
       icon: IconAppWindow,
+    },
+    {
+      title: "SyllaBuses",
+      url: "https://syllabus-pearl.vercel.app/",
+      icon: IconAppWindow,
+    },
+    {
+      title: "SyllaBusesTG",
+      url: "https://t.me/aitu_syllabus",
+      icon: IconBrandTelegram,
     },
     // {
     //   title: "My TG Channel",
