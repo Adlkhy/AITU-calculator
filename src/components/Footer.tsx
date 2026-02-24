@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Send, Heart } from 'lucide-react';
 import { Separator } from './ui/separator';
-import { Button } from './ui/button';
 import { useState, useEffect } from 'react';
 import { CopyButton } from './animate-ui/components/buttons/copy';
 import { toast } from 'sonner';
@@ -39,58 +38,16 @@ export default function Footer() {
   return (
     <footer className="bg-background text-foreground border-t border-dashed border-border ">
       <div className="container mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:text-left">
+        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-10 md:text-left">
           {/* Brand & CTA Section */}
-          <div className="space-y-4 md:items-start">
-            <img src="/logo.png" alt="Evalis Logo" className="h-8 w-auto" />
-            <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
+          <div className="col-span-2 max-w-md space-y-4 md:items-start">
+            <img src="/logo.png" alt="Evalis Logo" className="h-6 w-auto" />
+            <p className="text-muted-foreground text-sm leading-relaxed">
               Unlock your full academic potential! Create an account to save your grades, 
               track progress over time, and access our advanced AI assistant.
             </p>
-            <div className="pt-2">
-              <Link
-                to="/signup"
-                className="w-full md:w-auto"
-              ><Button 
-              variant="outline" 
-              size="default" 
-              className="w-full md:w-auto"
-              >
-                Sign Up Now
-              </Button></Link>
-            </div>
-          </div>
-          {/* Navigation Section */}
-          <div className="flex flex-col md:items-start">
-            <h4 className="font-semibold mb-6">Navigation</h4>
-            <ul className="space-y-4 text-sm text-muted-foreground">
-              <li>
-                <Link to="/" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Home</Link>
-              </li>
-              <li>
-                <Link to="/calculator" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Calculator</Link>
-              </li>
-              <li>
-                <Link to="/ai" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">AI Tool</Link>
-              </li>
-              <li>
-                <Link to="/leaderboard" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Leaderboard</Link>
-              </li>
-              <li>
-                <Link to="/final-grades" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Final Grades</Link>
-              </li>
-              <li>
-                <Link to="/profile" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">My Profile</Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Socials Section */}
-          <div className="flex flex-col md:items-start">
-            <h4 className="font-semibold mb-6">Socials</h4>
-            <ul className="space-y-4 text-sm text-muted-foreground">
-              <li>
-                <a 
+            <div className="flex gap-4 text-sm text-muted-foreground">
+              <a 
                   href="https://t.me/Adlkhy" 
                   target="_blank" 
                   rel="noopener noreferrer"
@@ -99,8 +56,6 @@ export default function Footer() {
                   <Send className="h-4 w-4" />
                   Telegram
                 </a>
-              </li>
-              <li>
                 <Popover open={isOpen} onOpenChange={setIsOpen}>
                   <PopoverTrigger asChild>
                     <button 
@@ -133,14 +88,37 @@ export default function Footer() {
                     </div>
                   </PopoverContent>
                 </Popover>
+            </div>
+          </div>
+          {/* Navigation Section */}
+          <div className="space-y-4 md:items-start">
+            <h4 className="font-bold">Navigation</h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>
+                <Link to="/" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Home</Link>
+              </li>
+              <li>
+                <Link to="/calculator" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Calculator</Link>
+              </li>
+              <li>
+                <Link to="/ai" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">AI Tool</Link>
+              </li>
+              <li>
+                <Link to="/leaderboard" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Leaderboard</Link>
+              </li>
+              <li>
+                <Link to="/final-grades" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Final Grades</Link>
+              </li>
+              <li>
+                <Link to="/profile" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">My Profile</Link>
               </li>
             </ul>
           </div>
 
           {/* Legal Section */}
-          <div className="flex flex-col md:items-start">
-            <h4 className="font-semibold mb-6">Legal</h4>
-            <ul className="space-y-4 text-sm text-muted-foreground">
+          <div className="space-y-4 md:items-start">
+            <h4 className="font-bold">Legal</h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <Link to="/term-of-service" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Terms of Service</Link>
               </li>
@@ -154,9 +132,9 @@ export default function Footer() {
         <Separator className="my-8" />
 
         <div className="flex md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-          <p>© 2026 Evalis. Made by <a href="https://t.me/Adlkhy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-foreground">Adilkhan</a>.</p>
+          <p>© 2026 Evalis. All rights reserved. Made by <a href="https://t.me/Adlkhy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-foreground">Adilkhan</a>.</p>
           <div className="flex gap-6">
-            <Link to="/term-of-service" className="hover:text-foreground transition-colors">Rights Page</Link>
+            <Link to="/term-of-service" className="hover:text-foreground transition-colors">Privacy Policy</Link>
           </div>
         </div>
       </div>
