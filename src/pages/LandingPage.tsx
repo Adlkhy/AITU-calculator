@@ -2,7 +2,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Card_3 } from '@/components/ui/card-3';
 import { Badge } from '@/components/ui/badge';
 import { useTheme } from "@/lib/useTheme"
 import Plasma from '@/components/shadcn/gsap/Plasma';
@@ -54,12 +53,6 @@ export default function LandingPage() {
       description: "Manage your student expenses alongside your grades. Perfect for staying on top of your finances.",
       icon: <PieChart className="h-6 w-6 text-primary" />,
     }
-  ];
-
-  const topPlayers = [
-    { name: "Elon Musk", score: 98.5, rank: 1, avatar: "EM" },
-    { name: "Mark Zuckerberg", score: 97.2, rank: 2, avatar: "MZ" },
-    { name: "Donald Trump", score: 96.8, rank: 3, avatar: "DT" },
   ];
 
   const plasmaColor = (theme === 'dark' || theme === 'system') ? "#79c0ff" : "#e2ebff";
@@ -243,9 +236,6 @@ export default function LandingPage() {
                 View Global Rankings
               </Button>
             </div>
-
-            
-            <Card_3 topPlayers={topPlayers} user={user} />
           </div>
         </section>
 

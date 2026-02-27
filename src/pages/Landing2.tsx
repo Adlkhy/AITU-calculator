@@ -7,12 +7,16 @@ import { useNavigate } from 'react-router-dom';
 import {
   Menu, X, 
   Sparkles, ArrowRight, 
-  Check, Twitter, 
-  Palette, Type, 
-  Layers, Sliders, 
-  Contrast, 
+  Check,
+  Palette,
   Rocket,
-  Code} from 'lucide-react';
+  Code,
+  Calculator,
+  ScanFace,
+  BadgeDollarSign,
+  ChartLine,
+  GraduationCap,
+  Trophy,} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Accordion,
@@ -20,260 +24,278 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 const navLinks = [
   { label: 'Features', href: '#features' },
   { label: 'AI', href: '#ai' },
   { label: 'FAQ', href: '#faq' },
+  { label: 'Calculator', href: '/calculator' },
+  { label: 'Leaderboard', href: '/leaderboard' },
 ];
 
 const features1 = [
-  'Real-time Preview',
-  'Export to Tailwind',
-  'Beautiful Presets',
+  'Pre-built templates',
+  'Budget management',
+  'Grade forecasting',
 ];
 
 const themePresets = [
-  { name: 'Modern Minimal', colors: ['#f8f9fa', '#e9ecef', '#dee2e6', '#ced4da'] },
-  { name: 'Twitter', colors: ['#1d9bf0', '#1d9bf020', '#15202b', '#ffffff'] },
-  { name: 'Amethyst Haze', colors: ['#9b59b6', '#8e44ad', '#f3e5f5', '#ffffff'] },
-  { name: 'Catppuccin', colors: ['#f5c2e7', '#cba6f7', '#1e1e2e', '#313244'] },
-  { name: 'Kodama Grove', colors: ['#a8d5ba', '#7cb87c', '#f5f5dc', '#4a5d4a'] },
-  { name: 'Quantum Rose', colors: ['#ff6b9d', '#c44569', '#fff0f3', '#2d3436'] },
-  { name: 'Elegant Luxury', colors: ['#d4af37', '#1a1a2e', '#f5f5f5', '#16213e'] },
-  { name: 'Neo Brutalism', colors: ['#ff006e', '#3a86ff', '#ffbe0b', '#000000'] },
-  { name: 'Cyberpunk', colors: ['#00f5ff', '#ff00ff', '#0a0a0a', '#1a0a1a'] },
-  { name: 'Caffeine', colors: ['#6f4e37', '#d4a574', '#f5e6d3', '#3d2914'] },
-  { name: 'Midnight Bloom', colors: ['#2d1b4e', '#1a0f2e', '#ff6b9d', '#c77dff'] },
-  { name: 'Violet Bloom', colors: ['#7c3aed', '#a78bfa', '#f5f3ff', '#4c1d95'] },
-  { name: 'Mocha Mousse', colors: ['#a67b5b', '#8b6f47', '#f5ebe0', '#5d4e37'] },
-  { name: 'Notebook', colors: ['#f7f7f7', '#e0e0e0', '#333333', '#ffffff'] },
-  { name: 'Graphite', colors: ['#2d2d2d', '#404040', '#1a1a1a', '#525252'] },
-  { name: 'Cosmic Night', colors: ['#0f0f23', '#1a1a3e', '#6366f1', '#8b5cf6'] },
-  { name: 'Nature', colors: ['#22c55e', '#16a34a', '#dcfce7', '#14532d'] },
-  { name: 'Amber Minimal', colors: ['#f59e0b', '#d97706', '#fffbeb', '#92400e'] },
-  { name: 'Solar Dusk', colors: ['#f97316', '#fb923c', '#fff7ed', '#c2410c'] },
-  { name: 'Pastel Dreams', colors: ['#fbcfe8', '#c7d2fe', '#fef3c7', '#e0e7ff'] },
-  { name: 'Ocean Breeze', colors: ['#0ea5e9', '#38bdf8', '#e0f2fe', '#0369a1'] },
-  { name: 'Candyland', colors: ['#f472b6', '#a78bfa', '#fde68a', '#67e8f9'] },
-  { name: 'Sunset Horizon', colors: ['#f43f5e', '#f97316', '#fbbf24', '#fb7185'] },
-  { name: 'T3 Chat', colors: ['#2e1065', '#7c3aed', '#ddd6fe', '#1e1b4b'] },
-  { name: 'Bubblegum', colors: ['#ff8fab', '#fb6f92', '#ffe5ec', '#ffc2d1'] },
-  { name: 'Doom 64', colors: ['#8b0000', '#4a0000', '#ff4444', '#1a0000'] },
-  { name: 'Perpetuity', colors: ['#14b8a6', '#2dd4bf', '#ccfbf1', '#0f766e'] },
-  { name: 'Tangerine', colors: ['#fb923c', '#fbbf24', '#fff7ed', '#ea580c'] },
-  { name: 'Bold Tech', colors: ['#3b82f6', '#06b6d4', '#eff6ff', '#1e40af'] },
-  { name: 'Supabase', colors: ['#3ecf8e', '#65d9a5', '#e6f9ef', '#2b8256'] },
-  { name: 'Claymorphism', colors: ['#ff9a9e', '#fecfef', '#fecfef', '#ff9a9e'] },
-  { name: 'Clean Slate', colors: ['#f8fafc', '#e2e8f0', '#64748b', '#0f172a'] },
-  { name: 'Retro Arcade', colors: ['#ff006e', '#8338ec', '#3a86ff', '#ffbe0b'] },
-  { name: 'Northern Lights', colors: ['#00d9ff', '#00ff88', '#7b2cbf', '#ff006e'] },
+  { name: 'Calculus' },
+  { name: 'Programming C++' },
+  { name: "Programming Python" },
+  { name: "English" },
+  { name: "German" },
+  { name: "Chinese" },
+  { name: "Korean" },
+  { name: "Sociology" },
+  { name: "Discrete Math" },
+  { name: "Psychology" },
+  { name: "ICT" },
+  { name: "Calculus 1" },
+  { name: "Calculus 2" },
+  { name: "Physics" },
+  { name: "Physical Education" },
+  { name: "History" },
+  { name: "Intro to Computing and Programming" },
+  { name: "Linear Algebra" },
+  { name: "Political Science" },
+  { name: "Culture Studies" },
+  { name: "Foundations of Journalism" },
+  { name: "Business Administration" },
+  { name: "Mathematics for AI" },
+  { name: 'Calculus' },
+  { name: 'Programming C++' },
+  { name: "Programming Python" },
+  { name: "English" },
+  { name: "German" },
+  { name: "Chinese" },
+  { name: "Korean" },
+  { name: "Sociology" },
+  { name: "Discrete Math" },
+  { name: "Psychology" },
+  { name: "ICT" },
+  { name: "Calculus 1" },
+  { name: "Calculus 2" },
+  { name: "Physics" },
+  { name: "Physical Education" },
+  { name: "History" },
+  { name: "Intro to Computing and Programming" },
+  { name: "Linear Algebra" },
+  { name: "Political Science" },
+  { name: "Culture Studies" },
+  { name: "Foundations of Journalism" },
+  { name: "Business Administration" },
+  { name: "Mathematics for AI" },
 ];
 
 const testimonials = [
   {
-    id: 1,
-    name: 'YiMing',
-    handle: '@yimingdothan',
-    avatar: 'Y',
-    content: 'v0 + tweakcn + chatgpt for graphics\n\ngenerated a landing page in about 2~ hours\n\ncrazy how easy this shit is now',
-  },
-  {
-    id: 2,
-    name: 'Guillermo Rauch',
-    handle: '@rauchg',
-    avatar: 'G',
-    content: "If you're looking to learn:\n▪️ full stack Next.js\n▪️ how to build a focused product people love\n\n… look no further than tweakcn by @iamsahaj_xyz. It's an open-source @shadcn theme builder.",
-  },
-  {
-    id: 3,
-    name: 'shadcn',
-    handle: '@shadcn',
-    avatar: 'S',
-    content: '4/n - Finally, a custom theme from tweakcn by @iamsahaj_xyz',
-  },
-  {
-    id: 4,
-    name: 'Kevin Kern',
-    handle: '@kregenrek',
-    avatar: 'K',
-    content: 'Tweakcn is really cool. Custom shadcn themes on the fly.',
-  },
-  {
-    id: 5,
-    name: 'OrcDev',
-    handle: '@theorcdev',
-    avatar: 'O',
-    content: 'Transform your Shadcn app with one click!\n\n@iamsahaj_xyz created a great concept with Tweakcn ⚔️',
-  },
-  {
-    id: 6,
-    name: 'Ciara Wearen',
-    handle: '@nocheerleader',
-    avatar: 'C',
-    content: 'Create a Custom Theme: Your app instantly looks more intentional.\n\nBuild a color palette, typography and layout preview with tweakcn dot com\n\nGrab the CSS → drop into Bolt = cohesive design',
-  },
-  {
-    id: 7,
-    name: 'Tanpreet Jolly',
-    handle: '@JollyTanpreet',
-    avatar: 'T',
-    content: 'I just tried tweakcn and seems like you nailed it. This is what I have been looking for, awesome job!',
-  },
-  {
-    id: 8,
-    name: 'Code With Antonio',
-    handle: '@YTCodeAntonio',
-    avatar: 'A',
-    content: 'there is an entire chapter dedicated to tweakcn!! such a cool project',
-  },
-  {
-    id: 9,
-    name: 'Emir',
-    handle: '@emirthedev',
-    avatar: 'E',
-    content: 'Started using tweakcn for client projects too. This is a real game changer',
-  },
-  {
-    id: 10,
-    name: 'Matt Silverlock',
-    handle: '@elithrar',
-    avatar: 'M',
-    content: 'used this shadcn theme editor to make it a little less plain: tweakcn.com',
-  },
+  id: 1,
+  name: 'Mark Zuckerberg',
+  handle: '@zuck',
+  avatar: 'https://image.cnbcfm.com/api/v1/image/108043097-1727989387071-gettyimages-2173579179-META_CONNECT.jpeg?v=1744292077&w=800&h=600&ffmt=webp',
+  content: 'Evalis feels like a well-designed system — clean, data-driven, and actually useful. The grade prediction and GPA tracking turn academic progress into something measurable and motivating.',
+},
+{
+  id: 2,
+  name: 'Joker',
+  handle: '@joker',
+  avatar: 'https://i.guim.co.uk/img/media/fbb1974c1ebbb6bf4c4beae0bb3d9cb93901953c/80_0_2400_1440/master/2400.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=ede2b27f1cea7c3be30b938195c0cc5c',
+  content: 'Why so serious about grades? Predicting exam points, battling friends on leaderboards… it’s like turning stress into a game. I don’t know if it saved my GPA — but it definitely saved my sanity.',
+},
+{
+  id: 3,
+  name: 'Lady Yaya',
+  handle: '@yaya',
+  avatar: 'https://i.scdn.co/image/ab67616100005174aadc18cac8d48124357c38e6',
+  content: 'Evalis is honestly a lifesaver. Everything is organized, aesthetic, and easy to understand. Finally, a tool that understands students.',
+},
+{
+  id: 4,
+  name: 'Baddie',
+  handle: '@baddest',
+  avatar: 'https://static.vecteezy.com/system/resources/thumbnails/000/265/417/small/cartoon-funny-comic-hand-finger-pointing.jpg',
+  content: 'Evalis is that girl. GPA tracking, attendance, budget management, AND competition with friends? I stayed disciplined, on track, and lowkey obsessed.',
+},
+{
+  id: 5,
+  name: 'Sam Sung',
+  handle: '@sam',
+  avatar: 'https://media.licdn.com/dms/image/v2/C4D12AQFhxsB0GhwH8w/article-inline_image-shrink_1000_1488/article-inline_image-shrink_1000_1488/0/1520210297300?e=1773273600&v=beta&t=2UJmd0GzUAU25ITIrIB8Fm_OfvrYd4eq16FXwb_7PZ4',
+  content: 'Evalis just works. Smooth, reliable, and packed with features. The exam point prediction helped me plan my finals properly, and the budget tracker was an unexpected bonus.',
+},
+{
+  id: 6,
+  name: 'P. Ennis',
+  handle: '@ennis',
+  avatar: 'https://img-9gag-fun.9cache.com/photo/aLQN9Az_460s.jpg',
+  content: 'Evalis helped me understand where I stand academically without overthinking it. Clear numbers, realistic predictions, and practical tools. It’s not flashy — it’s effective.',
+},
+{
+  id: 7,
+  name: 'Pablo Escobar',
+  handle: '@pablo',
+  avatar: 'https://wamu.org/wp-content/uploads/2016/09/01/narcos_203_00873r1_wide-775f1c1b8a3fe57cb17da8361e5e1c165e90d12f-1500x844.jpg',
+  content: 'Time is money. Evalis saved me both. I knew exactly how many points I needed, and how to manage my budget. Control the system before it controls you.',
+},
+{
+  id: 8,
+  name: 'BroCode',
+  handle: '@bro',
+  avatar: 'https://yt3.googleusercontent.com/ytc/AIdro_mPFVsxROj1dOtTWc9iNBwDYV4z42Q8LPokBSewiW9pCSg=s900-c-k-c0x00ffffff-no-rj',
+  content: 'Evalis is goated. You compete with your friends, and still know how hard you need to grind before finals. Studying alone is boring — this makes it a challenge.',
+},
+{
+  id: 9,
+  name: 'Arthur Morgan',
+  handle: '@arthur',
+  avatar: 'https://i.ytimg.com/vi/Jjt8KLHuJ6A/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLAUAh53OYKpdi_SUT-ayLcfWNKWvg',
+  content: 'I ain’t much for fancy tools, but Evalis keeps things honest. Shows you where you stand, what you need to do, and gives you a fair shot at finishing strong. Simple, clear, and dependable.',
+},
+{
+  id: 10,
+  name: 'Bread Pitt',
+  handle: '@bread',
+  avatar: 'https://ih1.redbubble.net/image.4621930181.9872/raf,360x360,075,t,fafafa:ca443f4786.jpg',
+  content: 'Evalis makes studying look good. Clean interface, smart predictions, and surprisingly fun features. The leaderboard kept me motivated, and the AI templates saved me hours. Five stars.',
+},
 ];
 
 const features = [
   {
-    icon: Palette,
-    title: 'Color Control',
+    icon: Calculator,
+    title: 'Grade Calculator',
     description:
-      'Customize background, text, and border colors with an intuitive color picker interface.',
+      'Calculate your current grade, predict final marks, and set goals with our intuitive grade calculator.',
   },
   {
-    icon: Type,
-    title: 'Typography Settings',
+    icon: ScanFace,
+    title: 'Attendance Tracker',
     description:
-      'Fine-tune font size, weight, and text transform to create the perfect look.',
+      'Track your attendance and calculate how many classes you can miss without dropping below a passing grade.',
   },
   {
-    icon: Layers,
-    title: 'Tailwind v4 & v3',
+    icon: BadgeDollarSign,
+    title: 'Budget Manager',
     description:
-      'Seamlessly switch between Tailwind versions with support for OKLCH & HSL formats.',
-  },
-  {
-    icon: Sliders,
-    title: 'Detailed Properties',
-    description:
-      'Fine-tune every aspect including radius, spacing, shadows, and other properties.',
-  },
-  {
-    icon: Contrast,
-    title: 'Contrast Checker',
-    description:
-      'Ensure designs meet accessibility standards with built-in contrast ratio checking.',
+      'Track your expenses and income to manage your budget effectively.',
   },
   {
     icon: Sparkles,
-    title: 'AI Theme Generation',
+    title: 'AI Template Maker',
     description:
-      'Create stunning, ready-to-use themes in seconds. Just provide an image or prompt.',
-    badge: 'Pro',
+      'Upload your syllabus and let our AI extract key info to create a personalized study template in seconds.',
+    badge: 'Login Required',
+    },
+  {
+    icon: ChartLine,
+    title: 'Leadership Boards',
+    description:
+      'Compete with friends and classmates on our public leaderboards. See how you stack up in your school or globally.',
+    badge: 'Login Required',
+    },
+  {
+    icon: GraduationCap,
+    title: 'GPA Insights',
+    description:
+      'Get detailed insights into your GPA, including projections and what-if scenarios to help you plan your academic future.',
+    badge: 'Login Required',
   },
 ];
 
 const aiFeatures = [
-  { icon: Check, label: 'Text-to-Theme' },
-  { icon: Check, label: 'Image Extraction' },
-  { icon: Check, label: 'Checkpoint Restoration' },
-  { icon: Check, label: 'Theme Preview' },
+  { icon: Check, label: 'Image Upload' },
+  { icon: Check, label: 'Gemini AI' },
+  { icon: Check, label: 'Image-to-Template' },
+  { icon: Check, label: 'Template Preview' },
 ];
 
-const chatMessages = [
-  {
-    type: 'user',
-    content: 'Generate a theme from this image.',
-    hasImage: true,
-  },
-  {
-    type: 'ai',
-    content:
-      "I've generated a Midnight Bloom theme based on your image. It features deep purples and blues for a calming, modern look.",
-  },
-  {
-    type: 'user',
-    content: 'Can you generate a theme inspired by @Twitter?',
-  },
-  {
-    type: 'ai',
-    content:
-      "Alright, I've whipped up a Twitter-inspired theme. Expect bright blues and clean contrasts for a social, energetic vibe.",
-  },
-  {
-    type: 'user',
-    content: 'How about a @Supabase theme?',
-  },
-  {
-    type: 'ai',
-    content:
-      "I've generated a Supabase theme for you. It uses fresh greens and dark backgrounds for a modern, developer-friendly feel.",
-  },
-];
+// const chatMessages = [
+//   {
+//     type: 'user',
+//     content: 'Generate a theme from this image.',
+//     hasImage: true,
+//   },
+//   {
+//     type: 'ai',
+//     content:
+//       "I've generated a Midnight Bloom theme based on your image. It features deep purples and blues for a calming, modern look.",
+//   },
+//   {
+//     type: 'user',
+//     content: 'Can you generate a theme inspired by @Twitter?',
+//   },
+//   {
+//     type: 'ai',
+//     content:
+//       "Alright, I've whipped up a Twitter-inspired theme. Expect bright blues and clean contrasts for a social, energetic vibe.",
+//   },
+//   {
+//     type: 'user',
+//     content: 'How about a @Supabase theme?',
+//   },
+//   {
+//     type: 'ai',
+//     content:
+//       "I've generated a Supabase theme for you. It uses fresh greens and dark backgrounds for a modern, developer-friendly feel.",
+//   },
+// ];
 
 const steps = [
   {
     number: '01',
     icon: Palette,
-    title: 'Customize',
+    title: 'Enter',
     description:
-      'Use our intuitive editor to adjust colors, typography, spacing, and more. See changes in real-time.',
+      'Use pre-built templates or create your own. Calculate grades, budget, attandance, and more. See changes in real-time.',
     color: 'from-blue-500 to-cyan-500',
   },
   {
     number: '02',
     icon: Code,
-    title: 'Export',
+    title: 'Analyze',
     description:
-      'Copy the generated CSS or download the theme file. Compatible with both Tailwind v3 and v4.',
+      'Our smart calculators instantly process the numbers, showing you projections, trends, and what-if scenarios.',
     color: 'from-purple-500 to-pink-500',
   },
   {
     number: '03',
     icon: Rocket,
-    title: 'Deploy',
+    title: 'Improve',
     description:
-      'Drop the theme into your project and watch your components transform instantly.',
+      'Use your new insights to set goals, adjust your study habits, or manage your finances for a better trimester.',
     color: 'from-orange-500 to-red-500',
   },
 ];
 
 const faqs = [
   {
-    question: 'What is tweakcn?',
+    question: 'How accurate is the grade prediction?',
     answer:
-      'tweakcn is a powerful visual theme editor for shadcn/ui components. It allows you to customize colors, typography, spacing, and other design tokens with a real-time preview. You can then export your theme and use it in your own projects.',
+      'It is as accurate as the data you provide. By inputting all your current assignments and their weights, the final mark predictor gives you a precise target to aim for.',
   },
   {
-    question: 'Is it free?',
+    question: 'Is my data private on the leaderboards?',
     answer:
-      'Yes! The core theme editor is completely free to use. We also offer a Pro plan with additional features like AI theme generation, unlimited theme saves, and priority support.',
+      'Absolutely. You control your privacy. You can choose to appear anonymously or use a nickname.',
   },
   {
-    question: "What's included in Pro?",
+    question: "What kind of syllabus files does the AI tool accept?",
     answer:
-      'Pro includes AI-powered theme generation from images or text prompts, unlimited theme saves, advanced color palettes, priority support, early access to new features, and the ability to export themes in multiple formats.',
+      'The AI Template Maker works best with screenshot of subject plan from PDFs. It extracts key information to build your study guide in seconds.',
   },
   {
-    question: 'Supports Tailwind v4?',
+    question: 'Are there pre-built templates for different subjects?',
     answer:
-      'Absolutely! tweakcn supports both Tailwind CSS v3 and v4. You can seamlessly switch between versions and export themes in the appropriate format, including OKLCH and HSL color formats.',
+      'I built them myself, so if I don\'t have a template for a specific subject, you can create your own or request one.',
   },
   {
-    question: 'Can I use with existing projects?',
+    question: 'Do I need to login to use the calculator?',
     answer:
-      'Yes, you can easily integrate tweakcn themes into existing projects. Simply export your theme and copy the CSS variables into your project. It works with any project using shadcn/ui components.',
+      'No login is required to use the grade calculator. However, creating an account allows you to save your data and access it across devices, and allows you to participate in leaderboards.',
   },
 ];
 
@@ -294,28 +316,18 @@ const itemVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.5,
+      duration: 0.3,
       ease: [0.25, 0.46, 0.45, 0.94] as const,
     },
   },
 };
 
-function ThemeCard({ theme }: { theme: { name: string; colors: string[] } }) {
+function ThemeCard({ theme }: { theme: { name: string; } }) {
   return (
     <motion.button
-      whileHover={{ scale: 1.05, y: -2 }}
-      whileTap={{ scale: 0.98 }}
-      className="flex-shrink-0 flex items-center gap-3 px-4 py-2.5 bg-card border border-border rounded-xl hover:border-primary/30 hover:shadow-lg transition-all duration-300 group"
+
+      className="flex items-center px-4 py-2.5 bg-card border border-border rounded-xl hover:border-primary/30 hover:shadow-lg transition-all duration-300 group"
     >
-      <div className="flex -space-x-1.5">
-        {theme.colors.slice(0, 4).map((color, i) => (
-          <div
-            key={i}
-            className="w-5 h-5 rounded-full border-2 border-card shadow-sm"
-            style={{ backgroundColor: color }}
-          />
-        ))}
-      </div>
       <span className="text-sm font-medium text-foreground whitespace-nowrap group-hover:text-primary transition-colors">
         {theme.name}
       </span>
@@ -336,22 +348,21 @@ function TestimonialCard({
 }) {
   return (
     <motion.div
-      whileHover={{ scale: 1.02, y: -2 }}
-      className="flex-shrink-0 w-[350px] p-5 bg-card border border-border rounded-2xl shadow-sm hover:shadow-md transition-all duration-300"
+      variants={itemVariants}
+      className="flex-shrink-0 w-[350px] p-5 bg-card border border-border rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300"
     >
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-sm font-semibold text-primary">
-            {testimonial.avatar}
+            <img src={testimonial.avatar} alt={testimonial.name} className="w-full h-full rounded-full object-cover" />
           </div>
           <div>
             <p className="font-semibold text-foreground text-sm">{testimonial.name}</p>
             <p className="text-muted-foreground text-xs">{testimonial.handle}</p>
           </div>
         </div>
-        <Twitter className="w-5 h-5 text-blue-400" />
       </div>
-      <p className="text-foreground text-sm whitespace-pre-line leading-relaxed">
+      <p className="text-foreground text-base whitespace-pre-line leading-relaxed">
         {testimonial.content}
       </p>
     </motion.div>
@@ -413,7 +424,7 @@ export default function Navbar() {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 + 0.2 }}
-                  className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-accent"
+                  className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {link.label}
                 </motion.a>
@@ -449,16 +460,17 @@ export default function Navbar() {
                 <Button
                   asChild
                   className="bg-foreground text-background hover:bg-foreground/90 rounded-full px-4"
+                  onClick={() => navigate('/calculator')}
                 >
-                  <a href="#editor" className="flex items-center gap-1">
+                  <div className="cursor-pointer flex items-center gap-1">
                     Try It Now
                     <motion.span
                       animate={{ x: [0, 3, 0] }}
                       transition={{ repeat: Infinity, duration: 1.5 }}
                     >
-                      →
+                      <ArrowRight className="w-4 h-4" />
                     </motion.span>
-                  </a>
+                  </div>
                 </Button>
               </motion.div>
 
@@ -509,7 +521,7 @@ export default function Navbar() {
                   transition={{ delay: 0.25 }}
                   className="pt-2"
                 >
-                  <Button className="w-full bg-foreground text-background hover:bg-foreground/90 rounded-full">
+                  <Button className="cursor-pointer w-full bg-foreground text-background hover:bg-foreground/90 rounded-full">
                     Try It Now
                   </Button>
                 </motion.div>
@@ -518,9 +530,19 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Hero Section */}
       <section className="relative min-h-screen pt-20 pb-32 md:pt-32 md:pb-40 overflow-hidden grid-pattern">
       {/* Background gradient */}
-      <div className="absolute inset-0 -z-10 h-full w-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+      <div
+        className="absolute inset-0 -z-10 h-full w-full"
+        style={{
+          backgroundImage:
+            'linear-gradient(to right, color-mix(in oklab, var(--foreground) 10%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in oklab, var(--foreground) 10%, transparent) 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
+          maskImage: 'radial-gradient(ellipse 60% 50% at 50% 0%, #000 67%, transparent 100%)',
+        }}
+      />
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
         <motion.div
@@ -534,11 +556,11 @@ export default function Navbar() {
             variants={itemVariants}
             className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-foreground mb-6"
           >
-            Design Your
-            <span className="mr-2 relative inline-block">
-              <span className="relative z-10 italic font-serif font-light">Perfect</span>
+            Master Your Grades with
+            <span className="mx-2 relative inline-block">
+              <span className="relative z-10 italic font-serif font-light">Confidence &</span>
             </span>
-            shadcn/ui Theme
+              Precision
           </motion.h1>
 
           {/* Subtitle */}
@@ -546,7 +568,8 @@ export default function Navbar() {
             variants={itemVariants}
             className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8"
           >
-            Customize colors, typography, and layouts with a real-time preview. No signup required.
+            Calculate grades, manage your budget, and climb the leaderboard. 
+            Everything a student needs in one minimal, powerful platform.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -561,9 +584,9 @@ export default function Navbar() {
               onClick={() => navigate('/calculator')}
               className="bg-foreground text-background hover:bg-foreground/90 px-8! h-11! rounded-full text-base group"
             >
-              <div className="flex font-medium items-center gap-1">
-                Start Customizing
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              <div className="flex font-medium items-center gap-1 cursor-pointer">
+                Start Calculating
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-2" />
             </div>
             </Button>
             
@@ -571,10 +594,10 @@ export default function Navbar() {
               asChild
               variant="outline"
               size="default"
-              onClick={() => navigate('/community')}
-              className="bg-background text-foreground rounded-full px-8! h-11! text-base border-border hover:bg-accent"
+              onClick={() => navigate('/leaderboard')}
+              className="bg-background text-foreground rounded-full px-8! h-11! text-base border-border hover:text-primary hover:bg-accent"
             >
-              <div>Browse Community</div>
+              <div className='cursor-pointer'>Leaderboards</div>
             </Button>
           </motion.div>
 
@@ -616,7 +639,7 @@ export default function Navbar() {
             {/* Row 1 - Left to Right */}
             <div className="relative">
               <motion.div
-                className="flex gap-3 animate-marquee"
+                className="flex gap-4 animate-marquee"
                 style={{ width: 'fit-content' }}
               >
                 {[...themePresets.slice(0, 12), ...themePresets.slice(0, 12)].map((theme, index) => (
@@ -628,7 +651,7 @@ export default function Navbar() {
             {/* Row 2 - Right to Left */}
             <div className="relative">
               <motion.div
-                className="flex gap-3 animate-marquee-reverse"
+                className="flex gap-4 animate-marquee-reverse"
                 style={{ width: 'fit-content' }}
               >
                 {[...themePresets.slice(12, 24), ...themePresets.slice(12, 24)].map((theme, index) => (
@@ -638,9 +661,9 @@ export default function Navbar() {
             </div>
             
             {/* Row 3 - Left to Right */}
-            <div className="relative">
+            <div className="relative mb-2">
               <motion.div
-                className="flex gap-3 animate-marquee"
+                className="flex gap-4 animate-marquee"
                 style={{ width: 'fit-content' }}
               >
                 {[...themePresets.slice(24), ...themePresets.slice(24)].map((theme, index) => (
@@ -652,8 +675,9 @@ export default function Navbar() {
         </motion.div>
       </div>
     </section>
+
     {/* Testimonials */}
-    <section id="testimonials" className="relative w-full py-20 md:py-32 overflow-hidden">
+    <section id="testimonials" className="relative w-full py-16 md:py-24 overflow-hidden">
       <div className="max-w-7xl mx-auto flex flex-col items-center justify-center space-y-4 text-center px-4 sm:px-6 mb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -663,16 +687,16 @@ export default function Navbar() {
           className="text-center"
         >
           <h2 className="text-3xl md:text-5xl lg:text-6xl tracking-tight font-bold text-foreground mb-4">
-            Loved by <span className="text-primary font-serif italic">Developers</span>
+            Loved by <span className="text-primary font-serif italic">Students</span>
           </h2>
           <p className="text-muted-foreground max-w-[600px] text-lg md:text-xl">
-            See what people are saying about tweakcn
+            See what people are saying about Evalis
           </p>
         </motion.div>
       </div>
 
       {/* Marquee Container */}
-      <div className="relative px-4 md:px-6">
+      <div className="max-w-7xl mx-auto relative px-4 md:px-6">
         {/* Gradient overlays */}
         <div className="absolute left-0 top-0 bottom-0 w-28 md:w-52 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-28 md:w-52 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
@@ -683,7 +707,7 @@ export default function Navbar() {
             className="flex gap-4 animate-marquee"
             style={{ width: 'fit-content' }}
           >
-            {[...row1, ...row1, ...row1, ...row1].map((testimonial, index) => (
+            {[...row1, ...row1].map((testimonial, index) => (
               <TestimonialCard key={`row1-${index}`} testimonial={testimonial} />
             ))}
           </motion.div>
@@ -695,7 +719,7 @@ export default function Navbar() {
             className="flex gap-4 animate-marquee-reverse"
             style={{ width: 'fit-content' }}
           >
-            {[...row2, ...row2, ...row2, ...row2].map((testimonial, index) => (
+            {[...row2, ...row2].map((testimonial, index) => (
               <TestimonialCard key={`row2-${index}`} testimonial={testimonial} />
             ))}
           </motion.div>
@@ -721,7 +745,7 @@ export default function Navbar() {
           </span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-[400px]">
-            Everything you need to customize your shadcn/ui components and make them unique.
+            Everything you need to master your grades and stay on top of your academic game.
           </p>
         </motion.div>
 
@@ -737,12 +761,12 @@ export default function Navbar() {
             <motion.div
               key={feature.title}
               variants={itemVariants}
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              whileHover={{ y: -4, transition: { duration: 0.1 } }}
               className="group p-6 bg-card border border-border rounded-2xl hover:border-primary/30 hover:shadow-lg transition-all duration-300"
             >
               <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                  <feature.icon className="w-6 h-6 text-primary" />
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-colors">
+                  <feature.icon className="w-6 h-6 text-primary group-hover:text-primary-foreground" />
                 </div>
                 {feature.badge && (
                   <span className="px-2.5 py-1 text-xs font-medium bg-primary text-primary-foreground rounded-full">
@@ -763,14 +787,14 @@ export default function Navbar() {
     </section>
 
     {/* AI Section */}
-    <section id="ai" className="bg-muted/35 relative w-full py-24 md:py-32 lg:py-40 overflow-hidden">
+    {/* <section id="ai" className="bg-muted/35 relative w-full py-24 md:py-32 lg:py-40 overflow-hidden"> */}
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-accent/20 via-background to-accent/20 pointer-events-none" />
+      {/* <div className="absolute inset-0 bg-gradient-to-b from-accent/20 via-background to-accent/20 pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-16 items-center"> */}
           {/* Left Content */}
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -786,25 +810,25 @@ export default function Navbar() {
             <p className="text-lg text-muted-foreground leading-relaxed">
               Just provide an image or text prompt, and our AI will create a
               stunning, production-ready theme for you.
-            </p>
+            </p> */}
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            {/* <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 asChild
                 size="lg"
                 variant="default"
-                className="bg-primary text-background hover:bg-primary/90 rounded-full px-8! h-14 text-lg group"
+                className="bg-primary text-background hover:bg-primary/90 rounded-full px-8! h-11! text-lg group"
               >
                 <div>
                   Generate with AI
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </div>
               </Button>
-            </div>
+            </div> */}
 
             {/* AI Features */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 pt-4 gap-4">
+            {/* <div className="grid grid-cols-1 sm:grid-cols-2 pt-4 gap-4">
               {aiFeatures.map((feature, index) => (
                 <motion.div
                   key={feature.label}
@@ -825,28 +849,28 @@ export default function Navbar() {
             </div>
 
             
-          </motion.div>
+          </motion.div> */}
 
           {/* Right Content - Chat Interface */}
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative hidden lg:block"
           >
-            <div className="relative bg-card border border-border rounded-3xl shadow-2xl overflow-hidden">
+            <div className="relative bg-card border border-border rounded-3xl shadow-2xl overflow-hidden"> */}
               {/* Chat Header */}
-              <div className="flex items-center gap-3 px-5 py-4 border-b border-border bg-accent/50">
+              {/* <div className="flex items-center gap-3 px-5 py-4 border-b border-border bg-accent/50">
                 <div>
                   <p className="font-semibold text-foreground text-sm">
                     AI Theme Generator
                   </p>
                 </div>
-              </div>
+              </div> */}
 
               {/* Chat Messages */}
-              <div className="p-5 space-y-4 max-h-[400px] overflow-hidden">
+              {/* <div className="p-5 space-y-4 max-h-[400px] overflow-hidden">
                 {chatMessages.map((message, index) => (
                   <motion.div
                     key={index}
@@ -872,10 +896,10 @@ export default function Navbar() {
                     </div>
                   </motion.div>
                 ))}
-              </div>
+              </div> */}
 
               {/* Chat Input */}
-              <div className="px-5 py-4 border-t border-border bg-accent/30">
+              {/* <div className="px-5 py-4 border-t border-border bg-accent/30">
                 <div className="flex items-center gap-3">
                   <div className="flex-1 h-10 flex items-center ">
                     <Input
@@ -889,13 +913,355 @@ export default function Navbar() {
                   </button>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Decorative elements */}
-            <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/20 rounded-full blur-2xl" />
+            {/* <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/20 rounded-full blur-2xl" />
             <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
           </motion.div>
         </div>
+      </div>
+    </section> */}
+
+    {/* Ai Section */}
+    <section id='ai' className="bg-muted/35 w-full relative py-24 md:py-32 lg:py-40 overflow-hidden">
+    <div className="absolute inset-0 bg-gradient-to-b from-accent/20 via-background to-accent/20 pointer-events-none" />
+    {/* Violet Storm Background with Top Glow */}
+    {/* <div
+      className="absolute inset-0 z-0"
+      style={{
+        background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(139, 92, 246, 0.25), transparent 70%), #000000",
+      }}
+    /> */}
+          <div className="max-w-7xl relative z-10 mx-auto grid gap-12 px-4 sm:px-6 lg:grid-cols-2">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55 }}
+              className="space-y-6"
+            >
+              <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+                Generate templates in 
+                <span className="block italic font-serif text-primary">Seconds</span>
+              </h1>
+              <p className="max-w-xl text-lg text-muted-foreground">
+                Just upload an image of syllabus and our AI will generate a personalized grade calculator template based on your course structure.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Button
+                asChild
+                size="default"
+                variant="outline"
+                className="hover:text-primary rounded-full px-8! h-10! text-lg group"
+                onClick={() => navigate('/ai')}
+              >
+                <div className="flex items-center gap-1 cursor-pointer">
+                  Generate with AI
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </div>
+              </Button>
+              </div>
+              {/* AI Features */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 pt-4 gap-4">
+                {aiFeatures.map((feature, index) => (
+                  <motion.div
+                    key={feature.label}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 + index * 0.1 }}
+                    className="text-muted-foreground flex items-center gap-3 text-base rounded-lg border bg-card px-2 py-2 group"
+                  >
+                    <div className="w-6 h-6 rounded-lg bg-primary/10 group-hover:bg-primary flex items-center justify-center transition-colors">
+                      <feature.icon className="w-4 h-4 text-primary group-hover:text-primary-foreground" />
+                    </div>
+                    <span className="group-hover:text-foreground transition-colors">
+                      {feature.label}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 26 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, delay: 0.1 }}
+              className="rounded-2xl border bg-card/80 p-4 shadow-lg backdrop-blur"
+            >
+              <div className="mb-4 flex items-center justify-between border-b pb-3">
+                <p className="text-sm font-medium">Subject</p>
+                <Badge>AI</Badge>
+              </div>
+              <div className="grid gap-4">
+                <Button className="w-full justify-between">
+                    Generate
+                    <Sparkles className="h-4 w-4" />
+                </Button>
+                <div className="rounded-xl border bg-background p-4">
+                  <div className="mb-3 flex items-center gap-2">
+                    <div className="h-3 w-3 rounded-full bg-primary" />
+                    <div className="h-3 w-3 rounded-full bg-accent" />
+                    <div className="h-3 w-3 rounded-full bg-muted" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="h-2 w-2/3 rounded bg-foreground/15" />
+                    <div className="h-2 w-1/2 rounded bg-foreground/10" />
+                  </div>
+                  <div className="mt-4 flex gap-2">
+                    <Button size="sm">Save to Profile</Button>
+                    <Button size="sm" variant="outline">Dismiss</Button>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  <Card className="bg-primary/15 py-3">
+                    <CardContent className="">
+                      <p className="text-xs text-muted-foreground">Midterm</p>
+                      <p className="mt-1 font-semibold">30%</p>
+                    </CardContent>
+                  </Card>
+                  <Card className="bg-accent py-3">
+                    <CardContent className="">
+                      <p className="text-xs text-muted-foreground">Endterm</p>
+                      <p className="mt-1 font-semibold">30%</p>
+                    </CardContent>
+                  </Card>
+                  <Card className="bg-muted py-3">
+                    <CardContent className="">
+                      <p className="text-xs text-muted-foreground">Final</p>
+                      <p className="mt-1 font-semibold">40%</p>
+                    </CardContent>
+                  </Card>
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="h-8 rounded-md bg-primary/15" />
+                  <div className="h-8 rounded-md bg-accent" />
+                  <div className="h-8 rounded-md bg-muted" />
+                </div>
+              </div>
+              <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/20 rounded-full blur-2xl" />
+            <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
+            </motion.div>
+          </div>
+    </section>
+
+    {/* Leaderboard Section */}
+    <section className="relative w-full py-32 md:py-44 bg-background overflow-hidden">
+      {/* Background: faint horizontal rule stripes for depth */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(180deg, transparent, transparent 79px, hsl(var(--border)) 80px)",
+          opacity: 0.35,
+        }}
+      />
+
+    {/* Midnight Mist */}
+    <div
+      className="absolute inset-0 z-0"
+      style={{
+        backgroundImage:
+          'radial-gradient(circle at 50% 100%, color-mix(in oklab, var(--foreground) 20%, transparent) 0%, transparent 60%), radial-gradient(circle at 50% 100%, color-mix(in oklab, var(--accent-foreground) 26%, transparent) 0%, transparent 70%), radial-gradient(circle at 50% 100%, color-mix(in oklab, var(--muted-foreground) 14%, transparent) 0%, transparent 80%)',
+      }}
+    />
+
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center">
+      
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.55 }}
+          className="text-center space-y-5 mb-14"
+        >
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight max-w-2xl mx-auto">
+            Your rank is waiting.
+            <br />
+            <span className="text-primary font-semibold">Will you claim it?</span>
+          </h2>
+      
+          <p className="text-muted-foreground text-base max-w-md mx-auto leading-relaxed">
+            Every grade you log moves you up the global rankings. See where you stand against your peers.
+          </p>
+      
+          <Button
+            className="rounded-full px-8 h-11 text-sm mt-2 hover:text-primary"
+            variant="outline"
+            onClick={() => navigate("/leaderboard")}
+          >
+            Open Leaderboard
+            <ArrowRight className="ml-2 w-3.5 h-3.5" />
+          </Button>
+        </motion.div>
+      
+        <motion.div
+          initial={{ opacity: 0, y: 36, scale: 0.97 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="w-full rounded-2xl border bg-card shadow-2xl overflow-hidden"
+        >
+          {/* Window chrome */}
+          <div className="flex items-center gap-4 px-5 py-3.5 border-b bg-muted/40 backdrop-blur">
+            <div className="flex items-center gap-1.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
+              <div className="w-2.5 h-2.5 rounded-full bg-amber-400/70" />
+              <div className="w-2.5 h-2.5 rounded-full bg-emerald-400/70" />
+            </div>
+            <div className="flex-1 flex justify-center">
+              <div className="flex items-center gap-2 bg-background/70 rounded-md px-3 py-1 text-xs text-muted-foreground border w-52 sm:w-64 justify-center">
+                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 shrink-0" />
+                evaiis.vercel.app/leaderboard
+              </div>
+            </div>
+            <div className="w-16" /> 
+          </div>
+      
+          <div className="flex items-center justify-between px-6 pt-6 pb-3">
+            <div>
+              <p className="text-base font-semibold">Global Rankings</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Updated just now · 1273 students</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <Badge variant="outline" className="text-xs gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block" />
+                Live
+              </Badge>
+              <Button variant="ghost" size="sm" className="h-8 px-3 text-xs rounded-lg">
+                All time
+              </Button>
+            </div>
+          </div>
+      
+          <div className="grid grid-cols-[2rem_1fr_auto] sm:grid-cols-[2.5rem_1fr_140px_auto] items-center gap-4 px-6 pb-2 text-[10px] uppercase tracking-widest text-muted-foreground/60 font-medium">
+            <span className="text-center">#</span>
+            <span>Student</span>
+            <span className="hidden sm:block text-right">Score trend</span>
+            <span className="text-right">GPA</span>
+          </div>
+      
+          <div className="px-3 pb-4 space-y-1">
+            {[
+              { rank: 1, name: "Sam Sung",    avatar: "https://api.dicebear.com/9.x/big-smile/svg?seed=Brian&accessories=catEars,clownNose,glasses,mustache,sailormoonCrown,sleepMask,sunglasses&backgroundColor=c0aede,d1d4f9,ffdfbf,b6e3f4", gpa: "3.98", trend: 92, delta: "+0.04", top: true },
+              { rank: 2, name: "Shay Kitoff",   avatar: "https://api.dicebear.com/9.x/dylan/svg?seed=Sadie&backgroundColor=619eff,ffd5dc,b6e3f4,c0aede&mood=confused,happy,hopeful,neutral,sad,superHappy", gpa: "3.90", trend: 78, delta: "+0.02", top: false },
+              { rank: 3, name: "Kitano Mina",    avatar: 'https://api.dicebear.com/9.x/micah/svg?seed=Luis&randomizeIds=true&earringColor=6bd9e9,77311d,9287ff,ac6651,d2eff3,e0ddff,f4d150,f9c9b6,fc909f,ffeba4,ffedef&earrings=hoop&ears=attached&eyebrows=eyelashesDown,eyelashesUp,up&facialHairProbability=5&hair=dannyPhantom,fonze,full,mrT,pixie,turban&mouth=laughing,nervous,pucker,smile,smirk,surprised,sad&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf', gpa: "3.69", trend: 85, delta: "–0.11", top: false },
+              { rank: 4, name: "Ho Lee Sheet",    avatar: "https://api.dicebear.com/9.x/big-smile/svg?seed=Sara&accessories=catEars,clownNose,glasses,mustache,sailormoonCrown,sleepMask,sunglasses&eyes=cheery,normal,sleepy,starstruck,confused&backgroundColor=c0aede,d1d4f9,ffdfbf,b6e3f4", gpa: "3.48", trend: 60, delta: "+0.03", top: false },
+              { rank: 5, name: "Yuno Ball",    avatar: "https://api.dicebear.com/9.x/dylan/svg?seed=Wyatt&backgroundColor=619eff,ffd5dc,b6e3f4,c0aede&mood=confused,happy,hopeful,neutral,sad,superHappy", gpa: "3.45", trend: 71, delta: "±0.00", top: false },
+            ].map((p, i) => (
+              <motion.div
+                key={p.rank}
+                initial={{ opacity: 0, x: -12 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.3 + i * 0.08 }}
+                className={cn(
+                  "group grid grid-cols-[2rem_1fr_auto] sm:grid-cols-[2.5rem_1fr_140px_auto] items-center gap-4 px-3 py-3 rounded-xl transition-colors",
+                  p.top
+                    ? "bg-primary/5 border border-primary/10"
+                    : "hover:bg-muted/50"
+                )}
+              >
+                <span
+                  className={cn(
+                    "text-sm font-semibold text-center tabular-nums",
+                    p.top ? "text-primary" : "text-muted-foreground"
+                  )}
+                >
+                  {p.rank === 1 ? (
+                    <Trophy className="w-4 h-4 mx-auto text-amber-500" />
+                  ) : (
+                    p.rank
+                  )}
+                </span>
+                
+                <div className="flex items-center gap-3 min-w-0">
+                  <div
+                    className={cn(
+                      "w-8 h-8 rounded-full text-xs font-semibold flex items-center justify-center shrink-0 border",
+                      p.top
+                        ? "bg-primary/10 text-primary border-primary/20"
+                        : "bg-muted text-muted-foreground"
+                    )}
+                  >
+                    <img src={p.avatar} className="w-full h-full rounded-full object-cover" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium truncate">{p.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {p.delta.startsWith("+")
+                        ? <span className="text-emerald-600">{p.delta} this week</span>
+                        : p.delta.startsWith("–")
+                        ? <span className="text-rose-500">{p.delta} this week</span>
+                        : <span>{p.delta} this week</span>
+                      }
+                    </p>
+                  </div>
+                </div>
+                    
+                <div className="hidden sm:flex items-center gap-2">
+                  <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden w-24">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${p.trend}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8, delay: 0.5 + i * 0.08, ease: "easeOut" }}
+                      className={cn(
+                        "h-full rounded-full",
+                        p.top ? "bg-primary" : "bg-muted-foreground/40"
+                      )}
+                    />
+                  </div>
+                  <span className="text-xs text-muted-foreground tabular-nums w-8 text-right">
+                    {p.trend}%
+                  </span>
+                </div>
+                    
+                <span
+                  className={cn(
+                    "text-sm font-semibold tabular-nums text-right",
+                    p.top ? "text-primary" : "text-foreground"
+                  )}
+                >
+                  {p.gpa}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+          
+          <div className="border-t bg-muted/20 px-6 py-3 flex items-center justify-between">
+            <p className="text-xs text-muted-foreground">Showing top 5 of 1273 students</p>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-xs h-7 px-3 rounded-lg gap-1.5"
+              onClick={() => navigate("/leaderboard")}
+            >
+              See full rankings
+              <ArrowRight className="w-3 h-3" />
+            </Button>
+          </div>
+        </motion.div>
+          
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="mt-8 flex flex-wrap items-center justify-center gap-8 text-center"
+        >
+          {[
+            { value: "12.8k", label: "Active students" },
+            { value: "4.3k", label: "Grade updates / day" },
+            { value: "9.1k", label: "Badges earned" },
+          ].map((s) => (
+            <div key={s.label}>
+              <p className="text-lg font-semibold">{s.value}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">{s.label}</p>
+            </div>
+          ))}
+        </motion.div>
+        
       </div>
     </section>
 
@@ -913,10 +1279,10 @@ export default function Navbar() {
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
             Three Steps to
             <br />
-            <span className="text-primary">Perfection</span>
+            <span className="text-primary">Clarity</span>
           </h2>
           <p className="text-lg md:text-xl max-w-[600px] text-muted-foreground mx-auto">
-            We've simplified the theming process so you can focus on building your app.
+            Upload your syllabus, customize your template, and start calculating your grades with confidence.
           </p>
           </div>
         </motion.div>
@@ -936,11 +1302,11 @@ export default function Navbar() {
                 {/* Step Number */}
                 <div className="relative mb-6">
                   <span
-                    className="text-8xl font-bold text-muted/20 group-hover:text-primary/10 transition-colors duration-500 block"
+                    className="text-8xl font-bold text-muted/50 group-hover:text-primary/60 transition-colors duration-500 block"
                   >
                     {step.number}
                   </span>
-                  <div className='absolute bottom-4 left-2 w-12 h-1 bg-primary rounded-full'></div>
+                  <div className='absolute bottom-2 left-2 w-12 h-1 bg-primary rounded-full'></div>
                 </div>
 
                 {/* Content */}
@@ -958,7 +1324,7 @@ export default function Navbar() {
 
     {/* FAQ */}
     <section id="faq" className="w-full py-24 md:py-32">
-      <div className="mx-auto px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className='grid lg:grid-cols-12 gap-12'>
         {/* Section Header */}
         <motion.div
@@ -968,7 +1334,7 @@ export default function Navbar() {
           transition={{ duration: 0.5 }}
           className="lg:col-span-4"
         >
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold mb-6">
             FAQ
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
@@ -981,9 +1347,9 @@ export default function Navbar() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-muted-foreground hover:underline"
+            className="text-muted-foreground"
           >
-            Contact us at telegram
+            Contact me at <a href="https://t.me/Adlkhy" target="_blank" rel="noopener noreferrer" className="hover:underline italic text-accent-foreground">Telegram</a>
           </motion.a>
         </motion.div>
 
@@ -1000,12 +1366,12 @@ export default function Navbar() {
               <AccordionItem
                 key={index}
                 value={`item-${index}`}
-                className="bg-card border border-border rounded-2xl px-4 data-[state=open]:border-primary/30 transition-colors"
+                className="bg-card border border-border last:border-b rounded-2xl px-4 data-[state=open]:border-primary/30 transition-colors"
               >
                 <AccordionTrigger className="text-left text-foreground hover:no-underline py-5 text-lg font-medium">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground pb-5 leading-relaxed">
+                <AccordionContent className="text-muted-foreground text-base pb-6 pt-0">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
@@ -1019,8 +1385,17 @@ export default function Navbar() {
     {/* Call to Action */}
     <section className="w-full py-20 md:py-32 relative overflow-hidden">
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background pointer-events-none" />
-
+      {/* <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background pointer-events-none" /> */}
+      {/* Dark White Dotted Grid Background */}
+        <div
+          className="absolute inset-0 z-0 bg-background"
+          style={{
+            backgroundImage:
+              'radial-gradient(circle, color-mix(in oklab, var(--foreground) 24%, transparent) 1.5px, transparent 1.5px)',
+            backgroundSize: "30px 30px",
+            backgroundPosition: "0 0",
+          }}
+        />
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -1030,51 +1405,40 @@ export default function Navbar() {
           className="text-center"
         >
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6">
-            Ready to Make Your
+            Ready to Take Control
             <br />
-            Components <span className="text-primary">Stand Out?</span>
+            of <span className="text-primary">Your Grades?</span>
           </h2>
 
           <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
-            Start customizing your shadcn/ui components today and create a unique
-            look for your application.
+            Join thousands of students who are mastering their grades with Evalis.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
+            <motion.div>
               <Button
                 asChild
                 size="lg"
-                className="bg-foreground text-background hover:bg-foreground/90 rounded-full px-8! h-12! text-base group"
+                onClick={() => navigate('/calculator')}
+                className="bg-foreground text-background hover:bg-foreground/90 rounded-full px-8! h-11! text-base group"
               >
-                <div>
+                <div className="cursor-pointer">
                   Try It Now
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </div>
               </Button>
             </motion.div>
 
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
+            <motion.div>
               <Button
                 asChild
                 variant="outline"
                 size="lg"
-                className="rounded-full px-8! h-12 text-base bg-transparent border-border hover:bg-accent"
-              >
-                <a
-                  href="https://github.com/jnsahaj/tweakcn"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2"
-                >
-                  View on GitHub
-                </a>
+                className="rounded-full px-8! h-11! text-base bg-transparent border-border hover:text-primary hover:bg-accent"
+                onClick={() => navigate('/leaderboard')}
+              ><div className='cursor-pointer'>
+                Leaderboard
+                </div>
               </Button>
             </motion.div>
           </div>
@@ -1086,11 +1450,13 @@ export default function Navbar() {
             transition={{ delay: 0.3 }}
             className="mt-8 text-sm text-muted-foreground"
           >
-            No login required. Free to use. Open source.
+            No login required. Free to use.
           </motion.p>
         </motion.div>
       </div>
     </section>
+
+    
     <Footer />
     </>
   );
@@ -1098,152 +1464,4 @@ export default function Navbar() {
 
 
 // hero section
-// section className="relative border-b">
-//           <motion.div
-//             className="pointer-events-none absolute -top-20 left-[10%] h-64 w-64 rounded-full bg-primary/20 blur-3xl"
-//             animate={{ y: [0, -24, 0], x: [0, 12, 0] }}
-//             transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-//           />
-//           <motion.div
-//             className="pointer-events-none absolute right-[10%] top-20 h-72 w-72 rounded-full bg-accent/50 blur-3xl"
-//             animate={{ y: [0, 20, 0], x: [0, -10, 0] }}
-//             transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
-//           />
 
-//           <div className="container relative z-10 mx-auto grid gap-12 px-4 py-20 lg:grid-cols-2 lg:py-28">
-//             <motion.div
-//               initial={{ opacity: 0, y: 24 }}
-//               animate={{ opacity: 1, y: 0 }}
-//               transition={{ duration: 0.55 }}
-//               className="space-y-6"
-//             >
-//               <Badge variant="outline" className="rounded-full px-4 py-1 text-xs">
-//                 <Sparkles className="mr-2 h-3.5 w-3.5" />
-//                 Design Your Perfect shadcn/ui Theme
-//               </Badge>
-//               <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
-//                 Build beautiful interfaces with a
-//                 <span className="block text-primary">real-time visual workflow</span>
-//               </h1>
-//               <p className="max-w-xl text-lg text-muted-foreground">
-//                 Customize colors, typography, spacing, and depth with instant preview.
-//                 Export clean Tailwind-ready tokens and ship faster.
-//               </p>
-//               <div className="flex flex-wrap gap-3">
-//                 <Button size="lg" onClick={() => navigate('/calculator')}>
-//                   Start Customizing
-//                   <ArrowRight className="ml-2 h-4 w-4" />
-//                 </Button>
-//                 <Button size="lg" variant="outline" onClick={() => navigate('/leaderboard')}>
-//                   Browse Community
-//                 </Button>
-//               </div>
-//               <div className="flex items-center gap-5 text-sm text-muted-foreground">
-//                 <div className="font-medium text-foreground">9.4k+ stars</div>
-//                 <div>No login required</div>
-//                 <div>Open source</div>
-//               </div>
-//             </motion.div>
-
-//             <motion.div
-//               initial={{ opacity: 0, y: 26 }}
-//               animate={{ opacity: 1, y: 0 }}
-//               transition={{ duration: 0.65, delay: 0.1 }}
-//               className="rounded-2xl border bg-card/80 p-4 shadow-lg backdrop-blur"
-//             >
-//               <div className="mb-4 flex items-center justify-between border-b pb-3">
-//                 <p className="text-sm font-medium">Theme Preview</p>
-//                 <Badge>Live</Badge>
-//               </div>
-//               <div className="grid gap-4">
-//                 <div className="rounded-xl border bg-background p-4">
-//                   <div className="mb-3 flex items-center gap-2">
-//                     <div className="h-3 w-3 rounded-full bg-primary" />
-//                     <div className="h-3 w-3 rounded-full bg-accent" />
-//                     <div className="h-3 w-3 rounded-full bg-muted" />
-//                   </div>
-//                   <div className="space-y-2">
-//                     <div className="h-2 w-2/3 rounded bg-foreground/15" />
-//                     <div className="h-2 w-1/2 rounded bg-foreground/10" />
-//                   </div>
-//                   <div className="mt-4 flex gap-2">
-//                     <Button size="sm">Primary</Button>
-//                     <Button size="sm" variant="outline">Secondary</Button>
-//                   </div>
-//                 </div>
-//                 <div className="grid grid-cols-2 gap-3">
-//                   <Card className="bg-background/70">
-//                     <CardContent className="p-4">
-//                       <p className="text-xs text-muted-foreground">Checkpoint</p>
-//                       <p className="mt-1 font-semibold">Restore in 1 click</p>
-//                     </CardContent>
-//                   </Card>
-//                   <Card className="bg-background/70">
-//                     <CardContent className="p-4">
-//                       <p className="text-xs text-muted-foreground">Export</p>
-//                       <p className="mt-1 font-semibold">Tailwind-ready</p>
-//                     </CardContent>
-//                   </Card>
-//                 </div>
-//               </div>
-//             </motion.div>
-//           </div>
-//         </section>
-{/* <SectionWrap id="ai" className="py-20">
-          <div className="container mx-auto grid items-center gap-8 px-4 lg:grid-cols-2">
-            <div className="space-y-5">
-              <Badge className="rounded-full">
-                <Bot className="mr-2 h-3.5 w-3.5" />
-                Generate themes in seconds
-              </Badge>
-              <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-                Prompt or image in.
-                <span className="block text-primary">Production-ready theme out.</span>
-              </h2>
-              <p className="text-muted-foreground">
-                Create complete theme systems from a quick description and refine them visually.
-              </p>
-              <div className="grid gap-2 text-sm">
-                {['Theme Preview', 'Checkpoint Restoration', 'Image Extraction', 'Text-to-Theme'].map((point) => (
-                  <div key={point} className="flex items-center gap-2 rounded-lg border bg-card px-3 py-2">
-                    <Check className="h-4 w-4 text-primary" />
-                    {point}
-                  </div>
-                ))}
-              </div>
-              <div className="flex flex-wrap gap-3 pt-2">
-                <Button onClick={() => navigate('/ai')}>Generate with AI</Button>
-                <Button variant="outline" onClick={() => navigate('/signup')}>View Pricing</Button>
-              </div>
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.98 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="rounded-2xl border bg-card p-4"
-            >
-              <div className="rounded-xl border bg-background p-6">
-                <div className="mb-4 flex items-center justify-between">
-                  <p className="font-medium">AI Theme Builder</p>
-                  <Badge variant="secondary">Pro</Badge>
-                </div>
-                <div className="space-y-3">
-                  <div className="rounded-lg border p-3 text-sm text-muted-foreground">
-                    “Build a violet + graphite dashboard theme with subtle glow and strong contrast.”
-                  </div>
-                  <Button className="w-full justify-between">
-                    Generate
-                    <Sparkles className="h-4 w-4" />
-                  </Button>
-                  <div className="grid grid-cols-3 gap-2 pt-2">
-                    <div className="h-10 rounded-md bg-primary/15" />
-                    <div className="h-10 rounded-md bg-accent" />
-                    <div className="h-10 rounded-md bg-muted" />
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </SectionWrap> */}
