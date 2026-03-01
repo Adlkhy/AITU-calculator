@@ -303,7 +303,9 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
                   <SheetContent side="left" className="w-[300px] sm:w-[400px]">
                     <SheetHeader>
                       <SheetTitle className="flex items-center gap-2">
-                        <img src="/logo.png" alt="logo" className="h-5 sm:h-6" />
+                        {(theme === 'dark' || theme === 'system') ?
+                          <img src="/evalis-black.png" alt="logo" className="h-5 sm:h-6" /> : <img src="/evalis-white.png" alt="logo" className="h-5 sm:h-6" />
+                        }     
                         {theme === 'dark' || theme === 'system' ?
                           <img src="/white.png" alt="logo" className="h-5 sm:h-6 ms-2 " /> : <img src="/dark.png" alt="logo" className="h-5 sm:h-6 ms-2" />
                         }
@@ -383,7 +385,9 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
                   <div className="text-2xl md:hidden">
                     {logo}
                   </div>
-                  <img src="/logo.png" alt="logo" className="h-6 hidden md:inline" />
+                  {(theme === 'dark' || theme === 'system') ?
+                    <img src="/evalis-black.png" alt="logo" className="h-5 sm:h-6 hidden md:inline" /> : <img src="/evalis-white.png" alt="logo" className="h-5 sm:h-6 hidden md:inline" />
+                  }
                   {theme === 'dark' || theme === 'system' ?
                   <img src="/white.png" alt="logo" className="h-6 ms-2 hidden md:inline" /> : <img src="/dark.png" alt="logo" className="h-6 ms-2 hidden md:inline" />
                   }
@@ -452,7 +456,7 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
                           ['Attendance', 'GPA'].includes(selectedSubject) && "bg-accent"
                         )}
                       >
-                        Other
+                        Tools
                       </NavigationMenuTrigger>
                       <NavigationMenuContent>
                         <ul className="grid w-[400px] gap-2 md:grid-cols-2">

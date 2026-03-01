@@ -408,7 +408,9 @@ export default function Navbar() {
               whileTap={{ scale: 0.98 }}
             >
               <div className="flex items-center gap-2">
-              <img src="/logo.png" alt="logo" className="h-5 sm:h-6" />
+              {(theme === 'dark' || theme === 'system') ?
+                <img src="/evalis-black.png" alt="logo" className="h-5 sm:h-6" /> : <img src="/evalis-white.png" alt="logo" className="h-5 sm:h-6" />
+              }
               {(theme === 'dark' || theme === 'system') ?
                 <img src="/white.png" alt="logo" className="h-5 sm:h-6 ms-2 " /> : <img src="/dark.png" alt="logo" className="h-5 sm:h-6 ms-2" />
               }
@@ -521,7 +523,7 @@ export default function Navbar() {
                   transition={{ delay: 0.25 }}
                   className="pt-2"
                 >
-                  <Button className="cursor-pointer w-full bg-foreground text-background hover:bg-foreground/90 rounded-full">
+                  <Button className="cursor-pointer w-full bg-foreground text-background hover:bg-foreground/90 rounded-full" onClick={() => { navigate('/calculator'); setIsMobileMenuOpen(false); }}>
                     Try It Now
                   </Button>
                 </motion.div>
@@ -554,11 +556,11 @@ export default function Navbar() {
           {/* Headline */}
           <motion.h1
             variants={itemVariants}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-foreground mb-6"
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-foreground mb-6"
           >
             Master Your Grades with
             <span className="mx-2 relative inline-block">
-              <span className="relative z-10 italic font-serif font-light">Confidence &</span>
+              <span className="relative z-10 italic font-serif font-medium">Confidence & </span>
             </span>
               Precision
           </motion.h1>
@@ -566,7 +568,7 @@ export default function Navbar() {
           {/* Subtitle */}
           <motion.p
             variants={itemVariants}
-            className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8"
+            className="text-base sm:text-xl text-muted-foreground max-w-xs sm:max-w-2xl mx-auto mb-8"
           >
             Calculate grades, manage your budget, and climb the leaderboard. 
             Everything a student needs in one minimal, powerful platform.
@@ -586,7 +588,7 @@ export default function Navbar() {
             >
               <div className="flex font-medium items-center gap-1 cursor-pointer">
                 Start Calculating
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-2" />
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </div>
             </Button>
             
@@ -687,9 +689,9 @@ export default function Navbar() {
           className="text-center"
         >
           <h2 className="text-3xl md:text-5xl lg:text-6xl tracking-tight font-bold text-foreground mb-4">
-            Loved by <span className="text-primary font-serif italic">Students</span>
+            Loved by <span className="text-primary italic">Students</span>
           </h2>
-          <p className="text-muted-foreground max-w-[600px] text-lg md:text-xl">
+          <p className="text-muted-foreground max-w-[600px] text-base md:text-xl">
             See what people are saying about Evalis
           </p>
         </motion.div>
@@ -739,12 +741,12 @@ export default function Navbar() {
           className="flex flex-col justify-center space-y-4"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl text-left font-bold text-foreground tracking-tight mb-2">
-            Powerful Tools <br className='hidden lg:block'/>
+            Powerful Tools <br className=''/>
           <span className="text-muted-foreground">
             For Total Control
           </span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-[400px]">
+          <p className="text-base md:text-xl text-muted-foreground max-w-[400px]">
             Everything you need to master your grades and stay on top of your academic game.
           </p>
         </motion.div>
@@ -765,11 +767,11 @@ export default function Navbar() {
               className="group p-6 bg-card border border-border rounded-2xl hover:border-primary/30 hover:shadow-lg transition-all duration-300"
             >
               <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-colors">
+                <div className="w-12 h-12 rounded-xl bg-accent-foreground/10 flex items-center justify-center group-hover:bg-accent-foreground transition-colors">
                   <feature.icon className="w-6 h-6 text-primary group-hover:text-primary-foreground" />
                 </div>
                 {feature.badge && (
-                  <span className="px-2.5 py-1 text-xs font-medium bg-primary text-primary-foreground rounded-full">
+                  <span className="px-2.5 py-1 text-xs font-medium bg-accent-foreground text-primary-foreground rounded-full">
                     {feature.badge}
                   </span>
                 )}
@@ -785,143 +787,6 @@ export default function Navbar() {
         </motion.div>
       </div>
     </section>
-
-    {/* AI Section */}
-    {/* <section id="ai" className="bg-muted/35 relative w-full py-24 md:py-32 lg:py-40 overflow-hidden"> */}
-      {/* Background gradient */}
-      {/* <div className="absolute inset-0 bg-gradient-to-b from-accent/20 via-background to-accent/20 pointer-events-none" />
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid lg:grid-cols-2 gap-16 items-center"> */}
-          {/* Left Content */}
-          {/* <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className='max-w-2xl mx-auto lg:mx-0 flex flex-col justify-start items-start gap-6'
-          >
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground tracking-tight">
-              Generate Themes in
-              <br />
-              <span className="text-primary font-serif italic">Seconds</span>
-            </h2>
-
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              Just provide an image or text prompt, and our AI will create a
-              stunning, production-ready theme for you.
-            </p> */}
-
-            {/* CTA Buttons */}
-            {/* <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                asChild
-                size="lg"
-                variant="default"
-                className="bg-primary text-background hover:bg-primary/90 rounded-full px-8! h-11! text-lg group"
-              >
-                <div>
-                  Generate with AI
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </div>
-              </Button>
-            </div> */}
-
-            {/* AI Features */}
-            {/* <div className="grid grid-cols-1 sm:grid-cols-2 pt-4 gap-4">
-              {aiFeatures.map((feature, index) => (
-                <motion.div
-                  key={feature.label}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 + index * 0.1 }}
-                  className="text-muted-foreground flex items-center gap-3 text-base"
-                >
-                  <div className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <feature.icon className="w-4 h-4 text-primary" />
-                  </div>
-                  <span className="">
-                    {feature.label}
-                  </span>
-                </motion.div>
-              ))}
-            </div>
-
-            
-          </motion.div> */}
-
-          {/* Right Content - Chat Interface */}
-          {/* <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative hidden lg:block"
-          >
-            <div className="relative bg-card border border-border rounded-3xl shadow-2xl overflow-hidden"> */}
-              {/* Chat Header */}
-              {/* <div className="flex items-center gap-3 px-5 py-4 border-b border-border bg-accent/50">
-                <div>
-                  <p className="font-semibold text-foreground text-sm">
-                    AI Theme Generator
-                  </p>
-                </div>
-              </div> */}
-
-              {/* Chat Messages */}
-              {/* <div className="p-5 space-y-4 max-h-[400px] overflow-hidden">
-                {chatMessages.map((message, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.3 + index * 0.15 }}
-                    className={`flex ${
-                      message.type === 'user' ? 'justify-end' : 'justify-start'
-                    }`}
-                  >
-                    <div
-                      className={`max-w-[85%] ${
-                        message.type === 'user'
-                          ? 'bg-primary text-primary-foreground rounded-2xl rounded-tr-sm'
-                          : 'bg-accent text-foreground rounded-2xl rounded-tl-sm'
-                      } px-4 py-3`}
-                    >
-                      {message.hasImage && (
-                        <div className="mb-2 w-full h-24 rounded-xl bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-800" />
-                      )}
-                      <p className="text-sm leading-relaxed">{message.content}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div> */}
-
-              {/* Chat Input */}
-              {/* <div className="px-5 py-4 border-t border-border bg-accent/30">
-                <div className="flex items-center gap-3">
-                  <div className="flex-1 h-10 flex items-center ">
-                    <Input
-                      type="text"
-                      placeholder="Type your message..."
-                      className="w-full bg-input border-none focus:ring-0 focus:outline-none"
-                    />
-                  </div>
-                  <button className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-                    <ArrowRight className="w-4 h-4 text-primary-foreground" />
-                  </button>
-                </div>
-              </div>
-            </div> */}
-
-            {/* Decorative elements */}
-            {/* <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/20 rounded-full blur-2xl" />
-            <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
-          </motion.div>
-        </div>
-      </div>
-    </section> */}
 
     {/* Ai Section */}
     <section id='ai' className="bg-muted/35 w-full relative py-24 md:py-32 lg:py-40 overflow-hidden">
@@ -942,9 +807,9 @@ export default function Navbar() {
             >
               <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
                 Generate templates in 
-                <span className="block italic font-serif text-primary">Seconds</span>
+                <span className="block italic text-primary">Seconds</span>
               </h1>
-              <p className="max-w-xl text-lg text-muted-foreground">
+              <p className="max-w-xl text-base md:text-xl text-muted-foreground">
                 Just upload an image of syllabus and our AI will generate a personalized grade calculator template based on your course structure.
               </p>
               <div className="flex flex-wrap gap-3">
@@ -1078,7 +943,7 @@ export default function Navbar() {
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight max-w-2xl mx-auto">
             Your rank is waiting.
             <br />
-            <span className="text-primary font-semibold">Will you claim it?</span>
+            <span className="text-muted-foreground font-semibold">Will you claim it?</span>
           </h2>
       
           <p className="text-muted-foreground text-base max-w-md mx-auto leading-relaxed">
@@ -1086,12 +951,12 @@ export default function Navbar() {
           </p>
       
           <Button
-            className="rounded-full px-8 h-11 text-sm mt-2 hover:text-primary"
+            className="rounded-full px-8 h-11 text-sm mt-2 hover:text-primary group"
             variant="outline"
             onClick={() => navigate("/leaderboard")}
           >
             Open Leaderboard
-            <ArrowRight className="ml-2 w-3.5 h-3.5" />
+            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
           </Button>
         </motion.div>
       
@@ -1234,11 +1099,11 @@ export default function Navbar() {
             <Button
               variant="ghost"
               size="sm"
-              className="text-xs h-7 px-3 rounded-lg gap-1.5"
+              className="text-xs h-7 px-3 rounded-lg gap-1.5 group"
               onClick={() => navigate("/leaderboard")}
             >
               See full rankings
-              <ArrowRight className="w-3 h-3" />
+              <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
             </Button>
           </div>
         </motion.div>
@@ -1251,9 +1116,9 @@ export default function Navbar() {
           className="mt-8 flex flex-wrap items-center justify-center gap-8 text-center"
         >
           {[
-            { value: "12.8k", label: "Active students" },
-            { value: "4.3k", label: "Grade updates / day" },
-            { value: "9.1k", label: "Badges earned" },
+            { value: "1.2k", label: "Active students" },
+            { value: "2.8k", label: "Grade updates / day" },
+            { value: "4.1k", label: "Badges earned" },
           ].map((s) => (
             <div key={s.label}>
               <p className="text-lg font-semibold">{s.value}</p>
@@ -1276,12 +1141,12 @@ export default function Navbar() {
           transition={{ duration: 0.5 }}
           className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16"
         ><div className='max-w-2xl'>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
             Three Steps to
             <br />
             <span className="text-primary">Clarity</span>
           </h2>
-          <p className="text-lg md:text-xl max-w-[600px] text-muted-foreground mx-auto">
+          <p className="text-base md:text-xl max-w-[600px] text-muted-foreground mx-auto">
             Upload your syllabus, customize your template, and start calculating your grades with confidence.
           </p>
           </div>
@@ -1313,7 +1178,7 @@ export default function Navbar() {
                 <h3 className="text-2xl font-bold mb-3">
                   {step.title}
                 </h3>
-                <p className="text-muted-foreground text-lg leading-relaxed">
+                <p className="text-muted-foreground text-base sm:text-lg leading-relaxed">
                   {step.description}
                 </p>
             </motion.div>
@@ -1334,15 +1199,14 @@ export default function Navbar() {
           transition={{ duration: 0.5 }}
           className="lg:col-span-4"
         >
-          <h2 className="text-3xl md:text-5xl font-bold mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold mb-3 sm:mb-6">
             FAQ
           </h2>
-          <p className="text-lg text-muted-foreground mb-8">
+          <p className="text-base md:text-lg text-muted-foreground mb-4 sm:mb-8">
             Got questions? We've got answers. If you can't find what you're looking
             for, feel free to reach out.
           </p>
-          <motion.a
-            href="mailto:sahaj@tweakcn.com"
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -1350,7 +1214,7 @@ export default function Navbar() {
             className="text-muted-foreground"
           >
             Contact me at <a href="https://t.me/Adlkhy" target="_blank" rel="noopener noreferrer" className="hover:underline italic text-accent-foreground">Telegram</a>
-          </motion.a>
+          </motion.div>
         </motion.div>
 
         {/* Accordion */}
@@ -1407,10 +1271,10 @@ export default function Navbar() {
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6">
             Ready to Take Control
             <br />
-            of <span className="text-primary">Your Grades?</span>
+            of Your Grades?
           </h2>
 
-          <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
             Join thousands of students who are mastering their grades with Evalis.
           </p>
 
