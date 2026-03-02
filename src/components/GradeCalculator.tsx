@@ -296,7 +296,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
         {/* EDITABLE COURSE NAME CARD */}
         <Card className="">
           <CardContent className="">
-            <CardTitle className="text-sm text-accent-foreground font-semibold uppercase tracking-wider mb-2">
+            <CardTitle className="text-sm text-muted-foreground font-semibold uppercase tracking-wider mb-2">
               Course Name
             </CardTitle>
             <div className="relative flex items-center">
@@ -304,7 +304,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
                  value={courseName}
                  name='Course Name'
                  onChange={(e) => setCourseName(e.target.value)}
-                 className="sm:text-lg font-bold text-primary pr-10 border-transparent hover:border-input focus:border-input transition-colors"
+                 className="sm:text-lg font-bold text-muted-foreground pr-10 border-transparent hover:border-input focus:border-input transition-colors"
                />
                <Pencil className="h-4 w-4 absolute right-3 text-muted-foreground pointer-events-none" />
             </div>

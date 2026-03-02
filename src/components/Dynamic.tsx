@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { X } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { 
   PieChart, Pie, Cell, Tooltip as RechartsTooltip
 } from 'recharts';
@@ -90,8 +91,8 @@ const GradeCategory = ({
   const categoryScore = calculateCategoryScore();
 
   return (
-    <Card className="mb-6 overflow-hidden border-muted-foreground/20 shadow-sm hover:shadow-md transition-shadow">
-      <CardHeader className="border-b px-4 border-muted-foreground/10">
+    <Card className="mb-6 gap-0 py-4 overflow-hidden border-muted-foreground/20 shadow-sm hover:shadow-md transition-shadow">
+      <CardHeader className="border-b px-4 pb-1! border-muted-foreground/10">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex-1 w-full">
             <Input
@@ -103,10 +104,10 @@ const GradeCategory = ({
                 ...category,
                 name: e.target.value
               })}
-              className="text-lg font-bold px-3"
+              className="text-sm sm:text-lg font-bold font-mono px-3"
             />
           </div>
-          <div className="flex items-center gap-3 bg-background/50 p-2 rounded-lg border border-muted-foreground/20 w-full md:w-auto justify-between md:justify-start">
+          <div className="flex items-center gap-3 bg-background/50 w-full md:w-auto justify-between md:justify-start">
             <div className="flex items-center gap-2">
               <Input
                 type="number"
@@ -115,132 +116,73 @@ const GradeCategory = ({
                 onChange={(e) => updateCategoryWeight(Number(e.target.value))}
                 min="0"
                 max="100"
-                className="w-16 h-8 text-center font-bold"
+                className="w-16 text-center font-bold font-mono"
               />
               <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">% Weight</span>
             </div>
-            <div className="h-4 w-px bg-muted-foreground/20 hidden md:block" />
-            <div className="text-right">
-              <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground block">Score</span>
-              <span className="font-bold text-primary">{categoryScore.toFixed(1)}%</span>
+            <div className="hidden sm:block border-l border-muted-foreground h-6" />
+            <div className="text-right flex items-center gap-2">
+              <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground block">Score:</span>
+              <span className="font-bold font-mono text-lg text-primary">{categoryScore.toFixed(1)}%</span>
             </div>
           </div>
         </div>
       </CardHeader>
 
-      <CardContent className="px-4">
-        {/* DESKTOP TABLE */}
-        <div className="hidden sm:block overflow-x-auto mb-4">
-          <table className="w-full border-collapse text-sm">
-            <thead>
-              <tr className="text-left text-muted-foreground border-b border-muted-foreground/10">
-                <th className="pb-3 font-medium">Assignment/Item Name</th>
-                <th className="pb-3 font-medium text-center w-32">Score (%)</th>
-                <th className="pb-3 font-medium text-center w-24">Weight</th>
-                <th className="pb-3 font-medium text-right w-16"></th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-muted-foreground/5">
-              {category.items.map(item => (
-                <tr key={item.id} className="group hover:bg-muted/20 transition-colors">
-                  <td className="py-3 pr-4">
-                    <Input
-                      value={item.name}
-                      onChange={(e) => updateItem(item.id, 'name', e.target.value)}
-                      placeholder="Item name"
-                      name='Assignment name'
-                      className=" border-muted-foreground/20"
-                    />
-                  </td>
-                  <td className="py-3 px-2">
-                    <Input
-                      type="number"
-                      value={item.score}
-                      onChange={(e) => updateItem(item.id, 'score', e.target.value)}
-                      placeholder="0"
-                      name='Assignment score'
-                      min="0"
-                      max="100"
-                      className="text-center border-muted-foreground/20"
-                    />
-                  </td>
-                  <td className="py-3 px-2">
-                    <Input
-                      type="number"
-                      value={item.weight}
-                      onChange={(e) => updateItem(item.id, 'weight', e.target.value)}
-                      placeholder="1"
-                      name='Assignment weight'
-                      min="0"
-                      step="0.1"
-                      className="text-center border-muted-foreground/20"
-                    />
-                  </td>
-                  <td className="py-3 text-right">
-                    <Button
-                      onClick={() => removeItem(item.id)}
-                      variant="ghost"
-                      size="icon"
-                      type="button"
-                      className="h-8 w-8 text-destructive hover:text-destructive-foreground hover:bg-destructive! border! border-destructive! transition-colors"
-                    >
-                      <X className="w-4 h-4" />
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* MOBILE CARDS */}
-        <div className="sm:hidden flex flex-col gap-4 mb-4">
-          {category.items.map(item => (
+      <CardContent className="px-0">
+        {/* RESPONSIVE DESIGN: Cards on Mobile, Table on Desktop */}
+        
+        {/* MOBILE VIEW (< md) */}
+        <div className="flex flex-col gap-0 md:hidden">
+          {category.items.map((item, index) => (
             <div
               key={item.id}
-              className="relative p-4 rounded-xl border border-muted-foreground/10 bg-muted/10 space-y-3"
+              className="relative p-4 rounded-none border border-muted-foreground/10 bg-muted/5 shadow-sm space-y-4"
             >
-              <Button
-                onClick={() => removeItem(item.id)}
-                variant="ghost"
-                size="icon"
-                type="button"
-                className="absolute top-2 right-2 h-8 w-8 text-destructive hover:text-destructive-foreground hover:bg-destructive!"
-              >
-                <X className="w-4 h-4"/>
-              </Button>
+              <div className="flex border-b border-muted-foreground/10 justify-between items-center">
+                <h4 className="text-sm font-semibold text-muted-foreground">Item {index + 1}</h4>
+                <Button
+                  onClick={() => removeItem(item.id)}
+                  variant="ghost"
+                  size="icon"
+                  type="button"
+                  className="h-8 w-8 text-destructive hover:text-destructive-foreground hover:bg-destructive/90"
+                >
+                  <Trash2 className="w-4 h-4"/>
+                </Button>
+              </div>
               
-              <div className="space-y-1">
+              <div className="space-y-1.5">
                 <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Item Name</label>
                 <Input
                   value={item.name}
                   placeholder="Assignment name"
                   name='Assignment name'
-                  className="h-10 bg-background border-muted-foreground/20"
+                  className="h-10 bg-background border-muted-foreground/20 font-mono transition-colors focus-visible:ring-1"
                   onChange={(e) => updateItem(item.id, 'name', e.target.value)}
                 />
               </div>
               
               <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Score %</label>
                   <Input
                     type="number"
                     value={item.score}
                     placeholder="0"
                     name='Assignment score'
-                    className="h-10 bg-background border-muted-foreground/20 text-center"
+                    className="h-10 bg-background border-muted-foreground/20 text-center font-medium font-mono"
                     onChange={(e) => updateItem(item.id, 'score', e.target.value)}
                   />
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Weight</label>
                   <Input
                     type="number"
                     value={item.weight}
                     name='Assignment weight'
                     placeholder="1"
-                    className="h-10 bg-background border-muted-foreground/20 text-center"
+                    className="h-10 bg-background border-muted-foreground/20 text-center font-medium font-mono"
                     onChange={(e) => updateItem(item.id, 'weight', e.target.value)}
                   />
                 </div>
@@ -249,7 +191,68 @@ const GradeCategory = ({
           ))}
         </div>
 
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-2">
+        {/* DESKTOP VIEW (>= md) */}
+        <div className="hidden md:block overflow-hidden rounded-none border border-muted-foreground/10 shadow-sm">
+          <Table>
+            <TableHeader className="bg-muted/30">
+              <TableRow className="hover:bg-transparent">
+                <TableHead className="w-[50px] text-center font-bold text-xs uppercase tracking-wider">#</TableHead>
+                <TableHead className="font-bold text-xs uppercase tracking-wider">Item Name</TableHead>
+                <TableHead className="font-bold text-xs uppercase tracking-wider text-center w-[120px]">Score %</TableHead>
+                <TableHead className="font-bold text-xs uppercase tracking-wider text-center w-[120px]">Weight</TableHead>
+                <TableHead className="w-[70px]"></TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody className="bg-background">
+              {category.items.map((item, index) => (
+                <TableRow key={item.id} className="group">
+                  <TableCell className="text-center text-sm font-medium text-muted-foreground">
+                    {index + 1}
+                  </TableCell>
+                  <TableCell>
+                    <Input
+                      value={item.name}
+                      placeholder="Assignment name"
+                      className="border-transparent bg-transparent hover:border-border focus:border-border shadow-none font-mono"
+                      onChange={(e) => updateItem(item.id, 'name', e.target.value)}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Input
+                      type="number"
+                      value={item.score}
+                      placeholder="0"
+                      className="border-transparent bg-transparent hover:border-border focus:border-border text-center font-medium font-mono shadow-none"
+                      onChange={(e) => updateItem(item.id, 'score', e.target.value)}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Input
+                      type="number"
+                      value={item.weight}
+                      placeholder="1"
+                      className="border-transparent bg-transparent hover:border-border focus:border-border text-center font-medium font-mono shadow-none"
+                      onChange={(e) => updateItem(item.id, 'weight', e.target.value)}
+                    />
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Button
+                      onClick={() => removeItem(item.id)}
+                      variant="ghost"
+                      size="icon"
+                      type="button"
+                      className="h-8 w-8 text-destructive opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive/90! hover:text-destructive-foreground"
+                    >
+                      <Trash2 className="w-4 h-4"/>
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+
+        <div className="flex flex-col px-4 sm:flex-row justify-between items-center gap-4 pt-4 border-t border-muted-foreground/10">
           <Button
             size='sm'
             onClick={addItem}
@@ -265,7 +268,7 @@ const GradeCategory = ({
             variant='ghost'
             type="button"
             onClick={() => onRemoveCategory(category.id)}
-            className="w-full sm:w-auto text-destructive hover:text-destructive-foreground hover:bg-destructive!"
+            className="w-full sm:w-auto text-destructive hover:text-destructive-foreground hover:bg-destructive! font-medium"
           >
             Delete Category
           </Button>
@@ -442,6 +445,37 @@ export default function DynamicGradeCalculator() {
 
   const finalGpa = percentToGpa(finalGrade);
 
+  // Calculate required final exam grade to achieve 70%
+  const calculateRequiredFinalGrade = () => {
+    // Find the final exam category (last category is usually final exam)
+    const finalExamCategory = categories[categories.length - 1];
+    if (!finalExamCategory) return -1;
+
+    const finalExamWeight = finalExamCategory.totalWeight;
+    
+    // Current score from all other categories
+    let currentScore = 0;
+    let currentWeight = 0;
+
+    categories.forEach((category, idx) => {
+      if (idx !== categories.length - 1) {
+        const categoryScore = categoryScores[category.id] || 0;
+        const weight = category.totalWeight;
+        currentScore += categoryScore * (weight / 100);
+        currentWeight += weight;
+      }
+    });
+
+    // Required formula: currentScore + (requiredGrade * (finalExamWeight / 100)) >= 70
+    // requiredGrade >= (70 - currentScore) / (finalExamWeight / 100)
+    const requiredGrade = (70 - currentScore) / (finalExamWeight / 100);
+
+    // Return the required grade, but cap it at 0-100
+    return Math.max(0, Math.min(100, requiredGrade));
+  };
+
+  const requiredFinalGrade = calculateRequiredFinalGrade();
+
   const chartConfig = categories.reduce((acc, cat, idx) => {
     acc[cat.id] = {
       label: cat.name || `Category ${idx + 1}`,
@@ -460,8 +494,8 @@ export default function DynamicGradeCalculator() {
     <div className="px-4 md:px-8 max-w-5xl mx-auto w-full space-y-8">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-foreground">
-            Grade <span className="text-primary">Calculator</span>
+          <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
+            Make It Your Own: < br/> Custom Grade Calculator
           </h1>
           <p className="text-muted-foreground font-medium">
             Customize your grading structure and track your progress.
@@ -472,8 +506,7 @@ export default function DynamicGradeCalculator() {
           onClick={addCategory}
           variant="default"
           size="lg"
-          type="button"
-          className="shadow-lg shadow-primary/20 font-bold px-6"
+          className="text-primary-foreground font-bold px-6"
         >
           + Add New Category
         </Button>
@@ -481,12 +514,6 @@ export default function DynamicGradeCalculator() {
 
       {/* CATEGORIES LIST */}
       <div className="space-y-2">
-        <div className="flex items-center gap-2 px-2 mb-4">
-          <div className="h-px flex-1 bg-muted-foreground/10" />
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">Grading Structure</span>
-          <div className="h-px flex-1 bg-muted-foreground/10" />
-        </div>
-        
         <div className="space-y-6">
           {categories.map(category => (
             <GradeCategory
@@ -502,7 +529,7 @@ export default function DynamicGradeCalculator() {
       {/* FOOTER STATS */}
       <Card className="p-0 shadow-sm border-muted-foreground/20">
         <CardContent className="p-6">
-          <CardTitle className="text-[12px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60 mb-6 text-center md:text-left">
+          <CardTitle className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-6 text-center md:text-left">
             Score Distribution
           </CardTitle>
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
@@ -555,11 +582,11 @@ export default function DynamicGradeCalculator() {
                         className="w-3 h-3 rounded-full shadow-sm" 
                         style={{ backgroundColor: item.color }} 
                       />
-                      <span className="font-semibold text-xs text-muted-foreground uppercase tracking-tight">
+                      <span className="font-semibold text-sm text-muted-foreground uppercase font-mono tracking-tight">
                         {item.name}
                       </span>
                     </div>
-                    <span className="font-bold text-sm tabular-nums">
+                    <span className="font-bold text-base tabular-nums font-mono" style={{ color: item.color }}>
                       {item.value.toFixed(1)}%
                     </span>
                   </div>
@@ -573,21 +600,29 @@ export default function DynamicGradeCalculator() {
           </div>
         </CardContent>
       </Card>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card className="bg-primary text-primary-foreground border-none shadow-xl shadow-primary/10 overflow-hidden relative">
-          <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-2xl" />
-          <CardContent className="p-6">
-            <p className="text-xs font-bold uppercase tracking-widest opacity-80 mb-1">Final Grade</p>
-            <div className="text-4xl font-black">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <Card className="bg-primary text-primary-foreground border-none overflow-hidden relative">
+          <CardContent className="">
+            <p className="text-xs font-bold uppercase tracking-widest">Final Grade</p>
+            <div className="text-3xl font-mono font-bold">
               {finalGrade.toFixed(1)}%
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-muted-foreground/20 shadow-sm overflow-hidden relative">
-          <CardContent className="p-6">
-            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">Final GPA</p>
-            <div className="text-4xl font-black flex items-baseline gap-2">
+        <Card className="bg-accent border-none overflow-hidden relative">
+          <CardContent className="">
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Needed Final</p>
+            <div className={`text-3xl font-bold font-mono ${requiredFinalGrade > 100 ? 'text-destructive' : 'text-foreground'}`}>
+              {requiredFinalGrade < 0 ? '—' : `${requiredFinalGrade.toFixed(1)}%`}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="overflow-hidden relative">
+          <CardContent className="">
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Final GPA</p>
+            <div className="text-3xl font-bold font-mono flex items-baseline gap-2">
               {finalGpa.toFixed(2)}
               <span className={`text-xl ${letterColor(gpaToLetter(finalGpa))}`}>
                 {gpaToLetter(finalGpa)}
@@ -596,11 +631,11 @@ export default function DynamicGradeCalculator() {
           </CardContent>
         </Card>
 
-        <Card className={`border-muted-foreground/20 shadow-sm overflow-hidden relative ${totalWeightPercentage !== 100 ? 'ring-2 ring-destructive/50' : ''}`}>
-          <CardContent className="p-6">
-            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">Total Weight</p>
+        <Card className={`overflow-hidden relative ${totalWeightPercentage !== 100 ? 'ring-2 ring-destructive/50' : ''}`}>
+          <CardContent className="">
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Total Weight</p>
             <div className="flex items-center justify-between">
-              <div className={`text-4xl font-black ${totalWeightPercentage !== 100 ? 'text-destructive' : 'text-foreground'}`}>
+              <div className={`text-3xl font-bold font-mono ${totalWeightPercentage !== 100 ? 'text-destructive' : 'text-foreground'}`}>
                 {totalWeightPercentage}%
               </div>
               {totalWeightPercentage !== 100 && (

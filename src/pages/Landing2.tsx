@@ -404,8 +404,6 @@ export default function Navbar() {
             <motion.a
               href="/"
               className="flex items-center gap-2 group"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
             >
               <div className="flex items-center gap-2">
               {(theme === 'dark' || theme === 'system') ?
@@ -767,11 +765,11 @@ export default function Navbar() {
               className="group p-6 bg-card border border-border rounded-2xl hover:border-primary/30 hover:shadow-lg transition-all duration-300"
             >
               <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-xl bg-accent-foreground/10 flex items-center justify-center group-hover:bg-accent-foreground transition-colors">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-colors">
                   <feature.icon className="w-6 h-6 text-primary group-hover:text-primary-foreground" />
                 </div>
                 {feature.badge && (
-                  <span className="px-2.5 py-1 text-xs font-medium bg-accent-foreground text-primary-foreground rounded-full">
+                  <span className="px-2.5 py-1 text-xs font-medium bg-primary/65 text-primary-foreground rounded-full">
                     {feature.badge}
                   </span>
                 )}
@@ -1167,11 +1165,11 @@ export default function Navbar() {
                 {/* Step Number */}
                 <div className="relative mb-6">
                   <span
-                    className="text-8xl font-bold text-muted/50 group-hover:text-primary/60 transition-colors duration-500 block"
+                    className="text-8xl font-bold text-muted/50 group-hover:text-primary/55 transition-colors duration-500 block"
                   >
                     {step.number}
                   </span>
-                  <div className='absolute bottom-2 left-2 w-12 h-1 bg-primary rounded-full'></div>
+                  <div className='absolute bottom-2 left-2 w-12 h-1 bg-primary/80 rounded-full'></div>
                 </div>
 
                 {/* Content */}

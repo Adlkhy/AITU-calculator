@@ -11,7 +11,7 @@ import { DotLoader } from '@/components/shadcn/gsap/dot-loader';
 
 export default function MainCalculator() {
   const subjects = [
-    "Dynamic",
+    "Custom",
     "Attendance",
     "GPA",
     "Budget",
@@ -66,7 +66,7 @@ export default function MainCalculator() {
     }
 
     switch (selectedSubject) {
-      case "Dynamic":
+      case "Custom":
         return <Dynamic />;
       case "Attendance":
         return <Attendance />;

@@ -45,7 +45,7 @@ export default function Footer() {
             </p>
             <div className="flex gap-4 text-sm text-muted-foreground">
               <a 
-                  href="https://t.me/Adlkhy" 
+                  href="https://t.me/safemys" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="flex gap-2 hover:text-foreground transition-all duration-300 md:justify-start"
