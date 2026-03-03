@@ -92,7 +92,7 @@ const GradeCategory = ({
 
   return (
     <Card className="mb-6 gap-0 py-4 overflow-hidden border-muted-foreground/20 shadow-sm hover:shadow-md transition-shadow">
-      <CardHeader className="border-b px-4 pb-1! border-muted-foreground/10">
+      <CardHeader className="px-4 pb-1!">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex-1 w-full">
             <Input
@@ -137,9 +137,9 @@ const GradeCategory = ({
           {category.items.map((item, index) => (
             <div
               key={item.id}
-              className="relative p-4 rounded-none border border-muted-foreground/10 bg-muted/5 shadow-sm space-y-4"
+              className="relative p-4 rounded-none border border-muted-foreground/10 bg-muted/5 space-y-4"
             >
-              <div className="flex border-b border-muted-foreground/10 justify-between items-center">
+              <div className="flex justify-between items-center">
                 <h4 className="text-sm font-semibold text-muted-foreground">Item {index + 1}</h4>
                 <Button
                   onClick={() => removeItem(item.id)}
@@ -192,7 +192,7 @@ const GradeCategory = ({
         </div>
 
         {/* DESKTOP VIEW (>= md) */}
-        <div className="hidden md:block overflow-hidden rounded-none border border-muted-foreground/10 shadow-sm">
+        <div className="hidden md:block overflow-hidden rounded-none border border-muted-foreground/10">
           <Table>
             <TableHeader className="bg-muted/30">
               <TableRow className="hover:bg-transparent">
@@ -252,7 +252,7 @@ const GradeCategory = ({
           </Table>
         </div>
 
-        <div className="flex flex-col px-4 sm:flex-row justify-between items-center gap-4 pt-4 border-t border-muted-foreground/10">
+        <div className="flex flex-col px-4 sm:flex-row justify-between items-center gap-4 pt-4">
           <Button
             size='sm'
             onClick={addItem}

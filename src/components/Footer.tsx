@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Separator } from './ui/separator';
+import { useTheme } from '@/lib/useTheme';
 // import { useState, useEffect } from 'react';
 // import { CopyButton } from './animate-ui/components/buttons/copy';
 // import { toast } from 'sonner';
@@ -11,6 +12,7 @@ import { Separator } from './ui/separator';
 // } from '@/components/ui/popover';
 
 export default function Footer() {
+  const { theme } = useTheme();
   // const [isOpen, setIsOpen] = useState(false);
   // const [copied, setCopied] = useState(false);
   // const cardNumber = "0000 0000 0000 0000"; 
@@ -38,7 +40,9 @@ export default function Footer() {
         <div className="grid sm:grid-cols-2 md:grid-cols-5 gap-10 md:text-left">
           {/* Brand & CTA Section */}
           <div className="col-span-2 max-w-md space-y-4 md:items-start">
-            <img src="/logo.png" alt="Evalis Logo" className="h-6 w-auto" />
+            {(theme === 'dark' || theme === 'system') ?
+              <img src="/evalis-black.png" alt="logo" className="h-6 w-auto" /> : <img src="/evalis-white.png" alt="logo" className="h-6 w-auto" />
+            }
             <p className="text-muted-foreground text-sm leading-relaxed">
               Unlock your full academic potential! Create an account to save your grades, 
               track progress over time, and access our advanced AI assistant.

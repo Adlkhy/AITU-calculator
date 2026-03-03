@@ -21,7 +21,7 @@ const game = [
 
 const LoadingPage = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="text-center flex items-center gap-5 rounded px-4 py-3">
           <DotLoader 
             frames={game}

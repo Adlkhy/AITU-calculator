@@ -62,7 +62,7 @@ export function SignupForm({
                     id="name" 
                     value={fullName} 
                     onChange={(e) => setFullName(e.target.value)} 
-                    placeholder="Jeffrey Epstein"
+                    placeholder="Your name or something"
                     required
                     />
                 </Field>
@@ -156,7 +156,7 @@ export function SignupForm({
         </CardContent>
       </Card>
       <FieldDescription className="px-6 text-center">
-        By clicking continue, you agree to our <Link to={"/term-of-service"}>Terms of Service.</Link>{" "}
+        By clicking continue, you agree to our <Link to={"/term-of-service"}>Terms of Service</Link>{" "} or go back to <Link to={"/calculator"}>Home</Link>.
       </FieldDescription>
     </div>
   )

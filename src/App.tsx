@@ -14,7 +14,6 @@ import { useUser } from './hooks/useUser';
 import FinalGrades from './pages/FinalGrades';
 import TermOfService from './pages/TermOfService';
 import AI from './pages/AI';
-import LandingPage2 from './pages/Landing2';
 
 function App() {
   const { user, loading, session } = useUser();
@@ -27,11 +26,10 @@ function App() {
     });
   }, [user, loading, session]);
   return (
-    <ThemeProvider defaultTheme='light' storageKey='vite-ui-theme'>
+    <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/la" element={<LandingPage2 />} />
           <Route path="/calculator" element={<MainCalculator />} />
           <Route path="/login" element={<Login />} />
           <Route path='/signup' element={<Signup />} />
