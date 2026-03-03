@@ -1093,7 +1093,7 @@ export default function Navbar() {
           </div>
           
           <div className="border-t bg-muted/20 px-6 py-3 flex items-center justify-between">
-            <p className="text-xs text-muted-foreground">Showing top 5 of 1273 students</p>
+            <p className="text-xs text-muted-foreground">Showing top 5 of 1773 students</p>
             <Button
               variant="ghost"
               size="sm"
@@ -1114,9 +1114,9 @@ export default function Navbar() {
           className="mt-8 flex flex-wrap items-center justify-center gap-8 text-center"
         >
           {[
-            { value: "1.2k", label: "Active students" },
-            { value: "2.8k", label: "Grade updates / day" },
-            { value: "4.1k", label: "Badges earned" },
+            { value: "1.7k", label: "Active students" },
+            { value: "1k", label: "Grades logged" },
+            { value: "3.3", label: "Average GPA" },
           ].map((s) => (
             <div key={s.label}>
               <p className="text-lg font-semibold">{s.value}</p>
