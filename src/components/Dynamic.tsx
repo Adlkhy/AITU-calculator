@@ -495,7 +495,7 @@ export default function DynamicGradeCalculator() {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="space-y-1">
           <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
-            Make It Your Own: < br/> Custom Grade Calculator
+            Custom Calculator
           </h1>
           <p className="text-muted-foreground font-medium">
             Customize your grading structure and track your progress.
