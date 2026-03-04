@@ -601,8 +601,8 @@ export default function DynamicGradeCalculator() {
         </CardContent>
       </Card>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="bg-primary text-primary-foreground border-none overflow-hidden relative">
-          <CardContent className="">
+        <Card className="py-4 rounded-sm bg-primary text-primary-foreground border-none overflow-hidden relative">
+          <CardContent className="px-4 flex flex-col">
             <p className="text-xs font-bold uppercase tracking-widest">Final Grade</p>
             <div className="text-3xl font-mono font-bold">
               {finalGrade.toFixed(1)}%
@@ -610,8 +610,8 @@ export default function DynamicGradeCalculator() {
           </CardContent>
         </Card>
 
-        <Card className="bg-accent border-none overflow-hidden relative">
-          <CardContent className="">
+        <Card className="py-4 rounded-sm bg-accent border-none overflow-hidden relative">
+          <CardContent className="px-4 flex flex-col">
             <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Needed Final</p>
             <div className={`text-3xl font-bold font-mono ${requiredFinalGrade > 100 ? 'text-destructive' : 'text-foreground'}`}>
               {requiredFinalGrade < 0 ? '—' : `${requiredFinalGrade.toFixed(1)}%`}
@@ -619,8 +619,8 @@ export default function DynamicGradeCalculator() {
           </CardContent>
         </Card>
 
-        <Card className="overflow-hidden relative">
-          <CardContent className="">
+        <Card className="py-4 rounded-sm bg-secondary border-none overflow-hidden relative">
+          <CardContent className="px-4 flex flex-col">
             <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Final GPA</p>
             <div className="text-3xl font-bold font-mono flex items-baseline gap-2">
               {finalGpa.toFixed(2)}
@@ -631,8 +631,8 @@ export default function DynamicGradeCalculator() {
           </CardContent>
         </Card>
 
-        <Card className={`overflow-hidden relative ${totalWeightPercentage !== 100 ? 'ring-2 ring-destructive/50' : ''}`}>
-          <CardContent className="">
+        <Card className={`py-4 rounded-sm overflow-hidden relative ${totalWeightPercentage !== 100 ? 'ring-2 ring-destructive/50' : ''}`}>
+          <CardContent className="px-4 flex flex-col">
             <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Total Weight</p>
             <div className="flex items-center justify-between">
               <div className={`text-3xl font-bold font-mono ${totalWeightPercentage !== 100 ? 'text-destructive' : 'text-foreground'}`}>

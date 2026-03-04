@@ -15,6 +15,11 @@ export default function MainCalculator() {
     "Attendance",
     "GPA",
     "Budget",
+    "Political Science",
+    "Linear Algebra",
+    "Hacking Lab",
+    "Culture Studies",
+    "Calculus II",
     "Calculus",
     "History",
     "ADS",
@@ -31,7 +36,7 @@ export default function MainCalculator() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const templates = ["Programming", "English", "Sociology", "Discrete Math", "Psychology", "ICT", "Calculus", "History", "ADS", "English B2"];
+    const templates = ["Programming", "English", "Sociology", "Discrete Math", "Psychology", "ICT", "Calculus", "History", "ADS", "English B2", "Political Science", "Linear Algebra", "Hacking Lab", "Culture Studies", "Calculus II"];
     if (templates.includes(selectedSubject)) {
       setIsLoading(true);
       fetch(`/templates/${selectedSubject.replace(" ", "")}.json`)

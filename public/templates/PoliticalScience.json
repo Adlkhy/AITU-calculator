@@ -1,0 +1,72 @@
+{
+  "breakdown": [
+    {
+      "name": "1st attestation",
+      "subItems": [
+        {
+          "name": "Practice discussions",
+          "weight": 25,
+          "description": "Oral"
+        },
+        {
+          "name": "Tests on Lecture materials",
+          "weight": 15,
+          "description": "CBT"
+        },
+        {
+          "name": "Group Project",
+          "weight": 30,
+          "description": "Presentation"
+        },
+        {
+          "name": "Midterm Quiz",
+          "weight": 30,
+          "description": "PBT"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 30
+    },
+    {
+      "name": "2nd attestation",
+      "subItems": [
+        {
+          "name": "Practice discussions",
+          "weight": 25,
+          "description": "Oral"
+        },
+        {
+          "name": "Tests on Lecture materials",
+          "weight": 15,
+          "description": "CBT"
+        },
+        {
+          "name": "Group Project",
+          "weight": 30,
+          "description": "Presentation"
+        },
+        {
+          "name": "Endterm Quiz",
+          "weight": 30,
+          "description": "PBT"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 30
+    },
+    {
+      "name": "Final exam",
+      "subItems": [
+        {
+          "name": "Exam",
+          "weight": 40,
+          "description": "PBT"
+        }
+      ],
+      "maxPoints": 40,
+      "overallWeight": 40
+    }
+  ],
+  "courseName": "Political Science",
+  "totalWeightNote": "0.3 * 1st Att + 0.3 * 2nd Att + 0.4 * Final"
+}

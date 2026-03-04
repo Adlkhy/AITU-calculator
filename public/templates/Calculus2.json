@@ -1,0 +1,72 @@
+{
+  "breakdown": [
+    {
+      "name": "1st attestation",
+      "subItems": [
+        {
+          "name": "Homework 1 (Week 2)",
+          "weight": 20,
+          "description": "Submission of written reports"
+        },
+        {
+          "name": "Quiz 1 (Week 3)",
+          "weight": 20,
+          "description": "Written"
+        },
+        {
+          "name": "Homework 2 (Week 4)",
+          "weight": 20,
+          "description": "Submission of written reports"
+        },
+        {
+          "name": "Midterm Exam (Week 5)",
+          "weight": 40,
+          "description": "Written"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 30
+    },
+    {
+      "name": "2nd attestation",
+      "subItems": [
+        {
+          "name": "Homework 3 (Week 7)",
+          "weight": 20,
+          "description": "Submission of written reports"
+        },
+        {
+          "name": "Quiz 2 (Week 8)",
+          "weight": 20,
+          "description": "Written"
+        },
+        {
+          "name": "Homework 4 (Week 9)",
+          "weight": 20,
+          "description": "Submission of written reports"
+        },
+        {
+          "name": "Endterm Exam (Week 10)",
+          "weight": 40,
+          "description": "Written"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 30
+    },
+    {
+      "name": "Final exam",
+      "subItems": [
+        {
+          "name": "Exam",
+          "weight": 100,
+          "description": "Written"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 40
+    }
+  ],
+  "courseName": "Calculus II",
+  "totalWeightNote": "0.3 * 1st Att + 0.3 * 2nd Att + 0.4 * Final"
+}

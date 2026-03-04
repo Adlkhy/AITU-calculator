@@ -1,0 +1,62 @@
+{
+  "breakdown": [
+    {
+      "name": "1st Attestation / Midterm (Weeks 1-5)",
+      "subItems": [
+        {
+          "name": "Defense of oral presentation (Individual work)",
+          "weight": 50,
+          "description": "Weeks 3-4 topics: Semiotics of culture, Nomads' culture of Kazakhstan, Medieval culture of Central Asia."
+        },
+        {
+          "name": "Quiz - Midterm assessment",
+          "weight": 30,
+          "description": "Week 5: 20 questions, 30 minutes MCQ covering weeks 1-5."
+        },
+        {
+          "name": "Lectures MCQ",
+          "weight": 20,
+          "description": "Week 1-5 lecture assessments via learn.astanait.edu.kz."
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 30
+    },
+    {
+      "name": "2nd Attestation / End term (Weeks 6-10)",
+      "subItems": [
+        {
+          "name": "Defense of research project (Group work)",
+          "weight": 50,
+          "description": "Weeks 8-9 topics: Kazakh culture in globalization, Cultural Policies, and Cultural Heritage of Kazakhstan."
+        },
+        {
+          "name": "Quiz - EndTerm assessment",
+          "weight": 30,
+          "description": "Week 10: 20 questions, 30 minutes MCQ."
+        },
+        {
+          "name": "Lectures MCQ",
+          "weight": 20,
+          "description": "Week 6-10 lecture assessments via learn.astanait.edu.kz."
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 30
+    },
+    {
+      "name": "Final assessment",
+      "subItems": [
+        {
+          "name": "Exam",
+          "weight": 100,
+          "description": "40 questions - 50 minutes MCQ."
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 40
+    }
+  ],
+  "courseName": "Culture Studies",
+  "totalWeightNote": "0.3 * 1st Att + 0.3 * 2nd Att + 0.4 * Final"
+}

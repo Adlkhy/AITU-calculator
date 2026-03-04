@@ -11,45 +11,64 @@ import { toast, Toaster } from 'sonner';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Trash, Loader2, Search, Edit2, Save, X, Info, GraduationCap, Calculator } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-// List of available subjects
-const AVAILABLE_SUBJECTS = [
-  "Programming C++",
-  "Programming Python",
-  "English", 
-  "German",
-  "Chinese",
-  "Korean",
-  "Sociology",
-  "Discrete Math",
-  "Psychology",
-  "ICT",
-  "Calculus 1",
-  "Calculus 2",
-  "Physics",
-  "Physical Education",
-  "History",
-  "Intro to Computing and Programming",
-  "Linear Algebra",
-  "Political Science",
-  "Culture Studies",
-  "Foundations of Journalism",
-  "Business Administration",
-  "Mathematics for AI",
-];
+
+type SubjectsPayload = {
+  '1trimestr'?: string[];
+  '2trimestr'?: string[];
+  '3trimestr'?: string[];
+};
+
+const normalizeSubjects = (value: unknown): string[] => {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value.filter((item): item is string => typeof item === 'string' && item.trim().length > 0))];
+};
+
+// Load available subjects from subjects.json
+const loadAvailableSubjects = async (): Promise<{ trimestr1: string[]; trimestr2: string[]; trimestr3: string[] }> => {
+  try {
+    const response = await fetch('/data/subjects.json');
+    if (!response.ok) {
+      return { trimestr1: [], trimestr2: [], trimestr3: [] };
+    }
+
+    const data = (await response.json()) as SubjectsPayload;
+    return {
+      trimestr1: normalizeSubjects(data['1trimestr']),
+      trimestr2: normalizeSubjects(data['2trimestr']),
+      trimestr3: normalizeSubjects(data['3trimestr'])
+    };
+  } catch (error) {
+    console.error('Error loading subjects:', error);
+    return { trimestr1: [], trimestr2: [], trimestr3: [] };
+  }
+};
 
 export default function FinalGrades() {
   const { user } = useUser();
   const [savedGrades, setSavedGrades] = useState<Record<string, number>>({});
   const [editingGrades, setEditingGrades] = useState<Record<string, string>>({});
+  const [trimestr1Subjects, setTrimestr1Subjects] = useState<string[]>([]);
+  const [trimestr2Subjects, setTrimestr2Subjects] = useState<string[]>([]);
+  const [trimestr3Subjects, setTrimestr3Subjects] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [activeSavingSubject, setActiveSavingSubject] = useState<string | null>(null);
+  const [activeDeletingSubject, setActiveDeletingSubject] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [viewTab, setViewTab] = useState('all');
+  const [currentTrimester, setCurrentTrimester] = useState<'1' | '2' | '3'>('1');
+  const [viewSavedOnly, setViewSavedOnly] = useState(false);
 
-  // Load saved grades when component mounts
+  // Load subjects and grades on component mount
   useEffect(() => {
-    const loadSavedGrades = async () => {
+    const initializeData = async () => {
+      // Load available subjects from subjects.json
+      const { trimestr1, trimestr2, trimestr3 } = await loadAvailableSubjects();
+      setTrimestr1Subjects(trimestr1);
+      setTrimestr2Subjects(trimestr2);
+      setTrimestr3Subjects(trimestr3);
+
+      // Load saved grades
       if (!user) {
         setIsLoading(false);
         return;
@@ -61,17 +80,21 @@ export default function FinalGrades() {
         .eq('user_id', user.id)
         .eq('semester', 'Fall 2025');
 
-      if (!error && data) {
-        const gradesMap: Record<string, number> = {};
-        data.forEach(item => {
-          gradesMap[item.subject] = item.final_grade;
-        });
-        setSavedGrades(gradesMap);
+      if (error) {
+        toast.error('Error loading saved grades');
+        setIsLoading(false);
+        return;
       }
+
+      const gradesMap: Record<string, number> = {};
+      (data || []).forEach(item => {
+        gradesMap[item.subject] = item.final_grade;
+      });
+      setSavedGrades(gradesMap);
       setIsLoading(false);
     };
 
-    loadSavedGrades();
+    initializeData();
   }, [user]);
 
   const handleGradeChange = (subject: string, value: string) => {
@@ -119,14 +142,17 @@ export default function FinalGrades() {
       return;
     }
 
+    setActiveSavingSubject(subject);
     setIsSaving(true);
     try {
       await saveGrade(subject, gradeValue);
+      toast.success(`${subject} grade saved`);
     } catch (error) {
       console.error('Error saving grade:', error);
       toast.error('Error saving grade');
     } finally {
       setIsSaving(false);
+      setActiveSavingSubject(null);
     }
   };
 
@@ -140,13 +166,15 @@ export default function FinalGrades() {
   const handleDeleteGrade = async (subject: string) => {
   if (!user) return;
   
+  setActiveDeletingSubject(subject);
   setIsDeleting(true);
     try {
       const { error } = await supabase
         .from('final_grades')
         .delete()
         .eq('user_id', user.id)
-        .eq('subject', subject);
+        .eq('subject', subject)
+        .eq('semester', 'Fall 2025');
 
       if (error) throw error;
       
@@ -162,6 +190,7 @@ export default function FinalGrades() {
       toast.error('Error deleting grade');
     } finally {
       setIsDeleting(false);
+      setActiveDeletingSubject(null);
     }
   };
 
@@ -213,14 +242,19 @@ export default function FinalGrades() {
   ];
 
   const filteredSubjects = useMemo(() => {
-    return AVAILABLE_SUBJECTS.filter(subject => {
+    const currentSubjects = currentTrimester === '1' ? trimestr1Subjects : currentTrimester === '2' ? trimestr2Subjects : trimestr3Subjects;
+    const subjects = viewSavedOnly
+      ? [...new Set([...trimestr1Subjects, ...trimestr2Subjects, ...trimestr3Subjects])]
+      : currentSubjects;
+
+    return subjects.filter(subject => {
       const matchesSearch = subject.toLowerCase().includes(searchQuery.toLowerCase());
       const isSaved = savedGrades[subject] !== undefined;
       
-      if (viewTab === 'saved') return matchesSearch && isSaved;
+      if (viewSavedOnly) return matchesSearch && isSaved;
       return matchesSearch;
     });
-  }, [searchQuery, viewTab, savedGrades]);
+  }, [searchQuery, viewSavedOnly, savedGrades, currentTrimester, trimestr1Subjects, trimestr2Subjects, trimestr3Subjects]);
 
   if (isLoading) {
     return (
@@ -301,9 +335,19 @@ export default function FinalGrades() {
             </CardContent>
           </Card>
           <div className="flex flex-col sm:flex-row gap-4 mb-6 items-center justify-between bg-muted/30 p-4 rounded-xl border border-muted/50">
-            <Tabs value={viewTab} onValueChange={setViewTab} className="w-full sm:w-auto">
-              <TabsList className="grid w-full grid-cols-2 sm:w-[240px] h-9">
-                <TabsTrigger value="all" className="text-xs">All Subjects</TabsTrigger>
+            <Tabs value={viewSavedOnly ? 'saved' : currentTrimester} onValueChange={(value) => {
+              if (value === 'saved') {
+                setViewSavedOnly(true);
+              } else {
+                setViewSavedOnly(false);
+                setCurrentTrimester(value as '1' | '2' | '3');
+              }
+              setSearchQuery('');
+            }} className="w-full sm:w-auto">
+              <TabsList className="grid w-full grid-cols-4 sm:w-auto h-9">
+                <TabsTrigger value="1" className="text-xs">1st Trimester</TabsTrigger>
+                <TabsTrigger value="2" className="text-xs">2nd Trimester</TabsTrigger>
+                <TabsTrigger value="3" className="text-xs">3rd Trimester</TabsTrigger>
                 <TabsTrigger value="saved" className="text-xs">My Grades</TabsTrigger>
               </TabsList>
             </Tabs>
@@ -323,10 +367,10 @@ export default function FinalGrades() {
             <div className="py-20 text-center border-2 border-dashed border-muted rounded-2xl">
               <Calculator className="h-10 w-10 text-muted-foreground/30 mx-auto mb-3" />
               <p className="text-muted-foreground font-medium">
-                {searchQuery ? 'No subjects matching your search.' : 'No grades saved yet.'}
+                {searchQuery ? 'No subjects matching your search.' : viewSavedOnly ? 'No grades saved yet.' : 'No subjects available.'}
               </p>
-              {viewTab === 'saved' && (
-                <Button variant="link" size="sm" onClick={() => setViewTab('all')} className="mt-2">
+              {viewSavedOnly && (
+                <Button variant="link" size="sm" onClick={() => setViewSavedOnly(false)} className="mt-2">
                   Browse all subjects
                 </Button>
               )}
@@ -345,7 +389,7 @@ export default function FinalGrades() {
                   <CardHeader className="px-4 pt-4">
                     <CardTitle className="text-base flex items-center justify-between">
                       <span className="truncate pr-2">{subject}</span>
-                      {savedGrade && !isEditing && (
+                      {savedGrade !== undefined && !isEditing && (
                         <Badge variant="secondary" className="bg-green-500/10 text-green-600 border-green-500/20 text-[10px] h-5">
                           Saved
                         </Badge>
@@ -353,7 +397,7 @@ export default function FinalGrades() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="px-4 pb-4">
-                    {!isEditing && savedGrade ? (
+                    {!isEditing && savedGrade !== undefined ? (
                       <div className="flex items-center justify-between">
                         <div className="flex items-baseline gap-1">
                           <span className="text-2xl font-bold text-primary">{savedGrade}</span>
@@ -373,10 +417,14 @@ export default function FinalGrades() {
                               <Button 
                                 variant="ghost" 
                                 size="sm"
-                                disabled={isDeleting}
-                                className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive"
+                                disabled={isDeleting && activeDeletingSubject === subject}
+                                className="h-8 w-8 p-0 text-destructive hover:bg-destructive! hover:text-destructive-foreground"
                               >
-                                <Trash className="h-4 w-4" />
+                                {isDeleting && activeDeletingSubject === subject ? (
+                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                  <Trash className="h-4 w-4" />
+                                )}
                               </Button>
                             </AlertDialogTrigger>
                             <AlertDialogContent>
@@ -409,11 +457,11 @@ export default function FinalGrades() {
                         <Button 
                           size="sm"
                           onClick={() => handleSaveGrade(subject)}
-                          disabled={isSaving || !editingGrade}
+                          disabled={(isSaving && activeSavingSubject === subject) || !editingGrade}
                         >
-                          {isSaving ? <Loader2 className="h-3 w-3 animate-spin" /> : <Save className="h-4 w-4" />}
+                          {isSaving && activeSavingSubject === subject ? <Loader2 className="h-3 w-3 animate-spin" /> : <Save className="h-4 w-4" />}
                         </Button>
-                        {savedGrade && (
+                        {savedGrade !== undefined && (
                           <Button 
                             variant="ghost" 
                             size="sm"

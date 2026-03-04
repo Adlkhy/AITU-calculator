@@ -410,7 +410,7 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
                         Subjects
                       </NavigationMenuTrigger>
                       <NavigationMenuContent>
-                        <ul className="grid w-[300px] gap-2 md:grid-cols-2">
+                        <ul className="grid w-[420px] gap-2 md:grid-cols-3">
                           {subjects
                             .filter(s => !['Attendance', 'GPA', 'Budget'].includes(s))
                             .map((subject) => (

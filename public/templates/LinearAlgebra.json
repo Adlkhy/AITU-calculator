@@ -1,0 +1,62 @@
+{
+  "breakdown": [
+    {
+      "name": "1st attestation",
+      "subItems": [
+        {
+          "name": "Assignment 1 (Week 2)",
+          "weight": 30,
+          "description": "Paper-based test"
+        },
+        {
+          "name": "Assignment 2 (Week 4)",
+          "weight": 30,
+          "description": "Paper-based test"
+        },
+        {
+          "name": "Midterm Exam (Week 5)",
+          "weight": 40,
+          "description": "Paper-based test"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 30
+    },
+    {
+      "name": "2nd attestation",
+      "subItems": [
+        {
+          "name": "Assignment 3 (Week 7)",
+          "weight": 30,
+          "description": "Paper-based test"
+        },
+        {
+          "name": "Assignment 4 (Week 9)",
+          "weight": 30,
+          "description": "Paper-based test"
+        },
+        {
+          "name": "Endterm Exam (Week 10)",
+          "weight": 40,
+          "description": "Paper-based test"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 30
+    },
+    {
+      "name": "Final exam",
+      "subItems": [
+        {
+          "name": "Exam",
+          "weight": 100,
+          "description": "Paper-based test"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 40
+    }
+  ],
+  "courseName": "Linear Algebra",
+  "totalWeightNote": "0.3 * 1st Att + 0.3 * 2nd Att + 0.4 * Final"
+}
