@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /profile
+User-agent: GPTBot
+Disallow: /
+User-agent: Google-Extended
+Disallow: /
+Sitemap: https://evaiis.vercel.app/sitemap.xml
