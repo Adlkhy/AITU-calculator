@@ -44,7 +44,7 @@ export default function AttendanceTracker() {
   return (
     <div className="px-4 sm:px-8 ">
       <div className="mb-6 space-y-1">
-          <h1 className="text-3xl md:text-4xl font-black text-foreground">
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground">
             Attendance Tracker
           </h1>
           <p className="text-muted-foreground font-medium">
@@ -61,9 +61,10 @@ export default function AttendanceTracker() {
               <Input
                 type="number"
                 min={0}
+                max={50}
                 value={classesPerWeek}
                 onChange={(e) => setClassesPerWeek(e.target.value)}
-                className="w-full bg-input text-accent-foreground p-2 border border-foreground/20 rounded-md"
+                className="w-full md:text-lg! bg-input font-mono text-accent-foreground pr-2 border border-foreground/20 rounded-md"
               />
             </div>
 
@@ -74,16 +75,17 @@ export default function AttendanceTracker() {
               <Input
                 type="number"
                 min={0}
+                max={50}
                 value={missedClasses}
                 onChange={(e) => setMissedClasses(e.target.value)}
-                className="w-full bg-input text-accent-foreground p-2 border border-foreground/20 rounded-md"
+                className="w-full md:text-lg! bg-input font-mono text-accent-foreground pr-2 border border-foreground/20 rounded-md"
               />
             </div>
           </div>
 
           <div className="text-center mb-4">
             <p className="text-lg text-foreground">Attendance:</p>
-            <p className="text-4xl font-bold text-primary">
+            <p className="text-4xl font-bold font-mono text-primary">
               {attendancePercent.toFixed(1)}%
             </p>
           </div>

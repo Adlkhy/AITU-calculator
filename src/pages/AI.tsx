@@ -9,6 +9,7 @@ import { ApiKeyInput } from '@/components/ApiKeyInput';
 import { useGemini } from '@/hooks/useGemini';
 import { useGeminiClient } from '../lib/GeminiClient';
 import type { SyllabusData } from '../hooks/types';
+import Footer from '@/components/Footer';
 // import CircularGallery from '@/components/shadcn/gsap/CircularGallary';
 import { BadgeAlert, CircleArrowLeft} from 'lucide-react';
 
@@ -57,15 +58,15 @@ const App: React.FC = () => {
   return (
     <>
     <Navbar08 />
-    <div className="max-w-4xl mx-auto px-4 md:px-8">
+    <div className="max-w-4xl min-h-screen mx-auto px-4 md:px-8">
       {/* Header */}
       <header className="mb-10 px-4 md:px-8 mt-6">
         {/* <h1 className="text-4xl md:text-5xl font-black text-foreground tracking-tight mb-4">
           We Asked AI. <br className='md:hidden'/>It Said <span className="text-primary">‘Sure’</span>
         </h1> */}
         <RotatingText
-          texts={["We Asked AI. It Said 'Sure'", "We Put AI in It. You’re Welcome. Or Sorry.", "An Overengineered Solution to a Simple Problem", "Because Someone Said ‘What If You Add AI?’", "Yep, I Trained a Model Instead of Writing Logic"]}
-          mainClassName='text-4xl justify-center flex items-center md:text-5xl text-center font-black text-foreground tracking-tight mb-4'
+          texts={["We Asked AI. It Said 'Sure'", "We Put AI in It. You're Welcome. Or Sorry.", "An Overengineered Solution to a Simple Problem", "Because Someone Said 'What If You Add AI?'", "Yep, I Trained a Model Instead of Writing Logic"]}
+          mainClassName='text-3xl justify-center flex items-center md:text-5xl text-center font-bold text-foreground tracking-tight mb-4'
           staggerFrom={"first"}
           initial={{ y: "100%", opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -75,7 +76,7 @@ const App: React.FC = () => {
           transition={{ type: "spring"}}
           rotationInterval={6500}
           splitBy='lines'/>
-        <p className="text-lg text-foreground max-w-2xl mx-auto">
+        <p className="text-lg text-foreground text-center max-w-2xl mx-auto">
           Don't guess your grades. Upload your syllabus and let AI build your custom grade tracker instantly.
         </p>
       </header>
@@ -126,6 +127,7 @@ const App: React.FC = () => {
       </section>
 
     </div>
+    <Footer />
     </>
   );
 };

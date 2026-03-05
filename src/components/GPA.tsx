@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardTitle, CardDescription } from './ui/card';
 import { Input } from './ui/input';
-import { X } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 
 export type SubjectRow = {
   id: number;
@@ -128,7 +128,7 @@ export default function GpaCalculator() {
   return (
     <div className="px-4 md:px-8 max-w-5xl mx-auto w-full">
       <div className="mb-6 space-y-1 ">
-          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-foreground">
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
             GPA Calculator
           </h1>
           <p className="text-muted-foreground font-medium">
@@ -146,9 +146,10 @@ export default function GpaCalculator() {
               size="sm"
               type="button"
               disabled={rows.length >= 10}
-              className="px-4 py-2 bg-primary text-secondary font-medium w-full sm:w-auto"
+              className="px-4 py-2 bg-primary text-primary-foreground font-medium w-full sm:w-auto"
             >
-              + Add subject
+              <Plus className="w-4 h-4" />
+              Add subject
             </Button>
             <Button
               onClick={reset}
@@ -179,12 +180,12 @@ export default function GpaCalculator() {
                 {rows.map((r, idx) => {
                   const g = percentToGpa(Number(r.percent) || 0);
                   return (
-                    <tr key={r.id} className="border-t border-foreground/10">
+                    <tr key={r.id} className="border-t border-foreground/10 group">
                       <td className="py-2 pr-4">{idx + 1}</td>
                       <td className="py-2">
                         <Input
                           value={r.name}
-                          className="w-40 p-2 border border-foreground/20 bg-input"
+                          className="w-40 p-2 font-mono border border-foreground/20 bg-input"
                           onChange={(e) =>
                             updateRow(r.id, { name: e.target.value })
                           }
@@ -197,7 +198,7 @@ export default function GpaCalculator() {
                           max={100}
                           value={r.percent}
                           placeholder="67"
-                          className="w-24 p-2 border border-foreground/20 bg-input"
+                          className="w-24 p-2 font-mono border border-foreground/20 bg-input"
                           onChange={(e) =>
                             updateRow(r.id, {
                               percent:
@@ -213,7 +214,7 @@ export default function GpaCalculator() {
                           type="number"
                           min={0}
                           value={r.credits}
-                          className="w-20 p-2 border border-foreground/20 bg-input"
+                          className="w-20 p-2 font-mono border border-foreground/20 bg-input"
                           onChange={(e) =>
                             updateRow(r.id, {
                               credits:
@@ -232,9 +233,9 @@ export default function GpaCalculator() {
                           size="sm"
                           disabled={rows.length === 1}
                           type="button"
-                          className="h-8 w-8 text-destructive hover:text-destructive-foreground hover:bg-destructive! border! border-destructive! transition-colors"
+                          className="h-8 w-8 opacity-0 group-hover:opacity-100 text-destructive hover:text-destructive-foreground hover:bg-destructive! transition-opacity"
                         >
-                          <X className="w-4 h-4" />
+                          <Trash2 className="w-4 h-4" />
                         </Button>
                       </td>
                     </tr>
@@ -261,7 +262,7 @@ export default function GpaCalculator() {
                     <Input
                       value={r.name}
                       placeholder="Subject..."
-                      className="w-full p-2 border border-foreground/20 bg-input"
+                      className="w-full p-2 border border-foreground/20 bg-input font-mono"
                       onChange={(e) => updateRow(r.id, { name: e.target.value })}
                     />
 
@@ -269,7 +270,7 @@ export default function GpaCalculator() {
                       type="number"
                       value={r.percent}
                       placeholder="Percent... 67%"
-                      className="w-full p-2 border border-foreground/20 bg-input"
+                      className="w-full p-2 border border-foreground/20 bg-input font-mono"
                       onChange={(e) =>
                         updateRow(r.id, {
                           percent:
@@ -282,7 +283,7 @@ export default function GpaCalculator() {
                       type="number"
                       value={r.credits}
                       placeholder="Credits"
-                      className="w-full p-2 border border-foreground/20 bg-input"
+                      className="w-full p-2 border border-foreground/20 bg-input font-mono"
                       onChange={(e) =>
                         updateRow(r.id, {
                           credits:
