@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { CloudUpload, Loader } from 'lucide-react';
 
 interface FileUploadProps {
@@ -8,10 +8,29 @@ interface FileUploadProps {
 
 export const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect, isLoading }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isDragActive, setIsDragActive] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const supportedMimeTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+  const supportedExtensions = ['png', 'jpg', 'jpeg', 'webp'];
+
+  const isSupportedImage = (file: File) => {
+    const mimeType = file.type.toLowerCase();
+    if (supportedMimeTypes.includes(mimeType)) {
+      return true;
+    }
+
+    const extension = file.name.split('.').pop()?.toLowerCase();
+    return extension ? supportedExtensions.includes(extension) : false;
+  };
+
+  const processFile = (file: File) => {
+    if (!isSupportedImage(file)) {
+      setErrorMessage('Only PNG, JPG, JPEG, and WEBP images are allowed.');
+      return;
+    }
+
+    setErrorMessage('');
 
     const reader = new FileReader();
     reader.onload = () => {
@@ -22,8 +41,45 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect, isLoading 
     reader.readAsDataURL(file);
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    processFile(file);
+    e.target.value = '';
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (isLoading) return;
+    setIsDragActive(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragActive(false);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (isLoading) return;
+
+    setIsDragActive(false);
+    const file = e.dataTransfer.files?.[0];
+    if (!file) return;
+
+    processFile(file);
+  };
+
   return (
-    <div className="w-full max-w-2xl mx-auto p-8 border-2 border-dashed border-foreground/80 rounded-2xl bg-card shadow-sm hover:border-primary transition-colors">
+    <div
+      className={`w-full max-w-2xl mx-auto p-8 border-2 border-dashed rounded-2xl bg-card shadow-sm transition-colors ${
+        isDragActive ? 'border-primary' : 'border-foreground/80 hover:border-primary'
+      }`}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+    >
       <div className="flex flex-col items-center justify-center space-y-4">
         <div className="p-4 bg-secondary rounded-full">
           <CloudUpload className="text-4xl text-primary" />
@@ -52,8 +108,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect, isLoading 
           ref={fileInputRef}
           onChange={handleFileChange}
           className="hidden"
-          accept="image/*"
+          accept="image/png,image/jpeg,image/jpg,image/webp"
         />
+        {errorMessage && <p className="text-xs text-destructive">{errorMessage}</p>}
         <p className="text-xs text-foreground/80">Supported: JPG, PNG, WEBP</p>
       </div>
     </div>

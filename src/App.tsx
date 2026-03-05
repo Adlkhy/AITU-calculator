@@ -34,17 +34,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path='/signup' element={<Signup />} />
           <Route path="/term-of-service" element={<TermOfService />} />
-          <Route path="/ai" element={
-            <ProtectedRoute>
-              <AI />
-            </ProtectedRoute>}
-          />
+          <Route path="/ai" element={<AI />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route path="/leaderboard" element={
-            <ProtectedRoute>
-              <Leaderboard />
-            </ProtectedRoute>} 
-            />
+          <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/profile" element={
             <ProtectedRoute>
               <Profile />

@@ -9,7 +9,7 @@ import { ApiKeyInput } from '@/components/ApiKeyInput';
 import { useGemini } from '@/hooks/useGemini';
 import { useGeminiClient } from '../lib/GeminiClient';
 import type { SyllabusData } from '../hooks/types';
-import CircularGallery from '@/components/shadcn/gsap/CircularGallary';
+// import CircularGallery from '@/components/shadcn/gsap/CircularGallary';
 import { BadgeAlert, CircleArrowLeft} from 'lucide-react';
 
 const App: React.FC = () => {
@@ -44,15 +44,15 @@ const App: React.FC = () => {
     setError(null);
   };
 
-  const items = [
-    { image: '/quote1.jpeg', text: '' },
-    { image: '/quote2.jpeg', text: '' },
-    { image: '/quote4.jpeg', text: '' },
-    { image: '/quote5.jpeg', text: '' },
-    { image: '/quote3.jpeg', text: '' },
-    { image: '/quote6.jpeg', text: '' },
+  // const items = [
+  //   { image: '/quote1.jpeg', text: '' },
+  //   { image: '/quote2.jpeg', text: '' },
+  //   { image: '/quote4.jpeg', text: '' },
+  //   { image: '/quote5.jpeg', text: '' },
+  //   { image: '/quote3.jpeg', text: '' },
+  //   { image: '/quote6.jpeg', text: '' },
 
-  ];
+  // ];
 
   return (
     <>
@@ -80,9 +80,9 @@ const App: React.FC = () => {
         </p>
       </header>
 
-      <main>
+      <section>
         {!syllabusData ? (
-          <div className="animate-in  px-4 md:px-8 fade-in slide-in-from-bottom-4 duration-700">
+          <div className="animate-in px-4 md:px-8 fade-in slide-in-from-bottom-4 duration-700">
             {error &&  (
               <div className="my-6 p-4 bg-card text-destructive rounded-xl text-center flex items-center justify-center">
                 <BadgeAlert className="w-6 h-6 mr-2 text-destructive" />
@@ -95,7 +95,7 @@ const App: React.FC = () => {
               <FileUpload onFileSelect={handleFileUpload} isLoading={loading} />
             )}
             
-            <div style={{ height: '40vh', width: '100%', position: 'relative' }}>
+            {/* <div style={{ height: '40vh', width: '100%', position: 'relative' }}>
               <CircularGallery 
               items={items}
               borderRadius={0.05} 
@@ -103,10 +103,10 @@ const App: React.FC = () => {
               scrollSpeed={2}
               scrollEase={0.05}
               />
-            </div>
+            </div> */}
           </div>
         ) : (
-          <div className="animate-in zoom-in-95 duration-500">
+          <div className="animate-in zoom-in-95 duration-500 mb-10">
             <div className="flex justify-between items-center mb-8">
               <button 
                 onClick={reset}
@@ -123,7 +123,7 @@ const App: React.FC = () => {
             <GradeCalculator data={syllabusData} />
           </div>
         )}
-      </main>
+      </section>
 
     </div>
     </>
