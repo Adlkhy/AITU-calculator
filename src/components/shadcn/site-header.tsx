@@ -36,17 +36,17 @@ export function SiteHeader() {
     return user?.email || 'No email';
   };
 
-  if (!user) {
-    return (
-      <Button 
-        variant="ghost" 
-        className="h-9 px-4"
-        onClick={() => navigate('/login')}
-      >
-        Login
-      </Button>
-    );
-  }
+  // if (!user) {
+  //   return (
+  //     <Button 
+  //       variant="ghost" 
+  //       className="h-9 px-4"
+  //       onClick={() => navigate('/login')}
+  //     >
+  //       Login
+  //     </Button>
+  //   );
+  // }
   
   if (loading) {
     return (
@@ -68,11 +68,12 @@ export function SiteHeader() {
           className="mx-2 data-[orientation=vertical]:h-4"
         />
         <h1 className="text-base font-medium">Leaderboard</h1>
-        <div className="ml-auto flex items-center gap-2">
-          <ModeToggle />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-9 px-2 py-0 hover:bg-accent hover:text-accent-foreground">
+          <div className="ml-auto flex items-center gap-2">
+            <ModeToggle />
+            {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-9 px-2 py-0 hover:bg-accent hover:text-accent-foreground">
                 <Avatar className="h-7 w-7">
                   <AvatarImage src={user.user_metadata?.avatar_url} alt={getUserName()} />
                   <AvatarFallback className="text-xs">
@@ -107,7 +108,12 @@ export function SiteHeader() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
+            ) : ( 
+          <Button variant="ghost" className="h-9 px-4" onClick={() => navigate('/login')}>
+              Login
+            </Button>
+          )}
+          </div>
       </div>
     </header>
   )

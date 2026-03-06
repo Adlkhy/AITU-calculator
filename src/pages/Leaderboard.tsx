@@ -12,6 +12,9 @@ import { fetchGroupData, getGroupName } from '@/services/groupService'
 // import { SectionCards } from "@/components/shadcn/section-cards"
 import { SiteHeader } from "@/components/shadcn/site-header"
 import { z } from 'zod';
+import { Info } from 'lucide-react'
+import { Card, CardContent } from '@/components/ui/card'
+import { Link } from 'react-router-dom'
 import {
   SidebarInset,
   SidebarProvider,
@@ -33,6 +36,7 @@ export type LeaderboardItem = z.infer<typeof leaderboardSchema>;
 
 export default function Leaderboard() {
   const { user: currentUser, loading} = useUser()
+  const  {user } = useUser()
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
@@ -134,10 +138,10 @@ export default function Leaderboard() {
 
   useEffect(() => {
     // Redirect if not authenticated
-    if (!loading && !currentUser) {
-      navigate('/login', { replace: true });
-      return;
-    }
+    // if (!loading && !currentUser) {
+    //   navigate('/login', { replace: true });
+    //   return;
+    // }
 
     // Initial data fetch
     fetchLeaderboardData();
@@ -233,7 +237,24 @@ export default function Leaderboard() {
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-              
+              {(!user && (
+                <Card className="mx-4 lg:mx-6 p-0 py-2 border-none bg-accent/30 shadow-none">
+                  <CardContent className="p-4 flex gap-4 items-start">
+                    <div className="bg-primary/10 p-2 rounded-full mt-1 shrink-0">
+                      <Info className="h-5 w-5 text-primary" />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="font-semibold text-sm">Join the Leaderboard</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed text-balance">
+                      Login to add your grades and compete fairly with your classmates. Only authenticated users can participate in the leaderboards. Add your grades at <Link to="/final-grades" className="text-primary hover:underline">
+                        /final-grades
+                      </Link>
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+              ))}
+
               {/* Enhanced: Current User Stats */}
               {currentUserRank > 0 && (
                 <div className="px-4 lg:px-6">
