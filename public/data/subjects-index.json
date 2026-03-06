@@ -1,0 +1,173 @@
+[
+  {
+    "slug": "programming",
+    "name": "Programming",
+    "courseName": "Object Oriented Programming (Java/Python)",
+    "description": "Track OOP assignments, quizzes, and project grades across a structured 30/30/40 attestation breakdown.",
+    "file": "Programming.json",
+    "type": "template",
+    "tags": ["CS", "SE", "BDA", "IIOT"]
+  },
+  {
+    "slug": "calculus",
+    "name": "Calculus I",
+    "courseName": "Calculus I",
+    "description": "Calculate your Calculus I grade across midterm exams, written assignments, and weekly quizzes.",
+    "file": "Calculus.json",
+    "type": "template",
+    "tags": ["CS", "SE", "MT", "BDA"]
+  },
+  {
+    "slug": "calculus-2",
+    "name": "Calculus II",
+    "courseName": "Calculus II",
+    "description": "Monitor Calculus II course progress through attestation periods and a weighted final exam.",
+    "file": "Calculus2.json",
+    "type": "template",
+    "tags": ["CS", "SE", "MT", "BDA"]
+  },
+  {
+    "slug": "discrete-math",
+    "name": "Discrete Math",
+    "courseName": "Discrete Mathematics",
+    "description": "Manage Discrete Mathematics grades including quizzes, classwork, homework, and lecture activities.",
+    "file": "DiscreteMath.json",
+    "type": "template",
+    "tags": ["CS", "SE", "BDA"]
+  },
+  {
+    "slug": "linear-algebra",
+    "name": "Linear Algebra",
+    "courseName": "Linear Algebra",
+    "description": "Calculate Linear Algebra paper-based test and midterm scores with a structured grade breakdown.",
+    "file": "LinearAlgebra.json",
+    "type": "template",
+    "tags": ["CS", "SE", "MT", "BDA"]
+  },
+  {
+    "slug": "ads",
+    "name": "Algorithms and Data Structures",
+    "courseName": "Algorithms and Data Structures",
+    "description": "Track Algorithms and Data Structures grades including programming assignments, quizzes, and the final project defense.",
+    "file": "ADS.json",
+    "type": "template",
+    "tags": ["CS", "SE", "BDA"]
+  },
+  {
+    "slug": "hacking-lab",
+    "name": "Hacking Lab",
+    "courseName": "Hacking Lab",
+    "description": "Monitor Ethical Hacking Lab grades across CTF practicals, theoretical assessments, and the final exam.",
+    "file": "HackingLab.json",
+    "type": "template",
+    "tags": ["CS", "SE"]
+  },
+  {
+    "slug": "english",
+    "name": "Academic English",
+    "courseName": "Academic English",
+    "description": "Track Academic English grades across writing tasks, speaking assessments, and presentation components.",
+    "file": "English.json",
+    "type": "template",
+    "tags": ["ALL"]
+  },
+  {
+    "slug": "english-b2",
+    "name": "English B2",
+    "courseName": "English B2",
+    "description": "Calculate your English B2 course grade with weighted assessments across all attestation periods.",
+    "file": "EnglishB2.json",
+    "type": "template",
+    "tags": ["ALL"]
+  },
+  {
+    "slug": "history",
+    "name": "History",
+    "courseName": "History of Kazakhstan",
+    "description": "Track History course grades including seminar activities, lecture attendance, and exam performance.",
+    "file": "History.json",
+    "type": "template",
+    "tags": ["ALL"]
+  },
+  {
+    "slug": "culture-studies",
+    "name": "Culture Studies",
+    "courseName": "Culture Studies",
+    "description": "Calculate Culture Studies grades including oral defenses, quizzes, and MCQ lecture assessments.",
+    "file": "CultureStudies.json",
+    "type": "template",
+    "tags": ["ALL"]
+  },
+  {
+    "slug": "political-science",
+    "name": "Political Science",
+    "courseName": "Political Science",
+    "description": "Monitor Political Science grades across attestations with a weighted 40-point final exam component.",
+    "file": "PoliticalScience.json",
+    "type": "template",
+    "tags": ["ALL"]
+  },
+  {
+    "slug": "ict",
+    "name": "ICT",
+    "courseName": "Information and Communication Technologies",
+    "description": "Track ICT course performance across all assessment components and attestation periods.",
+    "file": "ICT.json",
+    "type": "template",
+    "tags": ["ALL"]
+  },
+  {
+    "slug": "psychology",
+    "name": "Psychology",
+    "courseName": "Psychology",
+    "description": "Calculate Psychology course grades with a standard 30/30/40 attestation grading structure.",
+    "file": "Psychology.json",
+    "type": "template",
+    "tags": ["ALL"]
+  },
+  {
+    "slug": "sociology",
+    "name": "Sociology",
+    "courseName": "Sociology",
+    "description": "Monitor Sociology course grades with a structured attestation and final exam breakdown.",
+    "file": "Sociology.json",
+    "type": "template",
+    "tags": ["ALL"]
+  },
+  {
+    "slug": "custom",
+    "name": "Custom Calculator",
+    "courseName": "Custom Grade Calculator",
+    "description": "Build a fully customizable grade calculator with your own categories, weights, and assessment items.",
+    "file": null,
+    "type": "tool",
+    "tags": ["ALL"]
+  },
+  {
+    "slug": "attendance",
+    "name": "Attendance Tracker",
+    "courseName": "Attendance Calculator",
+    "description": "Track your class attendance percentage and verify you meet the minimum 85% requirement to sit exams.",
+    "file": null,
+    "type": "tool",
+    "tags": ["ALL"]
+  },
+  {
+    "slug": "gpa",
+    "name": "GPA Calculator",
+    "courseName": "GPA Calculator",
+    "description": "Calculate your cumulative GPA and convert grades between percentage, letter, and 4.0-scale formats.",
+    "file": null,
+    "type": "tool",
+    "tags": ["ALL"]
+  },
+  {
+    "slug": "budget",
+    "name": "Budget Planner",
+    "courseName": "Monthly Budget Planner",
+    "description": "Manage your monthly student budget, categorize expenses, and visualize your spending breakdown.",
+    "file": null,
+    "type": "tool",
+    "tags": ["ALL"]
+  }
+]

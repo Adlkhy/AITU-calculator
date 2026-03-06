@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { DotLoader } from '@/components/shadcn/gsap/dot-loader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Navbar08 } from '@/components/Navbar2';
+import { Navbar08 } from '@/components/Navbar';
 import { toast, Toaster } from 'sonner';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Trash, Loader2, Search, Edit2, Save, X, Info, GraduationCap, Calculator } from 'lucide-react';

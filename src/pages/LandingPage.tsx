@@ -29,11 +29,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
+  { label: 'Testimonials', href: '#testimonials' },
   { label: 'Features', href: '#features' },
   { label: 'AI', href: '#ai' },
+  { label: 'Leaderboard', href: '#leaderboard' },
   { label: 'FAQ', href: '#faq' },
-  { label: 'Calculator', href: '/calculator' },
-  { label: 'Leaderboard', href: '/leaderboard' },
 ];
 
 const features1 = [
@@ -416,7 +416,7 @@ export default function Navbar() {
             </motion.a>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-1">
+            <div className="hidden md:flex items-center justify-around gap-1">
               {navLinks.map((link, index) => (
                 <motion.a
                   key={link.label}
@@ -424,7 +424,7 @@ export default function Navbar() {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 + 0.2 }}
-                  className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="nav-link px-4 text-base text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {link.label}
                 </motion.a>
@@ -909,7 +909,7 @@ export default function Navbar() {
     </section>
 
     {/* Leaderboard Section */}
-    <section className="relative w-full py-32 md:py-44 bg-background overflow-hidden">
+    <section id="leaderboard" className="relative w-full py-32 md:py-44 bg-background overflow-hidden">
       {/* Background: faint horizontal rule stripes for depth */}
       <div
         className="absolute inset-0 pointer-events-none"

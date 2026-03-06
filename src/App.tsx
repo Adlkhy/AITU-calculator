@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './components/theme-provider';
-import MainCalculator from './pages/CalculatorApp'; // We'll create this
+import SubjectDirectory from './pages/SubjectDirectory';
+import SubjectCalculator from './pages/SubjectCalculator';
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -19,10 +20,10 @@ function App() {
   const { user, loading, session } = useUser();
 
   useEffect(() => {
-    console.log('App - User state:', { 
-      user: user?.email, 
+    console.log('App - User state:', {
+      user: user?.email,
       loading: loading,
-      hasSession: !!session 
+      hasSession: !!session
     });
   }, [user, loading, session]);
   return (
@@ -30,7 +31,9 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/calculator" element={<MainCalculator />} />
+          {/* SEO-friendly calculator routes */}
+          <Route path="/calculator" element={<SubjectDirectory />} />
+          <Route path="/calculator/:subjectSlug" element={<SubjectCalculator />} />
           <Route path="/login" element={<Login />} />
           <Route path='/signup' element={<Signup />} />
           <Route path="/term-of-service" element={<TermOfService />} />
@@ -40,12 +43,12 @@ function App() {
           <Route path="/profile" element={
             <ProtectedRoute>
               <Profile />
-            </ProtectedRoute>} 
+            </ProtectedRoute>}
             />
           <Route path="/final-grades" element={
             <ProtectedRoute>
               <FinalGrades />
-            </ProtectedRoute>} 
+            </ProtectedRoute>}
             />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

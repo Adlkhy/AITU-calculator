@@ -126,7 +126,7 @@ export default function GpaCalculator() {
   }, [addRow, rows.length]);
 
   return (
-    <div className="px-4 md:px-8 max-w-5xl mx-auto w-full">
+    <div className="max-w-5xl mx-auto w-full">
       <div className="mb-6 space-y-1 ">
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
             GPA Calculator
@@ -292,7 +292,7 @@ export default function GpaCalculator() {
                       }
                     />
 
-                    <div className="text-lg font-bold text-primary">
+                    <div className="text-lg font-bold font-mono text-primary">
                       GPA: {g.toFixed(2)}
                     </div>
 
@@ -317,21 +317,21 @@ export default function GpaCalculator() {
             <Card className="p-3 rounded-md shadow-none hover:shadow-lg transition-shadow">
               <CardContent className="px-0">
                 <CardTitle className="text-sm font-normal text-foreground/70">Total credits</CardTitle>
-                <CardDescription className="text-2xl text-foreground font-bold">{totalCredits}</CardDescription>
+                <CardDescription className="text-2xl text-foreground font-mono font-bold">{totalCredits}</CardDescription>
               </CardContent>
             </Card>
 
             <Card className="p-3 rounded-md shadow-none hover:shadow-lg transition-shadow">
               <CardContent className="px-0">
                 <CardTitle className="text-sm font-normal text-foreground/70">Total percent</CardTitle>
-                <CardDescription className="text-2xl text-primary font-bold">{weightedPercent.toFixed(1)}%</CardDescription>
+                <CardDescription className="text-2xl text-primary font-mono font-bold">{weightedPercent.toFixed(1)}%</CardDescription>
               </CardContent>
             </Card>
 
             <Card className="p-3 rounded-md shadow-none hover:shadow-lg transition-shadow">
               <CardContent className="px-0">
                 <CardTitle className="text-sm font-normal text-foreground/70">Total GPA</CardTitle>
-                <CardDescription className="text-2xl font-bold text-primary">
+                <CardDescription className="text-2xl font-bold font-mono text-primary">
                   {weightedGpa.toFixed(2)}{" "}
                   <span className={letterColor(gpaToLetter(weightedGpa))}>
                     {gpaToLetter(weightedGpa)}

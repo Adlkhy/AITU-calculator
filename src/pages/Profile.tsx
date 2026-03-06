@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useCallback, useEffect, useState } from 'react';
-import { Navbar08 } from '@/components/Navbar2';
+import { Navbar08 } from '@/components/Navbar';
 import { DotLoader } from '@/components/shadcn/gsap/dot-loader';
 import { cn } from "@/lib/utils";
 import { supabase } from '@/lib/supabaseClient'; // Ensure this path is correct

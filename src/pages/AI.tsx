@@ -4,7 +4,7 @@ import { FileUpload } from '../components/FileUpload';
 import { GradeCalculator } from '../components/GradeCalculator';
 import { parseSyllabus } from '../services/geminiService';
 import RotatingText from '@/components/shadcn/gsap/RotatingText';
-import { Navbar08 } from '../components/Navbar2';
+import { Navbar08 } from '../components/Navbar';
 import { ApiKeyInput } from '@/components/ApiKeyInput';
 import { useGemini } from '@/hooks/useGemini';
 import { useGeminiClient } from '../lib/GeminiClient';

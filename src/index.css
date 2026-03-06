@@ -406,3 +406,35 @@ html {
 
 /* #279AF1 */
 /* #DF9A57 */
+
+/* Navbar link hover animation */
+@keyframes underline-expand {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.nav-link {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--primary);
+  animation-duration: 0.3s;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+}
+
+.nav-link:hover::after {
+  animation-name: underline-expand;
+}

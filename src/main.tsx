@@ -5,6 +5,7 @@ import './index.css'
 import { UserProvider } from './contexts/UserContext.tsx'
 import { GeminiProvider } from './contexts/GeminiContext.tsx'
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { HelmetProvider } from 'react-helmet-async';
 
 const GA_ID = import.meta.env.VITE_GA_ID; 
 
@@ -29,11 +30,13 @@ if (GA_ID) {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <GeminiProvider>
-      <UserProvider>
-        <SpeedInsights />
-        <App />
-      </UserProvider>
-    </GeminiProvider>
+    <HelmetProvider>
+      <GeminiProvider>
+        <UserProvider>
+          <SpeedInsights />
+          <App />
+        </UserProvider>
+      </GeminiProvider>
+    </HelmetProvider>
   </React.StrictMode>
 )

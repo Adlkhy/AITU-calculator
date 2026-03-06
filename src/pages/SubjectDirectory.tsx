@@ -1,0 +1,179 @@
+import { Link } from 'react-router-dom';
+import { useMemo, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { ArrowRight, BookOpen, Search, Wrench } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Navbar08 } from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { useSubjectsIndex } from '@/hooks/useSubjectTemplate';
+import type { SubjectEntry } from '@/hooks/types';
+
+// ─── Loading skeleton ────────────────────────────────────────────────────────
+
+function DirectorySkeleton() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {Array.from({ length: 9 }).map((_, i) => (
+        <div key={i} className="flex flex-col gap-3 rounded-xl border p-6">
+          <Skeleton className="h-4 w-24" />
+          <Skeleton className="h-5 w-40" />
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-8 w-28 mt-auto" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ─── Single subject card ──────────────────────────────────────────────────────
+
+function SubjectCard({ subject }: { subject: SubjectEntry }) {
+  const isTemplate = subject.type === 'template';
+
+  return (
+    <Link
+      to={`/calculator/${subject.slug}`}
+      className="group block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl"
+      aria-label={`Open ${subject.name} calculator`}
+    >
+      <Card className="h-full transition-colors duration-200 hover:border-primary/60 hover:bg-accent/30 cursor-pointer">
+        <CardHeader className="pb-2">
+          <div className="flex items-center justify-between gap-2">
+            <Badge
+              variant={isTemplate ? 'default' : 'secondary'}
+              className="text-xs"
+            >
+              {isTemplate ? (
+                <><BookOpen className="size-3" /> Template</>
+              ) : (
+                <><Wrench className="size-3" /> Tool</>
+              )}
+            </Badge>
+          </div>
+          <CardTitle className="text-base mt-2">{subject.name}</CardTitle>
+        </CardHeader>
+
+        <CardContent className="flex-1">
+          <CardDescription className="text-sm leading-relaxed">
+            {subject.description}
+          </CardDescription>
+        </CardContent>
+
+        <CardFooter>
+          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary group-hover:gap-2.5 transition-all duration-200">
+            Open calculator
+            <ArrowRight className="size-4" />
+          </span>
+        </CardFooter>
+      </Card>
+    </Link>
+  );
+}
+
+// ─── Page ────────────────────────────────────────────────────────────────────
+
+export default function SubjectDirectory() {
+  const { subjects, isLoading, error } = useSubjectsIndex();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredSubjects = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return subjects;
+
+    return subjects.filter((subject) => {
+      const subjectName = subject.name.toLowerCase();
+      const subjectSlug = subject.slug.toLowerCase();
+      return subjectName.includes(query) || subjectSlug.includes(query);
+    });
+  }, [subjects, searchQuery]);
+
+  const templateSubjects = filteredSubjects.filter((s) => s.type === 'template');
+  const toolSubjects = filteredSubjects.filter((s) => s.type === 'tool');
+
+  return (
+    <>
+      <Helmet>
+        <title>Grade Calculator — AITU Subject Directory | Evalis</title>
+        <meta
+          name="description"
+          content="Choose from 15+ AITU subject grade calculators including Calculus, Programming, ADS, Discrete Math, and more. Track your attestation scores and final grade instantly."
+        />
+        <link rel="canonical" href="https://evalis.vercel.app/calculator" />
+      </Helmet>
+
+      <Navbar08/>
+
+      <div className="text-foreground min-h-screen font-sans">
+        <div className="max-w-5xl mx-auto min-h-screen px-4 pt-10 pb-16 sm:px-8 sm:pt-14">
+
+          {/* Page header */}
+          <header className="mb-10">
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">
+              Grade Calculator
+            </h1>
+            <p className="text-muted-foreground text-base sm:text-lg max-w-2xl">
+              Select a subject to calculate your grade across attestations and the final exam.
+              All calculators follow the standard <strong>30 / 30 / 40</strong> grading policy shown in the syllabus.
+            </p>
+
+            <div className="relative mt-6 max-w-xl">
+              <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                placeholder="Search by subject name or slug"
+                className="pl-9"
+                aria-label="Search subjects by name or slug"
+              />
+            </div>
+          </header>
+
+          {error && (
+            <div className="rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive mb-6">
+              Failed to load subject list. Please refresh the page.
+            </div>
+          )}
+
+          {isLoading ? (
+            <DirectorySkeleton />
+          ) : filteredSubjects.length === 0 ? (
+            <div className="rounded-lg border bg-card px-4 py-10 text-center text-sm text-muted-foreground">
+              No subjects match your search.
+            </div>
+          ) : (
+            <div className="space-y-10">
+              {/* Subject templates */}
+              <section id='templates' aria-labelledby="templates-heading">
+                <h2 id="templates-heading" className="text-lg font-semibold mb-4">
+                  Subject Templates
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {templateSubjects.map((subject) => (
+                    <SubjectCard key={subject.slug} subject={subject} />
+                  ))}
+                </div>
+              </section>
+
+              {/* Built-in tools */}
+              <section id='tools' aria-labelledby="tools-heading">
+                <h2 id="tools-heading" className="text-lg font-semibold mb-4">
+                  Tools
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {toolSubjects.map((subject) => (
+                    <SubjectCard key={subject.slug} subject={subject} />
+                  ))}
+                </div>
+              </section>
+            </div>
+          )}
+        </div>
+
+        <Footer />
+      </div>
+    </>
+  );
+}
