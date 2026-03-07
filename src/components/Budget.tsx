@@ -179,7 +179,7 @@ const BudgetRuleDisplay = ({
                     return (
                       <div className="bg-background border border-muted-foreground/20 p-2 rounded-lg shadow-xl text-[10px] font-bold uppercase tracking-widest">
                         <p style={{ color: payload[0].payload.color }}>{payload[0].name}: {payload[0].value}%</p>
-                        <p className="text-muted-foreground">{payload[0].payload.amount.toFixed(0)}₸</p>
+                        <p className="text-muted-foreground font-mono">{payload[0].payload.amount.toFixed(0)}<span>₸</span></p>
                       </div>
                     );
                   }
@@ -197,7 +197,7 @@ const BudgetRuleDisplay = ({
                 <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
                 <span className="font-medium text-muted-foreground">{item.name}</span>
               </div>
-              <span className="font-bold font-mono">{item.amount.toLocaleString()}₸</span>
+              <span className="font-bold font-mono">{item.amount.toLocaleString()}<span>₸</span></span>
             </div>
           ))}
         </div>
@@ -282,7 +282,7 @@ export default function BudgetPlanner() {
           </div>
           <div className="pr-4">
             <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Total Monthly</p>
-            <p className="text-2xl font-bold font-mono text-primary">{totalIncome.toLocaleString()}₸</p>
+            <p className="text-2xl font-bold font-mono text-primary">{totalIncome.toLocaleString()}<span>₸</span></p>
           </div>
         </div>
       </div>
@@ -376,7 +376,7 @@ export default function BudgetPlanner() {
               <div className="p-4 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/10">
                 <p className="text-[10px] font-bold uppercase tracking-widest opacity-70 mb-1">Target Savings</p>
                 <p className="text-3xl font-bold font-mono">
-                  {((totalIncome * activeRule.savings) / 100).toLocaleString()}₸
+                  {((totalIncome * activeRule.savings) / 100).toLocaleString()}<span className=''>₸</span>
                 </p>
               </div>
               

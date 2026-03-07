@@ -152,7 +152,7 @@ export default function SubjectCalculator() {
         <meta name="description" content={pageDescription} />
         <link
           rel="canonical"
-          href={`https://evalis.vercel.app/calculator/${canonicalSlug}`}
+          href={`https://evaiis.vercel.app/calculator/${canonicalSlug}`}
         />
       </Helmet>
 

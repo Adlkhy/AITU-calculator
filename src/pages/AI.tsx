@@ -58,7 +58,7 @@ const App: React.FC = () => {
   return (
     <>
     <Navbar08 />
-    <div className="max-w-4xl min-h-screen mx-auto px-4 md:px-8">
+    <div className="max-w-5xl min-h-screen mx-auto w-full">
       {/* Header */}
       <header className="mb-10 px-4 md:px-8 mt-6">
         {/* <h1 className="text-4xl md:text-5xl font-black text-foreground tracking-tight mb-4">

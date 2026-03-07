@@ -11,22 +11,36 @@ import {
   IconUsersGroup,
 } from "@tabler/icons-react"
 
-// import { NavDocuments } from "@/components/nav-documents"
 import { NavMain } from "@/components/shadcn/nav-main"
 import { NavSecondary } from "@/components/shadcn/nav-secondary"
 // import { NavUser } from "@/components/shadcn/nav-user"
 import {
   Sidebar,
   SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
   // SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { Calculator, Sparkles } from "lucide-react"
 
 const data = {
+  navNavi: [
+    {
+      title: "Calculator",
+      url: "/calculator",
+      icon: Calculator,
+    },
+    {
+      title: "AI",
+      url: "/ai",
+      icon: Sparkles,
+    }
+  ],
   navMain: [
     // {
     //   title: "DevJokes",
@@ -81,23 +95,6 @@ const data = {
       icon: IconPaw,
     },
   ],
-  // documents: [
-  //   {
-  //     name: "Mama",
-  //     url: "#",
-  //     icon: IconDatabase,
-  //   },
-  //   {
-  //     name: "Dada",
-  //     url: "#",
-  //     icon: IconReport,
-  //   },
-  //   {
-  //     name: "You",
-  //     url: "#",
-  //     icon: IconFileWord,
-  //   },
-  // ],
 }
 
 
@@ -125,8 +122,29 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        {/* <NavDocuments items={data.documents} /> */}
+        <h3 className="px-4 pt-2 text-xs font-semibold text-muted-foreground uppercase">
+          Navigation
+        </h3>
+        <SidebarGroup>
+          <SidebarGroupContent className="flex flex-col gap-2">
+            <SidebarMenu>
+              {data.navNavi.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton tooltip={item.title}>
+                    <Link to={item.url} className="flex items-center gap-2">
+                      {item.icon && <item.icon />}
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <h3 className="px-4 pt-2 text-xs font-semibold text-muted-foreground uppercase">
+          Links
+        </h3>
+        <NavMain items={data.navMain}/>
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       {/* <SidebarFooter>
