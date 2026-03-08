@@ -10,6 +10,7 @@ import { DotLoader } from '@/components/shadcn/gsap/dot-loader'
 import { fetchGroupData, getGroupName } from '@/services/groupService'
 // import { ChartAreaInteractive } from "@/components/shadcn/chart-area-interactive"
 // import { SectionCards } from "@/components/shadcn/section-cards"
+import { Podium } from '@/components/shadcn/podium'
 import { SiteHeader } from "@/components/shadcn/site-header"
 import { z } from 'zod';
 import { Info } from 'lucide-react'
@@ -25,6 +26,7 @@ export const leaderboardSchema = z.object({
   id: z.number(),
   name: z.string(), // This will be the user's name
   group: z.string(),   // This will be the group/class
+  avatarUrl: z.string().optional(),
   performance: z.string(), // This will be the performance level
   subjects: z.string(), // This will be the number of subjects
   limit: z.string(),  // This will be the semester
@@ -110,6 +112,7 @@ export default function Leaderboard() {
             id: 0, // Temporary ID, will be set after sorting
             name: userData.full_name,
             group: getGroupName(userData.email, groupMap),
+            avatarUrl: userData.avatar_url,
             performance: status,
             subjects: `${userData.count} subjects`, // Number of subjects completed
             limit: 'Fall 2025',
@@ -262,6 +265,8 @@ export default function Leaderboard() {
                     currentUserRank={currentUserRank} currentUserAverage={currentUserAverage} leaderboardData={leaderboardData} />
                 </div>
               )}
+
+              <Podium data={leaderboardData} />
 
               {/* <SectionCards /> */}
               

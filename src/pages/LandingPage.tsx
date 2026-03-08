@@ -42,53 +42,53 @@ const features1 = [
   'Grade forecasting',
 ];
 
-const themePresets = [
-  { name: 'Calculus' },
-  { name: 'Programming C++' },
-  { name: "Programming Python" },
-  { name: "English" },
-  { name: "German" },
-  { name: "Chinese" },
-  { name: "Korean" },
-  { name: "Sociology" },
-  { name: "Discrete Math" },
-  { name: "Psychology" },
-  { name: "ICT" },
-  { name: "Calculus 1" },
-  { name: "Calculus 2" },
-  { name: "Physics" },
-  { name: "Physical Education" },
-  { name: "History" },
-  { name: "Intro to Computing and Programming" },
-  { name: "Linear Algebra" },
-  { name: "Political Science" },
-  { name: "Culture Studies" },
-  { name: "Foundations of Journalism" },
-  { name: "Business Administration" },
-  { name: "Mathematics for AI" },
-  { name: 'Calculus' },
-  { name: 'Programming C++' },
-  { name: "Programming Python" },
-  { name: "English" },
-  { name: "German" },
-  { name: "Chinese" },
-  { name: "Korean" },
-  { name: "Sociology" },
-  { name: "Discrete Math" },
-  { name: "Psychology" },
-  { name: "ICT" },
-  { name: "Calculus 1" },
-  { name: "Calculus 2" },
-  { name: "Physics" },
-  { name: "Physical Education" },
-  { name: "History" },
-  { name: "Intro to Computing and Programming" },
-  { name: "Linear Algebra" },
-  { name: "Political Science" },
-  { name: "Culture Studies" },
-  { name: "Foundations of Journalism" },
-  { name: "Business Administration" },
-  { name: "Mathematics for AI" },
+const subjects = [
+  { name: 'Calculus', link: '/calculator/calculus' },
+  { name: 'Programming C++', link: '/calculator/cpp' },
+  { name: "Programming Python", link: '/calculator/python' },
+  { name: "English", link: '/calculator/english' },
+  { name: "German", link: '/calculator/german' },
+  { name: "Chinese", link: '/calculator/chinese' },
+  { name: "Korean", link: '/calculator/korean' },
+  { name: "Sociology", link: '/calculator/sociology' },
+  { name: "Discrete Math", link: '/calculator/discrete-math' },
+  { name: "Psychology", link: '/calculator/psychology' },
+  { name: "ICT", link: '/calculator/ict' },
+  { name: "Calculus 1", link: '/calculator/calculus-1' },
+  { name: "Calculus 2", link: '/calculator/calculus-2' },
+  { name: "Physics", link: '/calculator/physics' },
+  { name: "Physical Education", link: '/calculator/physical-education' },
+  { name: "History", link: '/calculator/history' },
+  { name: "Intro to Computing and Programming", link: '/calculator/intro-to-computing-and-programming' },
+  { name: "Linear Algebra", link: '/calculator/linear-algebra' },
+  { name: "Political Science", link: '/calculator/political-science' },
+  { name: "Culture Studies", link: '/calculator/culture-studies' },
+  { name: "Foundations of Journalism", link: '/calculator/foundations-of-journalism' },
+  { name: "Business Administration", link: '/calculator/business-administration' },
+  { name: "Mathematics for AI", link: '/calculator/mathematics-for-ai' },
+  { name: 'Calculus', link: '/calculator/calculus' },
+  { name: 'Programming C++', link: '/calculator/cpp' },
+  { name: "Programming Python", link: '/calculator/python' },
+  { name: "English", link: '/calculator/english' },
+  { name: "German", link: '/calculator/german' },
+  { name: "Chinese", link: '/calculator/chinese' },
+  { name: "Korean", link: '/calculator/korean' },
+  { name: "Sociology", link: '/calculator/sociology' },
+  { name: "Discrete Math", link: '/calculator/discrete-math' },
+  { name: "Psychology", link: '/calculator/psychology' },
+  { name: "ICT", link: '/calculator/ict' },
+  { name: "Calculus 1", link: '/calculator/calculus-1' },
+  { name: "Calculus 2", link: '/calculator/calculus-2' },
+  { name: "Physics", link: '/calculator/physics' },
+  { name: "Physical Education", link: '/calculator/physical-education' },
+  { name: "History", link: '/calculator/history' },
+  { name: "Intro to Computing and Programming", link: '/calculator/intro-to-computing-and-programming' },
+  { name: "Linear Algebra", link: '/calculator/linear-algebra' },
+  { name: "Political Science", link: '/calculator/political-science' },
+  { name: "Culture Studies", link: '/calculator/culture-studies' },
+  { name: "Foundations of Journalism", link: '/calculator/foundations-of-journalism' },
+  { name: "Business Administration", link: '/calculator/business-administration' },
+  { name: "Mathematics for AI", link: '/calculator/mathematics-for-ai' },
 ];
 
 const testimonials = [
@@ -213,37 +213,6 @@ const aiFeatures = [
   { icon: Check, label: 'Template Preview' },
 ];
 
-// const chatMessages = [
-//   {
-//     type: 'user',
-//     content: 'Generate a theme from this image.',
-//     hasImage: true,
-//   },
-//   {
-//     type: 'ai',
-//     content:
-//       "I've generated a Midnight Bloom theme based on your image. It features deep purples and blues for a calming, modern look.",
-//   },
-//   {
-//     type: 'user',
-//     content: 'Can you generate a theme inspired by @Twitter?',
-//   },
-//   {
-//     type: 'ai',
-//     content:
-//       "Alright, I've whipped up a Twitter-inspired theme. Expect bright blues and clean contrasts for a social, energetic vibe.",
-//   },
-//   {
-//     type: 'user',
-//     content: 'How about a @Supabase theme?',
-//   },
-//   {
-//     type: 'ai',
-//     content:
-//       "I've generated a Supabase theme for you. It uses fresh greens and dark backgrounds for a modern, developer-friendly feel.",
-//   },
-// ];
-
 const steps = [
   {
     number: '01',
@@ -322,10 +291,11 @@ const itemVariants = {
   },
 };
 
-function ThemeCard({ theme }: { theme: { name: string; } }) {
+function ThemeCard({ theme }: { theme: { name: string; link: string; }; onClick?: () => void }) {
+  const navigate = useNavigate();
   return (
     <motion.button
-
+      onClick={() => navigate(theme.link)}
       className="flex items-center px-4 py-2.5 bg-card border border-border rounded-xl hover:border-primary/30 hover:shadow-lg transition-all duration-300 group"
     >
       <span className="text-sm font-medium text-foreground whitespace-nowrap group-hover:text-primary transition-colors">
@@ -642,8 +612,8 @@ export default function Navbar() {
                 className="flex gap-4 animate-marquee"
                 style={{ width: 'fit-content' }}
               >
-                {[...themePresets.slice(0, 12), ...themePresets.slice(0, 12)].map((theme, index) => (
-                  <ThemeCard key={`row1-${index}`} theme={theme} />
+                {[...subjects.slice(0, 12), ...subjects.slice(0, 12)].map((subject, index) => (
+                  <ThemeCard key={`row1-${index}`} theme={subject} />
                 ))}
               </motion.div>
             </div>
@@ -654,8 +624,8 @@ export default function Navbar() {
                 className="flex gap-4 animate-marquee-reverse"
                 style={{ width: 'fit-content' }}
               >
-                {[...themePresets.slice(12, 24), ...themePresets.slice(12, 24)].map((theme, index) => (
-                  <ThemeCard key={`row2-${index}`} theme={theme} />
+                {[...subjects.slice(12, 24), ...subjects.slice(12, 24)].map((subject, index) => (
+                  <ThemeCard key={`row2-${index}`} theme={subject} />
                 ))}
               </motion.div>
             </div>
@@ -666,8 +636,8 @@ export default function Navbar() {
                 className="flex gap-4 animate-marquee"
                 style={{ width: 'fit-content' }}
               >
-                {[...themePresets.slice(24), ...themePresets.slice(24)].map((theme, index) => (
-                  <ThemeCard key={`row3-${index}`} theme={theme} />
+                {[...subjects.slice(24), ...subjects.slice(24)].map((subject, index) => (
+                  <ThemeCard key={`row3-${index}`} theme={subject} />
                 ))}
               </motion.div>
             </div>

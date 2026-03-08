@@ -1,47 +1,109 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { LeaderboardItem } from "@/pages/Leaderboard";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent } from "@/components/ui/card"
+import { ChartContainer, type ChartConfig } from "@/components/ui/chart"
+import type { LeaderboardItem } from "@/pages/Leaderboard"
+import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts"
 
-export const Card_14 = ({ currentUserRank, currentUserAverage, leaderboardData }: { currentUserRank: number; currentUserAverage: string; leaderboardData: LeaderboardItem[] }) => {
+type Card14Props = {
+  currentUserRank: number
+  currentUserAverage: string
+  leaderboardData: LeaderboardItem[]
+}
+
+const chartConfig = {
+  grade: {
+    label: "Average",
+    color: "hsl(var(--primary))",
+  },
+} satisfies ChartConfig
+
+function getInitials(name: string): string {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("")
+}
+
+export const Card_14 = ({ currentUserRank, currentUserAverage, leaderboardData }: Card14Props) => {
+  const currentUser = leaderboardData.find((item) => item.isCurrentUser)
+  const totalStudents = leaderboardData.length
+  const averageScore = Math.max(0, Math.min(100, Number.parseFloat(currentUserAverage) || 0))
+  const percentile = totalStudents > 0 ? Math.max(1, Math.round(((totalStudents - currentUserRank + 1) / totalStudents) * 100)) : 0
+
   return (
-		<div className="relative overflow-hidden rounded-xl bg-white">
-			<div
-				className="absolute inset-0 rounded-lg"
-				style={{
-					backgroundImage: `
-        radial-gradient(ellipse at 20% 30%, rgba(56, 189, 248, 0.4) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 70%, rgba(139, 92, 246, 0.3) 0%, transparent 70%),
-        radial-gradient(ellipse at 60% 20%, rgba(236, 72, 153, 0.25) 0%, transparent 50%),
-        radial-gradient(ellipse at 40% 80%, rgba(34, 197, 94, 0.2) 0%, transparent 65%)
-      `,
-				}}
-			/>
-			<Card className="z-10 isolate bg-transparent border-0">
-				<CardHeader>
-					<CardTitle className="text-[#0a0a0a] text-xl font-bold">Your Ranking</CardTitle>
-				</CardHeader>
-				<CardContent className="flex flex-col md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="text-[#0a0a0a] mb-2">
-              You are ranked <span className="font-bold text-2xl">#{currentUserRank}</span> out of {leaderboardData.length} students
-            </p>
-            <p className="text-[#0a0a0a]">
-              Average Grade: <span className="font-bold text-xl">{currentUserAverage}</span>
-            </p>
-          </div>
-          <div className="mt-4 md:mt-0">
-            <div className="flex items-center gap-4">
-              <div className="text-center text-[#0a0a0a]">
-                <div className="text-3xl font-bold">{currentUserRank}</div>
-                <div className="text-sm">Rank</div>
-              </div>
-              <div className="text-center text-[#0a0a0a]">
-                <div className="text-3xl font-bold">{currentUserAverage}</div>
-                <div className="text-sm">Average</div>
+    <Card className="relative overflow-hidden border-border p-0 bg-card">
+      {/* <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage: `linear-gradient(90deg, #6330b4 0%, #ee92b1 50%, #eeddf3 100%)`,
+          backgroundSize: "200% 200%",
+          backgroundPosition: "0% 0%",
+          animation: " 2s linear infinite",
+        }}
+      /> */}
+      <CardContent className="relative z-10 p-4 sm:p-5">
+        <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_160px] sm:items-center">
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <Avatar className="size-10 border border-border/70">
+                <AvatarImage src={currentUser?.avatarUrl ?? ""} alt={`${currentUser?.name ?? "User"} avatar`} />
+                <AvatarFallback>{getInitials(currentUser?.name ?? "User")}</AvatarFallback>
+              </Avatar>
+              <div className="min-w-0">
+                <p className="truncate text-sm font-semibold">{currentUser?.name ?? "Current User"}</p>
+                <p className="truncate text-xs text-muted-foreground">{currentUser?.group ?? "No group"}</p>
               </div>
             </div>
+
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="secondary" className="font-mono">#{currentUserRank} Rank</Badge>
+              <Badge variant="outline" className="font-mono">{currentUserAverage} Avg</Badge>
+              <Badge variant="outline" className="font-mono">Top {percentile}%</Badge>
+            </div>
+
+            <p className="text-sm text-muted-foreground">
+              Competing against {totalStudents} students in this semester leaderboard.
+            </p>
           </div>
-        </CardContent>
-			</Card>
-		</div>
-	);
-};
+
+          <div className="mx-auto h-32 w-32 sm:ml-auto sm:mr-0">
+            <ChartContainer config={chartConfig} className="h-full w-full aspect-square">
+              <RadialBarChart
+                data={[{ grade: averageScore }]}
+                startAngle={90}
+                endAngle={90 + (averageScore / 100) * 360}
+                innerRadius={44}
+                outerRadius={60}
+              >
+                <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
+                  <Label
+                    content={({ viewBox }) => {
+                      if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                        return (
+                          <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle" dominantBaseline="middle">
+                            <tspan x={viewBox.cx} y={viewBox.cy} className="fill-foreground text-lg font-semibold">
+                              {`${averageScore.toFixed(1)}%`}
+                            </tspan>
+                            <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 16} className="fill-muted-foreground text-[10px]">
+                              Average
+                            </tspan>
+                          </text>
+                        )
+                      }
+
+                      return null
+                    }}
+                  />
+                </PolarRadiusAxis>
+                <RadialBar dataKey="grade" cornerRadius={8} fill="var(--foreground)" background />
+              </RadialBarChart>
+            </ChartContainer>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}

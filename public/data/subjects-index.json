@@ -1,8 +1,8 @@
 [
   {
-    "slug": "programming",
-    "name": "Programming",
-    "courseName": "Object Oriented Programming (Java/Python)",
+    "slug": "cpp",
+    "name": "Programming C++",
+    "courseName": "Programming C++",
     "description": "Track OOP assignments, quizzes, and project grades across a structured 30/30/40 attestation breakdown.",
     "file": "Programming.json",
     "type": "template",
@@ -64,9 +64,9 @@
   },
   {
     "slug": "english",
-    "name": "Academic English",
-    "courseName": "Academic English",
-    "description": "Track Academic English grades across writing tasks, speaking assessments, and presentation components.",
+    "name": "English -B2",
+    "courseName": "English -B2",
+    "description": "Track English grades across writing tasks, speaking assessments, and presentation components.",
     "file": "English.json",
     "type": "template",
     "tags": ["ALL"]
