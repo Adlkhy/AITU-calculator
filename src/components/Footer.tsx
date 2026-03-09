@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Separator } from './ui/separator';
 import { useTheme } from '@/lib/useTheme';
-import { ArrowUpRight } from 'lucide-react';
 // import { useState, useEffect } from 'react';
 // import { CopyButton } from './animate-ui/components/buttons/copy';
 // import { toast } from 'sonner';
