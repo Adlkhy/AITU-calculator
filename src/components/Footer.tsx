@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Separator } from './ui/separator';
 import { useTheme } from '@/lib/useTheme';
+import { ArrowUpRight } from 'lucide-react';
 // import { useState, useEffect } from 'react';
 // import { CopyButton } from './animate-ui/components/buttons/copy';
 // import { toast } from 'sonner';
@@ -40,9 +41,14 @@ export default function Footer() {
         <div className="grid sm:grid-cols-2 md:grid-cols-5 gap-10 md:text-left">
           {/* Brand & CTA Section */}
           <div className="col-span-2 max-w-md space-y-4 md:items-start">
+            <div className='flex items-center justify-between '>
             {(theme === 'dark' || theme === 'system') ?
-              <img src="/evalis-black.png" alt="logo" className="h-6 w-auto" /> : <img src="/evalis-white.png" alt="logo" className="h-6 w-auto" />
+              <img src="/evalis-black.png" alt="logo" className="h-6 pointer-events-none" /> : <img src="/evalis-white.png" alt="logo" className="h-6 pointer-events-none" />
             }
+            <blockquote className="text-sm italic text-muted-foreground ">
+              Per Aspera Ad Astra 
+            </blockquote>
+            </div>
             <p className="text-muted-foreground text-sm leading-relaxed">
               Unlock your full academic potential! Create an account to save your grades, 
               track progress over time, and access our advanced AI assistant.
@@ -95,7 +101,7 @@ export default function Footer() {
             <h4 className="font-bold">Navigation</h4>
             <ul className="space-y-2 grid grid-cols-2 text-sm text-muted-foreground">
               <li>
-                <Link to="/" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Home</Link>
+                <Link to="/" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Landing</Link>
               </li>
               <li>
                 <Link to="/calculator" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Calculator</Link>

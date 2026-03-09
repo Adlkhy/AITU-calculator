@@ -16,13 +16,13 @@ import {
 } from "@/components/ui/alert-dialog"
 import { toast, Toaster } from 'sonner';
 import { 
-  PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend 
+  PieChart, Pie, Cell, Tooltip as RechartsTooltip
 } from 'recharts';
 import { supabase } from '@/lib/supabaseClient';
 import { useUser } from '../hooks/useUser';
 import { Loader2, Save, Trash, Pencil } from 'lucide-react';
 import { Separator } from './ui/separator';
+import { Badge } from './ui/badge';
 import { ChartContainer, type ChartConfig } from './ui/chart';
 
 interface GradeCalculatorProps {
@@ -90,6 +90,87 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
   const finalGrade = useMemo(() => {
     return performanceData.reduce((acc, curr) => acc + curr.earned, 0);
   }, [performanceData]);
+
+  // Calculate required final exam grade to achieve 70% and 90% final grade
+  const calculateNeededFinalGrade = (targetGrade: number): number | null => {
+    // Find the final exam category
+    const finalCategory = data.breakdown.find(cat => 
+      cat.name.toLowerCase().includes('final')
+    );
+    
+    if (!finalCategory) return null;
+    
+    // Calculate earned points excluding final exam
+    const earnedExcludingFinal = performanceData
+      .filter(item => !item.name.toLowerCase().includes('final'))
+      .reduce((acc, curr) => acc + curr.earned, 0);
+    
+    // Formula: earnedExcludingFinal + (neededFinalScore / 100 * finalExamWeight) = targetGrade
+    // neededFinalScore = (targetGrade - earnedExcludingFinal) / finalExamWeight * 100
+    const neededFinalScore = (targetGrade - earnedExcludingFinal) / finalCategory.overallWeight * 100;
+
+    // Clamp only the lower bound; >100 means mathematically impossible but still informative.
+    if (neededFinalScore < 0) return 0;
+
+    return Math.round(neededFinalScore * 100) / 100;
+  };
+
+  const neededFor70 = useMemo(() => calculateNeededFinalGrade(70), [performanceData, data.breakdown]);
+  const neededFor90 = useMemo(() => calculateNeededFinalGrade(90), [performanceData, data.breakdown]);
+
+  const panicLevelData = useMemo(() => {
+    if (neededFor70 === null) {
+      return {
+        level: 'Unknown',
+        emoji: '🤔',
+        message: 'Final exam category was not found in this syllabus.',
+        badgeClassName: 'bg-muted text-muted-foreground border-border',
+      };
+    }
+
+    if (neededFor70 <= 50) {
+      return {
+        level: 'Chill',
+        emoji: '😎',
+        message: 'You could almost sleep through the exam.',
+        badgeClassName: 'bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800',
+      };
+    }
+
+    if (neededFor70 <= 60) {
+      return {
+        level: 'Focus',
+        emoji: '📚',
+        message: "Study a bit and you'll be fine.",
+        badgeClassName: 'bg-sky-100 text-sky-800 border-sky-300 dark:bg-sky-950/40 dark:text-sky-300 dark:border-sky-800',
+      };
+    }
+
+    if (neededFor70 <= 75) {
+      return {
+        level: 'Serious',
+        emoji: '😬',
+        message: 'Time to actually study.',
+        badgeClassName: 'bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800',
+      };
+    }
+
+    if (neededFor70 <= 90) {
+      return {
+        level: 'High Panic',
+        emoji: '😰',
+        message: 'Cancel your weekend plans.',
+        badgeClassName: 'bg-orange-100 text-orange-800 border-orange-300 dark:bg-orange-950/40 dark:text-orange-300 dark:border-orange-800',
+      };
+    }
+
+    return {
+      level: 'Extreme Panic',
+      emoji: '💀',
+      message: 'You either become a genius tonight or pray.',
+      badgeClassName: 'bg-rose-100 text-rose-800 border-rose-300 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-800',
+    };
+  }, [neededFor70]);
 
   // 3. Category Percentages for Attestations
   const att1 = useMemo(() => {
@@ -246,7 +327,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
   return (
     <>
     <Toaster position="top-center"/>
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
       {/* Inputs Column */}
       <div className="lg:col-span-2 space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -405,27 +486,38 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
             </CardContent>
           </Card>
 
-          {/* NEW CHART: Earned vs Potential */}
+          {/* Needed final grade for 70% and 90% */}
           <Card className="shadow-md hover:shadow-lg">
-             <CardContent className="">
-             <CardTitle className="font-bold text-foreground mb-4 text-sm uppercase">Points Earned Breakdown</CardTitle>
-             <div className="h-64 text-xs">
-               <ResponsiveContainer width="100%" height="100%">
-                 <BarChart data={performanceData} layout="vertical" margin={{ left: 10 }}>
-                   <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                   <XAxis type="number" domain={[0, 100]} hide />
-                   <YAxis dataKey="name" type="category" width={80} tick={{fontSize: 10}} />
-                   <RechartsTooltip 
-                      cursor={{fill: 'transparent'}}
-                      formatter={(value: number, name: string) => [`${value}%`, name === 'earned' ? 'Earned' : 'Potential Remaining']}
-                   />
-                   <Legend />
-                   <Bar dataKey="earned" stackId="a" fill="var(--color-chart-1)" name="Earned" radius={[0, 0, 0, 0]} />
-                   <Bar dataKey="missing" stackId="a" fill="var(--color-foreground)" name="Possible" radius={[0, 4, 4, 0]} />
-                 </BarChart>
-               </ResponsiveContainer>
-             </div>
-             </CardContent>
+            <CardContent className="px-2">
+              <div className="flex justify-between items-center text-center">
+                <div className="flex-1">
+                  <p className="text-[12px] font-bold uppercase text-muted-foreground mb-1">Needed for 70%</p>
+                  <p className="text-lg font-black text-primary">
+                    {neededFor70 !== null ? `${neededFor70}%` : 'N/A'}
+                  </p>
+                </div>
+                <Separator orientation="vertical" className="h-10 mx-2" />
+                <div className="flex-1">
+                  <p className="text-[12px] font-bold uppercase text-muted-foreground mb-1">Needed for 90%</p>
+                  <p className="text-lg font-black text-primary">
+                    {neededFor90 !== null ? `${neededFor90}%` : 'N/A'}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Panic level */}
+          <Card className="shadow-md gap-3 hover:shadow-lg">
+            <CardHeader className="flex items-center justify-between gap-4">
+              <CardTitle className="text-sm font-bold uppercase tracking-wide">Panic Level</CardTitle>
+              <Badge className={`text-xs font-bold px-3 py-1 border ${panicLevelData.badgeClassName}`}>
+                {panicLevelData.level} {panicLevelData.emoji}
+              </Badge>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <p className="text-sm text-muted-foreground font-medium">{panicLevelData.message}</p>
+            </CardContent>
           </Card>
 
           {/* Score Distribution Pie Chart - Redesigned to match Budget style */}

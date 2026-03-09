@@ -491,7 +491,7 @@ export default function DynamicGradeCalculator() {
   }));
 
   return (
-    <div className="px-4 md:px-8 max-w-5xl mx-auto w-full space-y-8">
+    <div className="max-w-5xl mx-auto w-full space-y-8">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="space-y-1">
           <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
