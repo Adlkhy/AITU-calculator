@@ -8,8 +8,6 @@ import { DataTable } from '@/components/shadcn/data-table'
 import { AppSidebar } from "@/components/shadcn/app-sidebar"
 import { DotLoader } from '@/components/shadcn/gsap/dot-loader'
 import { fetchGroupData, getGroupName } from '@/services/groupService'
-// import { ChartAreaInteractive } from "@/components/shadcn/chart-area-interactive"
-// import { SectionCards } from "@/components/shadcn/section-cards"
 import { Podium } from '@/components/shadcn/podium'
 import { SiteHeader } from "@/components/shadcn/site-header"
 import { z } from 'zod';
@@ -267,14 +265,6 @@ export default function Leaderboard() {
               )}
 
               <Podium data={leaderboardData} />
-
-              {/* <SectionCards /> */}
-              
-              {/* <div className="px-4 lg:px-6">
-                <ChartAreaInteractive />
-              </div> */}
-              
-              {/* Enhanced DataTable with real-time data */}
               <DataTable data={leaderboardData} />
             </div>
             

@@ -135,6 +135,15 @@
     "tags": ["ALL"]
   },
   {
+    "slug": "dms",
+    "name": "Database Management Systems",
+    "courseName": "Database Management Systems",
+    "description": "Monitor Database Management Systems grades across all assessment components and attestation periods.",
+    "file": "DMS.json",
+    "type": "template",
+    "tags": ["ALL"]
+  },
+  {
     "slug": "custom",
     "name": "Custom Calculator",
     "courseName": "Custom Grade Calculator",

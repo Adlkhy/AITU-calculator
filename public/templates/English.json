@@ -23,7 +23,13 @@
     {
       "name": "Final Exam",
       "overallWeight": 40,
-      "subItems": []
+      "subItems": [
+        {
+          "name": "Oral Exam",
+          "weight": 100,
+          "description": "Comprehensive oral exam assessing all language skills."
+        }
+      ]
     }
   ]
 }

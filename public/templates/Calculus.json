@@ -23,9 +23,16 @@
       ]
     },
     {
-      "name": "Final Exam",
-      "overallWeight": 40,
-      "subItems": []
+      "name": "Final exam",
+      "subItems": [
+        {
+          "name": "Exam",
+          "weight": 100,
+          "description": "Written"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 40
     }
   ]
 }

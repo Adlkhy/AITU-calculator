@@ -5,9 +5,7 @@ import {
   IconBrandTelegram,
   IconHelp,
   IconMap,
-  // IconMoodTongueWink,
   IconPaw,
-  IconSettings,
   IconUsersGroup,
 } from "@tabler/icons-react"
 
@@ -79,11 +77,6 @@ const data = {
     // },
   ],
   navSecondary: [
-    {
-      title: "Settings",
-      url: "#",
-      icon: IconSettings,
-    },
     {
       title: "Get Help",
       url: "#",

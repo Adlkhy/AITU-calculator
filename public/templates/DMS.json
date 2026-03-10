@@ -1,0 +1,72 @@
+{
+  "breakdown": [
+    {
+      "name": "1st attestation",
+      "subItems": [
+        {
+          "name": "Assignment 1",
+          "weight": 30,
+          "description": "Creating of ERD diagram, Intro to DDL"
+        },
+        {
+          "name": "Quiz (Week 3)",
+          "weight": 10,
+          "description": "Quiz"
+        },
+        {
+          "name": "Assignment 2",
+          "weight": 30,
+          "description": "SQL Schema Creation & Basic Queries, Intro to DML"
+        },
+        {
+          "name": "Mid Term",
+          "weight": 30,
+          "description": "Mid Term exam"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 30
+    },
+    {
+      "name": "2nd attestation",
+      "subItems": [
+        {
+          "name": "Assignment 3",
+          "weight": 30,
+          "description": "Multi-table Queries, Joins & Analytical SQL"
+        },
+        {
+          "name": "Quiz (Week 8)",
+          "weight": 10,
+          "description": "Quiz"
+        },
+        {
+          "name": "Assignment 4",
+          "weight": 30,
+          "description": "Subqueries, Views & Indexes Implementation"
+        },
+        {
+          "name": "End Term",
+          "weight": 30,
+          "description": "End Term exam"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 30
+    },
+    {
+      "name": "Final exam",
+      "subItems": [
+        {
+          "name": "Final Test (MCQ)",
+          "weight": 100,
+          "description": "Multiple Choice Question final test"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 40
+    }
+  ],
+  "courseName": "Database Management Systems",
+  "totalWeightNote": "0,3 * 1st Att + 0,3 * 2nd Att + 0,4 * Final"
+}

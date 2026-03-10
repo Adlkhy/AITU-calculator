@@ -27,7 +27,13 @@
     {
       "name": "Final Exam",
       "overallWeight": 40,
-      "subItems": []
+      "subItems": [
+        {
+          "name": "Final Exam",
+          "weight": 100,
+          "description": "Comprehensive written exam covering all course material."
+        }
+      ]
     }
   ]
 }
