@@ -45,34 +45,21 @@ const App: React.FC = () => {
     setError(null);
   };
 
-  // const items = [
-  //   { image: '/quote1.jpeg', text: '' },
-  //   { image: '/quote2.jpeg', text: '' },
-  //   { image: '/quote4.jpeg', text: '' },
-  //   { image: '/quote5.jpeg', text: '' },
-  //   { image: '/quote3.jpeg', text: '' },
-  //   { image: '/quote6.jpeg', text: '' },
-
-  // ];
-
   return (
     <>
     <Navbar08 />
     <div className="max-w-5xl min-h-screen mx-auto w-full">
       {/* Header */}
       <header className="mb-10 px-4 md:px-8 mt-6">
-        {/* <h1 className="text-4xl md:text-5xl font-black text-foreground tracking-tight mb-4">
-          We Asked AI. <br className='md:hidden'/>It Said <span className="text-primary">‘Sure’</span>
-        </h1> */}
         <RotatingText
           texts={["We Asked AI. It Said 'Sure'", "We Put AI in It. You're Welcome. Or Sorry.", "An Overengineered Solution to a Simple Problem", "Because Someone Said 'What If You Add AI?'", "Yep, I Trained a Model Instead of Writing Logic"]}
-          mainClassName='text-3xl justify-center flex items-center md:text-5xl text-center font-bold text-foreground tracking-tight mb-4'
+          mainClassName='w-full max-w-4xl mx-auto min-h-[5.5rem] md:min-h-[8rem] text-3xl md:text-5xl leading-tight text-center font-bold text-foreground tracking-tight mb-4 flex items-center justify-center'
           staggerFrom={"first"}
           initial={{ y: "100%", opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: "-120%", opacity: 0 }}
           staggerDuration={0.25}
-          splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
+          splitLevelClassName="w-full justify-center overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
           transition={{ type: "spring"}}
           rotationInterval={6500}
           splitBy='lines'/>

@@ -3,7 +3,6 @@ import { useTheme } from "@/lib/useTheme"
 import {
   IconAppWindow,
   IconBrandTelegram,
-  IconHelp,
   IconMap,
   IconPaw,
   IconUsersGroup,
@@ -78,11 +77,6 @@ const data = {
   ],
   navSecondary: [
     {
-      title: "Get Help",
-      url: "#",
-      icon: IconHelp,
-    },
-    {
       title: "404",
       url: "/404",
       icon: IconPaw,
@@ -124,7 +118,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               {data.navNavi.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton tooltip={item.title}>
-                    <Link to={item.url} className="flex items-center gap-2">
+                    <Link to={item.url} className="flex items-center w-full gap-2">
                       {item.icon && <item.icon />}
                       <span>{item.title}</span>
                     </Link>
@@ -140,9 +134,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain}/>
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
-      {/* <SidebarFooter>
-        <NavUser />
-      </SidebarFooter> */}
     </Sidebar>
   )
 }
