@@ -1,0 +1,102 @@
+{
+  "breakdown": [
+    {
+      "name": "1st attestation",
+      "subItems": [
+        {
+          "name": "assignment #1",
+          "weight": 10,
+          "description": "Report"
+        },
+        {
+          "name": "Quiz #1",
+          "weight": 10,
+          "description": "MCQ"
+        },
+        {
+          "name": "assignment #2",
+          "weight": 10,
+          "description": "Report"
+        },
+        {
+          "name": "Quiz #2",
+          "weight": 10,
+          "description": "MCQ"
+        },
+        {
+          "name": "assignment #3",
+          "weight": 10,
+          "description": "Report"
+        },
+        {
+          "name": "Quiz #3",
+          "weight": 10,
+          "description": "MCQ"
+        },
+        {
+          "name": "Midterm Exam",
+          "weight": 40,
+          "description": "MCQ"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 30
+    },
+    {
+      "name": "2nd attestation",
+      "subItems": [
+        {
+          "name": "assignment #4",
+          "weight": 10,
+          "description": "Report"
+        },
+        {
+          "name": "Quiz #4",
+          "weight": 10,
+          "description": "MCQ"
+        },
+        {
+          "name": "assignment #5",
+          "weight": 10,
+          "description": "Report"
+        },
+        {
+          "name": "Quiz #5",
+          "weight": 10,
+          "description": "MCQ"
+        },
+        {
+          "name": "assignment #6",
+          "weight": 10,
+          "description": "Report"
+        },
+        {
+          "name": "Quiz #6",
+          "weight": 10,
+          "description": "MCQ"
+        },
+        {
+          "name": "Endterm Exam",
+          "weight": 40,
+          "description": "MCQ"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 30
+    },
+    {
+      "name": "Final exam",
+      "subItems": [
+        {
+          "name": "Exam",
+          "weight": 100,
+          "description": "MCQ"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 40
+    }
+  ],
+  "courseName": "Electronics",
+  "totalWeightNote": "0.3 * 1st Att + 0.3 * 2nd Att + 0.4 * Final"
+}

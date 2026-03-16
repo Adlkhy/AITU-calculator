@@ -144,6 +144,15 @@
     "tags": ["ALL"]
   },
   {
+    "slug": "electronics",
+    "name": "Electronics",
+    "courseName": "Electronics",
+    "description": "Monitor Electronics course grades across all assessment components and attestation periods.",
+    "file": "Electronics.json",
+    "type": "template",
+    "tags": ["ALL"]
+  },
+  {
     "slug": "custom",
     "name": "Custom Calculator",
     "courseName": "Custom Grade Calculator",
