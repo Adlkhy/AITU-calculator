@@ -59,8 +59,8 @@ export function ApiKeyInput() {
   return (
     <>
     <Toaster position="top-center"/>
-    <Card className="w-full max-w-2xl mx-auto mb-8 p-4">
-      <CardContent className="space-y-2 p-0">
+    <Card className="w-full max-w-2xl mx-auto mb-8 ">
+      <CardContent className="space-y-2 ">
       <CardTitle>Bring Your Own Key (BYOK)</CardTitle>
       <CardDescription>
         Enter your Gemini API key to use your own quota. 
@@ -76,7 +76,7 @@ export function ApiKeyInput() {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
         />
-        <Button onClick={handleValidateAndSave} disabled={status === 'checking' || !inputValue}>Save</Button>
+        <Button onClick={handleValidateAndSave} disabled={status === 'checking' || !inputValue}>Use</Button>
         <Button variant="outline" onClick={handleClear}>Clear</Button>
       </div>
       <CardDescription>Don't have one? <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="text-primary">Create one here</a>

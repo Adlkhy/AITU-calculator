@@ -282,7 +282,7 @@ export default function FinalGrades() {
       <Navbar08 />
       <Toaster position="top-center" richColors />
       <div className="min-h-screen bg-background text-foreground pb-12">
-        <div className="max-w-5xl mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto px-4 py-8">
           {/* Header & Stats Section */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
             <div>

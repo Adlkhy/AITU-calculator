@@ -1,0 +1,63 @@
+{
+  "breakdown": [
+    {
+      "name": "1st attestation",
+      "subItems": [
+        {
+          "name": "assignment 1",
+          "weight": 20
+        },
+        {
+          "name": "assignment 2",
+          "weight": 20
+        },
+        {
+          "name": "assignment 3",
+          "weight": 20
+        },
+        {
+          "name": "Mid Term Quiz",
+          "weight": 40
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 30
+    },
+    {
+      "name": "2nd attestation",
+      "subItems": [
+        {
+          "name": "assignment 4",
+          "weight": 20
+        },
+        {
+          "name": "assignment 5",
+          "weight": 20
+        },
+        {
+          "name": "assignment 6",
+          "weight": 20
+        },
+        {
+          "name": "End Term Quiz",
+          "weight": 40
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 30
+    },
+    {
+      "name": "Final exam",
+      "subItems": [
+        {
+          "name": "Quiz",
+          "weight": 100
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 40
+    }
+  ],
+  "courseName": "Computational Mathematics",
+  "totalWeightNote": "0,3 * 1st Att + 0,3 * 2nd Att + 0,4 * Final"
+}

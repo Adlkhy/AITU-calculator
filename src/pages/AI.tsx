@@ -48,12 +48,12 @@ const App: React.FC = () => {
   return (
     <>
     <Navbar08 />
-    <div className="max-w-5xl min-h-screen mx-auto w-full">
+    <div className="max-w-6xl min-h-screen mx-auto w-full">
       {/* Header */}
       <header className="mb-10 px-4 md:px-8 mt-6">
         <RotatingText
           texts={["We Asked AI. It Said 'Sure'", "We Put AI in It. You're Welcome. Or Sorry.", "An Overengineered Solution to a Simple Problem", "Because Someone Said 'What If You Add AI?'", "Yep, I Trained a Model Instead of Writing Logic"]}
-          mainClassName='w-full max-w-4xl mx-auto min-h-[5.5rem] md:min-h-[8rem] text-3xl md:text-5xl leading-tight text-center font-bold text-foreground tracking-tight mb-4 flex items-center justify-center'
+          mainClassName='w-full max-w-5xl mx-auto min-h-[5.5rem] md:min-h-[8rem] text-3xl md:text-5xl leading-tight text-center font-bold text-foreground tracking-tight mb-4 flex items-center justify-center'
           staggerFrom={"first"}
           initial={{ y: "100%", opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -63,7 +63,7 @@ const App: React.FC = () => {
           transition={{ type: "spring"}}
           rotationInterval={6500}
           splitBy='lines'/>
-        <p className="text-lg text-foreground text-center max-w-2xl mx-auto">
+        <p className="text-lg text-foreground text-center max-w-3xl mx-auto">
           Don't guess your grades. Upload your syllabus and let AI build your custom grade tracker instantly.
         </p>
       </header>

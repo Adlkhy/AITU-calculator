@@ -159,7 +159,7 @@ export default function SubjectCalculator() {
       <Navbar08/>
 
       <div className="text-foreground min-h-screen font-sans">
-        <div className="max-w-5xl mx-auto min-h-screen px-4 pt-4 mb-4 sm:mb-16 sm:px-8 sm:pt-16">
+        <div className="max-w-6xl mx-auto min-h-screen px-4 pt-4 mb-4 sm:mb-16 sm:px-8 sm:pt-16">
 
           {/* Breadcrumb back-link */}
           <nav aria-label="breadcrumb" className="mb-4">

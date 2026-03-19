@@ -36,7 +36,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-background text-foreground border-t border-dashed border-border ">
-      <div className="container mx-auto px-6 py-12">
+      <div className="container max-w-7xl mx-auto px-6 py-12">
         <div className="grid sm:grid-cols-2 md:grid-cols-5 gap-10 md:text-left">
           {/* Brand & CTA Section */}
           <div className="col-span-2 max-w-md space-y-4 md:items-start">

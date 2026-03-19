@@ -455,6 +455,7 @@ export default function DynamicGradeCalculator() {
     
     // Current score from all other categories
     let currentScore = 0;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let currentWeight = 0;
 
     categories.forEach((category, idx) => {

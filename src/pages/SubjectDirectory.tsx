@@ -79,6 +79,32 @@ export default function SubjectDirectory() {
   const { subjects, isLoading, error } = useSubjectsIndex();
   const [searchQuery, setSearchQuery] = useState('');
 
+  const midtermCountdown = useMemo(() => {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+
+    const nextMidtermDate = new Date(currentYear, 3, 13);
+    if (now > nextMidtermDate) {
+      nextMidtermDate.setFullYear(currentYear + 1);
+    }
+
+    const msInDay = 1000 * 60 * 60 * 24;
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const startOfMidterm = new Date(
+      nextMidtermDate.getFullYear(),
+      nextMidtermDate.getMonth(),
+      nextMidtermDate.getDate(),
+    );
+
+    const daysLeft = Math.round((startOfMidterm.getTime() - startOfToday.getTime()) / msInDay);
+
+    return {
+      dateLabel: `April 13, ${nextMidtermDate.getFullYear()}`,
+      daysLeft,
+      isToday: daysLeft === 0,
+    };
+  }, []);
+
   const filteredSubjects = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     if (!query) return subjects;
@@ -107,7 +133,13 @@ export default function SubjectDirectory() {
       <Navbar08/>
 
       <div className="text-foreground min-h-screen font-sans">
-        <div className="max-w-5xl mx-auto min-h-screen px-4 pt-10 pb-16 sm:px-8 sm:pt-14">
+        <div className="max-w-6xl mx-auto min-h-screen px-4 pt-10 pb-16 sm:px-8 sm:pt-14">
+          {/* Countdown */}
+          <div className="mb-6 inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
+            {midtermCountdown.isToday
+              ? `Midterm day is today (${midtermCountdown.dateLabel})`
+              : `Midterm day: ${midtermCountdown.dateLabel} • ${midtermCountdown.daysLeft} day${midtermCountdown.daysLeft === 1 ? '' : 's'} left`}
+          </div>
 
           {/* Page header */}
           <header className="mb-10">

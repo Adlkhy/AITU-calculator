@@ -115,7 +115,9 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
     return Math.round(neededFinalScore * 100) / 100;
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const neededFor70 = useMemo(() => calculateNeededFinalGrade(70), [performanceData, data.breakdown]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const neededFor90 = useMemo(() => calculateNeededFinalGrade(90), [performanceData, data.breakdown]);
 
   const panicLevelData = useMemo(() => {

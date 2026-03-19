@@ -1,0 +1,62 @@
+{
+  "breakdown": [
+    {
+      "name": "1st attestation",
+      "subItems": [
+        {
+          "name": "Homework 1 - Practice",
+          "weight": 25,
+          "description": "50% of Homework 1 mark"
+        },
+        {
+          "name": "Homework 1 - Reflection questions",
+          "weight": 25,
+          "description": "50% of Homework 1 mark"
+        },
+        {
+          "name": "Mid Term",
+          "weight": 50,
+          "description": "Mid-term examination"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 30
+    },
+    {
+      "name": "2nd attestation",
+      "subItems": [
+        {
+          "name": "Homework 2 - Practice",
+          "weight": 25,
+          "description": "50% of Homework 2 mark"
+        },
+        {
+          "name": "Homework 2 - Reflection questions",
+          "weight": 25,
+          "description": "50% of Homework 2 mark"
+        },
+        {
+          "name": "End Term",
+          "weight": 50,
+          "description": "End-term examination"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 30
+    },
+    {
+      "name": "Final exam",
+      "subItems": [
+        {
+          "name": "Written Exam",
+          "weight": 100,
+          "description": "Final written examination"
+        }
+      ],
+      "maxPoints": 100,
+      "overallWeight": 40
+    }
+  ],
+  "courseName": "Probability and Statistics",
+  "totalWeightNote": "0,3 * 1st Att + 0,3 * 2nd Att + 0,4 * Final"
+}

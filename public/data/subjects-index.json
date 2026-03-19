@@ -153,6 +153,33 @@
     "tags": ["ALL"]
   },
   {
+    "slug": "computational-mathematics",
+    "name": "Computational Mathematics",
+    "courseName": "Computational Mathematics",
+    "description": "Calculate Computational Mathematics grades with a standard 30/30/40 attestation grading structure.",
+    "file": "ComputationalMathematics.json",
+    "type": "template",
+    "tags": ["ALL"]
+  },
+  {
+    "slug": "computer-networks",
+    "name": "Computer Networks",
+    "courseName": "Computer Networks",
+    "description": "Calculate Computer Networks grades with a standard 30/30/40 attestation grading structure.",
+    "file": "ComputerNetworks.json",
+    "type": "template",
+    "tags": ["ALL"]
+  },
+  {
+    "slug": "probability-statistics",
+    "name": "Probability and Statistics",
+    "courseName": "Probability and Statistics",
+    "description": "Calculate Probability and Statistics grades with a standard 30/30/40 attestation grading structure.",
+    "file": "ProbabilityStatistics.json",
+    "type": "template",
+    "tags": ["ALL"]
+  },
+  {
     "slug": "custom",
     "name": "Custom Calculator",
     "courseName": "Custom Grade Calculator",
