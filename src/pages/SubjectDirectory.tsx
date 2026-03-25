@@ -127,7 +127,7 @@ export default function SubjectDirectory() {
           name="description"
           content="Choose from 15+ AITU subject grade calculators including Calculus, Programming, ADS, Discrete Math, and more. Track your attestation scores and final grade instantly."
         />
-        <link rel="canonical" href="https://evaiis.vercel.app/calculator" />
+        <link rel="canonical" href="https://evaiis.vercel.app/calculator/" />
       </Helmet>
 
       <Navbar08/>

@@ -4,7 +4,6 @@ import { useTheme } from '@/lib/useTheme';
 // import { useState, useEffect } from 'react';
 // import { CopyButton } from './animate-ui/components/buttons/copy';
 // import { toast } from 'sonner';
-// import { cn } from '@/lib/utils';
 // import {
 //   Popover,
 //   PopoverContent,
@@ -15,7 +14,7 @@ export default function Footer() {
   const { theme } = useTheme();
   // const [isOpen, setIsOpen] = useState(false);
   // const [copied, setCopied] = useState(false);
-  // const cardNumber = "0000 0000 0000 0000"; 
+  // const cardNumber = ""; 
 
   // useEffect(() => {
   //   if (isOpen) {
@@ -36,7 +35,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-background text-foreground border-t border-dashed border-border ">
-      <div className="container max-w-7xl mx-auto px-6 py-12">
+      <div className="container max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-6">
         <div className="grid sm:grid-cols-2 md:grid-cols-5 gap-10 md:text-left">
           {/* Brand & CTA Section */}
           <div className="col-span-2 max-w-md space-y-4 md:items-start">
@@ -64,9 +63,8 @@ export default function Footer() {
                 {/* <Popover open={isOpen} onOpenChange={setIsOpen}>
                   <PopoverTrigger asChild>
                     <button 
-                      className="flex gap-2 text-muted-foreground hover:text-foreground hover:pl-1.5 transition-all duration-300 group"
+                      className="flex gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 group"
                     >
-                      <Heart className={cn("h-4 w-4 transition-colors", isOpen ? "fill-primary text-primary" : "")} />
                       <span>Donate</span>
                     </button>
                   </PopoverTrigger>
@@ -96,9 +94,9 @@ export default function Footer() {
             </div>
           </div>
           {/* Navigation Section */}
-          <div className="space-y-4 col-span-2 md:items-start">
+          <div className="space-y-4 col-span-1 md:items-start">
             <h4 className="font-bold">Navigation</h4>
-            <ul className="space-y-2 grid grid-cols-2 text-sm text-muted-foreground">
+            <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <Link to="/" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Landing</Link>
               </li>
@@ -110,12 +108,6 @@ export default function Footer() {
               </li>
               <li>
                 <Link to="/leaderboard" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Leaderboard</Link>
-              </li>
-              <li>
-                <Link to="/final-grades" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Final Grades</Link>
-              </li>
-              <li>
-                <Link to="/profile" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">My Profile</Link>
               </li>
             </ul>
           </div>
@@ -129,6 +121,16 @@ export default function Footer() {
               </li>
               <li>
                 <Link to="/term-of-service" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Rights & Privacy</Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Partners */}
+          <div className="space-y-4 md:items-start">
+            <h4 className="font-bold">Partners</h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>
+                <Link to="https://t.me/astanait_forum" target="_blank" rel="noopener noreferrer" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">AITU Connect</Link>
               </li>
             </ul>
           </div>

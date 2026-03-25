@@ -5,15 +5,19 @@
       "subItems": [
         {
           "name": "Assignment 1",
-          "weight": 25
+          "weight": 20
         },
         {
           "name": "Assignment 2",
-          "weight": 25
+          "weight": 20
         },
         {
-          "name": "Mid-term test",
-          "weight": 50
+          "name": "Assignment 3",
+          "weight": 20
+        },
+        {
+          "name": "Mid-term",
+          "weight": 40
         }
       ],
       "maxPoints": 100,
@@ -23,16 +27,21 @@
       "name": "2nd attestation",
       "subItems": [
         {
-          "name": "Assignment 3",
-          "weight": 25
+          "name": "Assignment 5",
+          "weight": 20
         },
         {
-          "name": "Assignment 4",
-          "weight": 25
+          "name": "Assignment 6",
+          "weight": 20
         },
         {
-          "name": "End-term test",
-          "weight": 50
+          "name": "Assignment 7",
+          "weight": 20
+        },
+        {
+          "name": "End-term",
+          "weight": 40,
+          "description": "Grade is average of all assignments"
         }
       ],
       "maxPoints": 100,
@@ -42,8 +51,9 @@
       "name": "Final exam",
       "subItems": [
         {
-          "name": "multiple-choice test and practical questions",
-          "weight": 100
+          "name": "Final Exam",
+          "weight": 100,
+          "description": "MCQ"
         }
       ],
       "maxPoints": 100,

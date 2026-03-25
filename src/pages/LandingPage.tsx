@@ -16,7 +16,8 @@ import {
   BadgeDollarSign,
   ChartLine,
   GraduationCap,
-  Trophy,} from 'lucide-react';
+  Trophy,
+  ArrowUpRight,} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Accordion,
@@ -124,7 +125,7 @@ const testimonials = [
   id: 5,
   name: 'Sam Sung',
   handle: '@sam',
-  avatar: 'https://media.licdn.com/dms/image/v2/C4D12AQFhxsB0GhwH8w/article-inline_image-shrink_1000_1488/article-inline_image-shrink_1000_1488/0/1520210297300?e=1773273600&v=beta&t=2UJmd0GzUAU25ITIrIB8Fm_OfvrYd4eq16FXwb_7PZ4',
+  avatar: 'https://i.insider.com/68f7fed2cc993f9955d0a15e?width=500&format=jpeg&auto=webp',
   content: 'Evalis just works. Smooth, reliable, and packed with features. The exam point prediction helped me plan my finals properly, and the budget tracker was an unexpected bonus.',
 },
 {
@@ -188,21 +189,18 @@ const features = [
     title: 'AI Template Maker',
     description:
       'Upload your syllabus and let our AI extract key info to create a personalized study template in seconds.',
-    badge: 'Login Required',
     },
   {
     icon: ChartLine,
     title: 'Leadership Boards',
     description:
       'Compete with friends and classmates on our public leaderboards. See how you stack up in your school or globally.',
-    badge: 'Login Required',
     },
   {
     icon: GraduationCap,
     title: 'GPA Insights',
     description:
       'Get detailed insights into your GPA, including projections and what-if scenarios to help you plan your academic future.',
-    badge: 'Login Required',
   },
 ];
 
@@ -736,13 +734,11 @@ export default function Navbar() {
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-colors">
-                  <feature.icon className="w-6 h-6 text-primary group-hover:text-primary-foreground" />
+                  <feature.icon className="w-6 h-6 text-primary group-hover:text-primary-foreground transition-colors" />
                 </div>
-                {feature.badge && (
-                  <span className="px-2.5 py-1 text-xs font-medium bg-primary/65 text-primary-foreground rounded-full">
-                    {feature.badge}
+                  <span className="text-xs font-medium text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <ArrowUpRight className="w-6 h-6" />
                   </span>
-                )}
               </div>
               <h4 className="text-xl font-semibold text-foreground mb-2">
                 {feature.title}

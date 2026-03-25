@@ -229,26 +229,33 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
                         {(theme === 'dark' || theme === 'system') ?
                           <img src="/evalis-black.png" alt="logo" className="h-5 sm:h-6" /> : <img src="/evalis-white.png" alt="logo" className="h-5 sm:h-6" />
                         }     
+                        |
                         {theme === 'dark' || theme === 'system' ?
-                          <img src="/white.png" alt="logo" className="h-5 sm:h-6 ms-2 " /> : <img src="/dark.png" alt="logo" className="h-5 sm:h-6 ms-2" />
+                          <img src="/white.png" alt="logo" className="h-5 sm:h-6 " /> : <img src="/dark.png" alt="logo" className="h-5 sm:h-6" />
                         }
                       </SheetTitle>
                     </SheetHeader>
                     <div className="flex px-2 flex-col gap-4 py-2 overflow-y-auto max-h-[80vh]">
+                    <h3 className="px-2 text-xs font-semibold text-muted-foreground uppercase">
+                      Navigation
+                    </h3>
                       {/* Navigation Links */}
-                      <Link to="/calculator/gpa" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-base font-medium">
+                      <Link to="/calculator/gpa" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
                         GPA
                       </Link>
-                      <Link to="/calculator/attendance" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-base font-medium">
+                      <Link to="/calculator/attendance" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
                         Attendance
                       </Link>
-                      <Link to="/calculator/budget" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-base font-medium">
+                      <Link to="/calculator/budget" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
                         Budget
                       </Link>
-                      <Link to="/leaderboard" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-base font-medium">
+                      <Link to="/leaderboard" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
                         Leaderboard
                       </Link>
                     </div>
+                    <Link to="/404" className="px-4 text-xs text-muted-foreground mt-auto pb-4">
+                      /404
+                    </Link>
                   </SheetContent>
                 </Sheet>
               )}
@@ -265,10 +272,10 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
                   {(theme === 'dark' || theme === 'system') ?
                     <img src="/evalis-black.png" alt="logo" className="h-5 sm:h-6 hidden md:inline" /> : <img src="/evalis-white.png" alt="logo" className="h-5 sm:h-6 hidden md:inline" />
                   }
+                  <span className='px-2 hidden md:inline'>|</span>
                   {theme === 'dark' || theme === 'system' ?
-                  <img src="/white.png" alt="logo" className="h-6 ms-2 hidden md:inline" /> : <img src="/dark.png" alt="logo" className="h-6 ms-2 hidden md:inline" />
+                  <img src="/white.png" alt="logo" className="h-6 hidden md:inline" /> : <img src="/dark.png" alt="logo" className="h-6 hidden md:inline" />
                   }
-                  
                 </button>
               </div>
             </div>
