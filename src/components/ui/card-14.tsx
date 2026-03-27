@@ -2,13 +2,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { ChartContainer, type ChartConfig } from "@/components/ui/chart"
-import type { LeaderboardItem } from "@/pages/Leaderboard"
+import { useLeaderboardData } from "@/hooks/useLeaderboardData"
 import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts"
 
 type Card14Props = {
   currentUserRank: number
   currentUserAverage: string
-  leaderboardData: LeaderboardItem[]
+  leaderboardData: ReturnType<typeof useLeaderboardData>["leaderboardData"]
 }
 
 const chartConfig = {
@@ -27,23 +27,19 @@ function getInitials(name: string): string {
     .join("")
 }
 
+function calculateGPAtoPercentage(gpa: number): number {
+  // Assuming GPA is on a 4.0 scale, convert to percentage
+  return Math.max(0, Math.min(100, (gpa / 4.0) * 100));
+}
+
 export const Card_14 = ({ currentUserRank, currentUserAverage, leaderboardData }: Card14Props) => {
   const currentUser = leaderboardData.find((item) => item.isCurrentUser)
   const totalStudents = leaderboardData.length
-  const averageScore = Math.max(0, Math.min(100, Number.parseFloat(currentUserAverage) || 0))
+  const averageScore = calculateGPAtoPercentage(parseFloat(currentUserAverage))
   const percentile = totalStudents > 0 ? Math.max(1, Math.round(((totalStudents - currentUserRank + 1) / totalStudents) * 100)) : 0
 
   return (
     <Card className="relative overflow-hidden border-border p-0 bg-card">
-      {/* <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          backgroundImage: `linear-gradient(90deg, #6330b4 0%, #ee92b1 50%, #eeddf3 100%)`,
-          backgroundSize: "200% 200%",
-          backgroundPosition: "0% 0%",
-          animation: " 2s linear infinite",
-        }}
-      /> */}
       <CardContent className="relative z-10 p-4 sm:p-5">
         <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_160px] sm:items-center">
           <div className="space-y-3">
@@ -93,7 +89,6 @@ export const Card_14 = ({ currentUserRank, currentUserAverage, leaderboardData }
                           </text>
                         )
                       }
-
                       return null
                     }}
                   />

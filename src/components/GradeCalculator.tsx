@@ -21,7 +21,6 @@ import {
 import { supabase } from '@/lib/supabaseClient';
 import { useUser } from '../hooks/useUser';
 import { Loader2, Save, Trash, Pencil } from 'lucide-react';
-import { Separator } from './ui/separator';
 import { Badge } from './ui/badge';
 import { ChartContainer, type ChartConfig } from './ui/chart';
 
@@ -387,7 +386,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
                  value={courseName}
                  name='Course Name'
                  onChange={(e) => setCourseName(e.target.value)}
-                 className="sm:text-lg font-bold text-muted-foreground pr-10 border-transparent hover:border-input focus:border-input transition-colors"
+                 className="sm:text-lg font-semibold text-muted-foreground pr-10 border-transparent hover:border-input focus:border-input transition-colors"
                />
                <Pencil className="h-4 w-4 absolute right-3 text-muted-foreground pointer-events-none" />
             </div>
@@ -407,11 +406,11 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
                   type="number"
                   placeholder="Score"
                   name="Assignment Score"
-                  className="w-24 p-2 text-center font-bold"
+                  className="w-24 p-2 text-center font-mono"
                   value={scores[`${catIdx}-main`] || ''}
                   onChange={(e) => handleScoreChange(`${catIdx}-main`, e.target.value)}
                 />
-                <span className="text-foreground/80 font-medium">%</span>
+                <span className="text-foreground/80 font-mono">%</span>
               </CardContent>
             )}
             
@@ -429,7 +428,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
                         type="number"
                         placeholder="0-100"
                         name="Assignment Weight"
-                        className="w-20 p-1.5 text-center text-sm"
+                        className="w-20 p-1.5 text-center text-sm font-mono"
                         value={scores[`${catIdx}-${subIdx}`] || ''}
                         onChange={(e) => handleScoreChange(`${catIdx}-${subIdx}`, e.target.value)}
                       />
@@ -450,14 +449,14 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
           {/* Main Grade Card */}
           <Card className="shadow-md hover:shadow-lg text-center overflow-hidden relative">
             <CardHeader>
-              <CardTitle className="text-lg font-bold">Your Estimated Final Grade</CardTitle>
+              <CardTitle className="text-lg font-semibold">Your Estimated Final Grade</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-5xl font-black text-foreground mb-2">
+              <div className="text-4xl font-black font-mono text-foreground mb-2">
                 {finalGrade.toFixed(1)}%
               </div>
               {/* Progress Bar */}
-              <div className="h-3 w-full bg-secondary rounded-full overflow-hidden mb-6">
+              <div className="h-3 w-full bg-secondary rounded-full overflow-hidden">
                 <div 
                   className={`h-full transition-all duration-500 ${finalGrade >= 90 ? 'bg-green-500' : finalGrade >= 70 ? 'bg-blue-500' : 'bg-red-500'}`}
                   style={{ width: `${Math.min(100, finalGrade)}%` }}
@@ -471,37 +470,40 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
             <CardContent className="px-2">
               <div className="flex justify-between items-center text-center">
                 <div className="flex-1">
-                  <p className="text-[12px] font-bold uppercase text-muted-foreground mb-1">1st Att.</p>
-                  <p className="text-lg font-black text-primary">{att1 !== null ? `${att1}%` : '—'}</p>
+                  <p className="text-[12px] font-semibold uppercase text-muted-foreground mb-1">1st Att.</p>
+                  <p className="text-lg font-black font-mono text-chart-1">{att1 !== null ? `${att1}%` : '—'}</p>
                 </div>
-                <Separator orientation="vertical" className="h-10 mx-2" />
+                <div className="w-px h-10 bg-muted-foreground/50" />
                 <div className="flex-1">
-                  <p className="text-[12px] font-bold uppercase text-muted-foreground mb-1">2nd Att.</p>
-                  <p className="text-lg font-black text-primary">{att2 !== null ? `${att2}%` : '—'}</p>
+                  <p className="text-[12px] font-semibold uppercase text-muted-foreground mb-1">2nd Att.</p>
+                  <p className="text-lg font-black font-mono text-chart-2">{att2 !== null ? `${att2}%` : '—'}</p>
                 </div>
-                <Separator orientation="vertical" className="h-10 mx-2" />
+                <div className="w-px h-10 bg-muted-foreground/50" />
                 <div className="flex-1">
                   <p className="text-[12px] font-bold uppercase text-muted-foreground mb-1">Final</p>
-                  <p className="text-lg font-black text-primary">{finalScore !== null ? `${finalScore}%` : '—'}</p>
+                  <p className="text-lg font-black font-mono text-chart-3">{finalScore !== null ? `${finalScore}%` : '—'}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           {/* Needed final grade for 70% and 90% */}
-          <Card className="shadow-md hover:shadow-lg">
+          <Card className="shadow-md hover:shadow-lg gap-2">
+            <CardHeader className=''>
+              <CardTitle className="text-sm font-bold uppercase text-center tracking-wide">Final Exam</CardTitle>
+            </CardHeader>
             <CardContent className="px-2">
               <div className="flex justify-between items-center text-center">
                 <div className="flex-1">
                   <p className="text-[12px] font-bold uppercase text-muted-foreground mb-1">Needed for 70%</p>
-                  <p className="text-lg font-black text-primary">
+                  <p className="text-lg font-black font-mono text-foreground">
                     {neededFor70 !== null ? `${neededFor70}%` : 'N/A'}
                   </p>
                 </div>
-                <Separator orientation="vertical" className="h-10 mx-2" />
+                <div className="w-px h-10 bg-muted-foreground/50" />
                 <div className="flex-1">
                   <p className="text-[12px] font-bold uppercase text-muted-foreground mb-1">Needed for 90%</p>
-                  <p className="text-lg font-black text-primary">
+                  <p className="text-lg font-black font-mono text-foreground">
                     {neededFor90 !== null ? `${neededFor90}%` : 'N/A'}
                   </p>
                 </div>
@@ -510,11 +512,11 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
           </Card>
 
           {/* Panic level */}
-          <Card className="shadow-md gap-3 hover:shadow-lg">
+          <Card className="shadow-md gap-4 hover:shadow-lg">
             <CardHeader className="flex items-center justify-between gap-4">
               <CardTitle className="text-sm font-bold uppercase tracking-wide">Panic Level</CardTitle>
               <Badge className={`text-xs font-bold px-3 py-1 border ${panicLevelData.badgeClassName}`}>
-                {panicLevelData.level} {panicLevelData.emoji}
+                {panicLevelData.emoji} {panicLevelData.level} 
               </Badge>
             </CardHeader>
             <CardContent className="space-y-2">
@@ -522,7 +524,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
             </CardContent>
           </Card>
 
-          {/* Score Distribution Pie Chart - Redesigned to match Budget style */}
+          {/* Score Distribution Pie Chart */}
           <Card className="shadow-sm border-muted-foreground/20">
              <CardContent className="">
              <CardTitle className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60 mb-4">Score Distribution</CardTitle>
@@ -546,7 +548,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
                       content={({ active, payload }) => {
                         if (active && payload && payload.length) {
                           return (
-                            <div className="bg-background border border-muted-foreground/20 p-2 rounded-lg shadow-xl text-[10px] font-bold uppercase tracking-widest">
+                            <div className="bg-background border border-muted-foreground/20 p-2 rounded-lg shadow-xl text-[10px] font-bold font-mono tracking-widest">
                               <p style={{ color: payload[0].payload.color }}>{payload[0].name}: {payload[0].value}%</p>
                             </div>
                           );
@@ -565,7 +567,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
                        <span className="font-medium text-muted-foreground">{item.name}</span>
                      </div>
-                     <span className="font-bold">{item.value}%</span>
+                     <span className="font-bold font-mono">{item.value}%</span>
                    </div>
                  ))
                ) : (

@@ -1,11 +1,17 @@
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 export default function Profile() {
   const navigate = useNavigate();
   return (
-    <div className="text-foreground min-h-screen font-sans px-4 py-4 sm:px-8 sm:py-8">
-      <div className="max-w-4xl mx-auto bg-card rounded-lg border border-foreground shadow-lg p-4 sm:p-8">
+    <div className="text-foreground min-h-screen font-sans p-4 mb-8 sm:p-8">
+      <div className="max-w-4xl mx-auto">
+        <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
+          <ArrowLeft className="" />
+          Back
+        </Button>
         <h1 className="text-2xl font-bold text-foreground mb-6">Terms of Service for Evalis</h1>
-        <h3 className="text-lg font-semibold mb-4">Effective Date: {new Date().getFullYear()}</h3>
+        <h3 className="text-base font-semibold mb-4">Effective Date: {new Date().getFullYear()}</h3>
         
         <div className="space-y-6 text-foreground">
           <section>
@@ -86,18 +92,6 @@ export default function Profile() {
             <h2 className="text-xl font-bold mb-3">10. Termination</h2>
             <p>I can terminate your access at any time, for any reason, or for no reason at all. Maybe I don't like your email address. Maybe your grades are too good and you're making the rest of us look bad. It's a vibe check, and I'm the only one who gets to administer it.</p>
           </section>
-
-          <div className="mt-8 p-4 bg-muted rounded-lg border border-foreground/20">
-            <p className="font-semibold text-center">By proceeding, you swear you have read this entire document and willingly submit to our terms.</p>
-            <div className="mt-4 flex justify-center">
-              <button 
-                onClick={() => navigate('/signup', { replace: true })} 
-                className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition"
-              >
-                Accept Terms and Continue to Signup
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </div>

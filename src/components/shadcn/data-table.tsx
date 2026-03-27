@@ -19,12 +19,10 @@ import {
 } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import {
-  IconChevronDown,
   IconChevronLeft,
   IconChevronRight,
   IconChevronsLeft,
   IconChevronsRight,
-  IconLayoutColumns,
   IconMoodAnnoyed,
   IconMoodHappy,
   IconMoodLookUp,
@@ -46,35 +44,9 @@ import {
   useReactTable,
   type VisibilityState,
 } from "@tanstack/react-table"
-// import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 import { z } from "zod"
-
-// import { useIsMobile } from "@/hooks/use-mobile"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-// import {
-//   type ChartConfig,
-//   ChartContainer,
-//   ChartTooltip,
-//   ChartTooltipContent,
-// } from "@/components/ui/chart"
-// import {
-//   Drawer,
-//   DrawerClose,
-//   DrawerContent,
-//   DrawerDescription,
-//   DrawerFooter,
-//   DrawerHeader,
-//   DrawerTitle,
-//   DrawerTrigger,
-// } from "@/components/ui/drawer"
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-// import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
   Select,
@@ -83,7 +55,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-// import { Separator } from "@/components/ui/separator"
 import {
   Table,
   TableBody,
@@ -95,9 +66,8 @@ import {
 import {
   Tabs,
   TabsContent,
-  TabsList,
-  TabsTrigger,
 } from "@/components/ui/tabs"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const schema = z.object({
@@ -105,9 +75,8 @@ export const schema = z.object({
   name: z.string(),
   group: z.string(),
   performance: z.string(),
-  subjects: z.string(),
-  limit: z.string(),
   grade: z.string(),
+  avatarUrl: z.string().optional(),
 })
 
 const columns: ColumnDef<z.infer<typeof schema>>[] = [
@@ -137,9 +106,22 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     header: "Student Name",
     enableHiding: false,
     cell: ({ row }) => {
+      const avatarUrl = row.original.avatarUrl;
+      const name = row.original.name;
+      const initials = name
+        .split(' ')
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part[0]?.toUpperCase() ?? '')
+        .join('');
+      
       return (
-        <div className="font-medium">
-          {row.original.name}
+        <div className="flex items-center gap-3">
+          <Avatar className="hidden h-9 w-9 sm:flex">
+            <AvatarImage src={avatarUrl} alt={name} />
+            <AvatarFallback>{initials}</AvatarFallback>
+          </Avatar>
+          <div className="font-medium">{name}</div>
         </div>
       );
     },
@@ -163,13 +145,13 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
       let badgeVariant: "default" | "secondary" | "outline" = "secondary";
       let icon = null;
       
-      if (status === "Povishnik") {
+      if (status === "Nerd") {
         badgeVariant = "default";
         icon = <IconMoodHappy className="w-4 h-4" />;
-      } else if (status === "Stependia") {
+      } else if (status === "Survivor") {
         badgeVariant = "secondary";
         icon = <IconMoodLookUp className="w-4 h-4" />;
-      } else if (status === "Letnik") {
+      } else if (status === "At Risk") {
         badgeVariant = "outline";
         icon = <IconMoodTongueWink className="w-4 h-4" />;
       } else {
@@ -185,29 +167,20 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     },
   },
   {
-    accessorKey: "subjects",
-    header: "Subjects",
-    cell: ({ row }) => (
-      <div className="text-sm text-muted-foreground">
-        {row.original.subjects}
-      </div>
-    ),
-  },
-  {
     accessorKey: "grade",
-    header: "Average Grade",
+    header: "GPA",
     cell: ({ row }) => {
       const grade = parseFloat(row.original.grade);
       let gradeColor = "text-gray-600";
       
-      if (grade >= 90) gradeColor = "text-green-600 font-semibold";
-      else if (grade >= 70) gradeColor = "text-blue-600";
-      else if (grade < 50) gradeColor = "text-red-600";
+      if (grade >= 3.67) gradeColor = "text-green-600 font-semibold";
+      else if (grade >= 2.33) gradeColor = "text-blue-600";
+      else if (grade < 1.0) gradeColor = "text-red-600";
       else gradeColor = "text-orange-600";
       
       return (
         <div className={`text-lg font-mono ${gradeColor}`}>
-          {row.original.grade}
+          {isNaN(grade) ? row.original.grade : grade.toFixed(2)}
         </div>
       );
     },
@@ -309,65 +282,6 @@ export function DataTable({
       defaultValue="person-id"
       className="w-full flex-col justify-start gap-6"
     >
-      <div className="flex items-center justify-between px-4 lg:px-6">
-        <Label htmlFor="view-selector" className="sr-only">
-          View
-        </Label>
-        <Select defaultValue="person-id">
-          <SelectTrigger
-            className="flex w-fit @4xl/main:hidden"
-            size="sm"
-            id="view-selector"
-          >
-            <SelectValue placeholder="Select a view" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="person-id">By Student</SelectItem>
-            <SelectItem value="groups-id">By Group</SelectItem>
-          </SelectContent>
-        </Select>
-        <TabsList className="**:data-[slot=badge]:bg-muted-foreground/30 hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:px-1 @4xl/main:flex">
-          <TabsTrigger value="person-id">By Student</TabsTrigger>
-          <TabsTrigger value="groups-id">
-            By Group
-          </TabsTrigger>
-        </TabsList>
-        <div className="flex items-center gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
-                <IconLayoutColumns />
-                <span className="hidden lg:inline">Customize Columns</span>
-                <span className="lg:hidden">Columns</span>
-                <IconChevronDown />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              {table
-                .getAllColumns()
-                .filter(
-                  (column) =>
-                    typeof column.accessorFn !== "undefined" &&
-                    column.getCanHide()
-                )
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  )
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
       <TabsContent
         value="person-id"
         className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
@@ -637,182 +551,3 @@ export function DataTable({
     </Tabs>
   )
 }
-
-// const chartData = [
-//   { month: "January", desktop: 186, mobile: 80 },
-//   { month: "February", desktop: 305, mobile: 200 },
-//   { month: "March", desktop: 237, mobile: 120 },
-//   { month: "April", desktop: 73, mobile: 190 },
-//   { month: "May", desktop: 209, mobile: 130 },
-//   { month: "June", desktop: 214, mobile: 140 },
-// ]
-
-// const chartConfig = {
-//   desktop: {
-//     label: "Desktop",
-//     color: "var(--primary)",
-//   },
-//   mobile: {
-//     label: "Mobile",
-//     color: "var(--primary)",
-//   },
-// } satisfies ChartConfig
-
-// function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
-//   const isMobile = useIsMobile()
-
-//   return (
-//     <Drawer direction={isMobile ? "bottom" : "right"}>
-//       <DrawerTrigger asChild>
-//         <Button variant="link" className="text-foreground w-fit px-0 text-left">
-//           {item.header}
-//         </Button>
-//       </DrawerTrigger>
-//       <DrawerContent>
-//         <DrawerHeader className="gap-1">
-//           <DrawerTitle>{item.header}</DrawerTitle>
-//           <DrawerDescription>
-//             Showing total visitors for the last 6 months
-//           </DrawerDescription>
-//         </DrawerHeader>
-//         <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
-//           {!isMobile && (
-//             <>
-//               <ChartContainer config={chartConfig}>
-//                 <AreaChart
-//                   accessibilityLayer
-//                   data={chartData}
-//                   margin={{
-//                     left: 0,
-//                     right: 10,
-//                   }}
-//                 >
-//                   <CartesianGrid vertical={false} />
-//                   <XAxis
-//                     dataKey="month"
-//                     tickLine={false}
-//                     axisLine={false}
-//                     tickMargin={8}
-//                     tickFormatter={(value) => value.slice(0, 3)}
-//                     hide
-//                   />
-//                   <ChartTooltip
-//                     cursor={false}
-//                     content={<ChartTooltipContent indicator="dot" />}
-//                   />
-//                   <Area
-//                     dataKey="mobile"
-//                     type="natural"
-//                     fill="var(--color-mobile)"
-//                     fillOpacity={0.6}
-//                     stroke="var(--color-mobile)"
-//                     stackId="a"
-//                   />
-//                   <Area
-//                     dataKey="desktop"
-//                     type="natural"
-//                     fill="var(--color-desktop)"
-//                     fillOpacity={0.4}
-//                     stroke="var(--color-desktop)"
-//                     stackId="a"
-//                   />
-//                 </AreaChart>
-//               </ChartContainer>
-//               <Separator />
-//               <div className="grid gap-2">
-//                 <div className="flex gap-2 leading-none font-medium">
-//                   Trending up by 5.2% this month{" "}
-//                   <IconTrendingUp className="size-4" />
-//                 </div>
-//                 <div className="text-muted-foreground">
-//                   Showing total visitors for the last 6 months. This is just
-//                   some random text to test the layout. It spans multiple lines
-//                   and should wrap around.
-//                 </div>
-//               </div>
-//               <Separator />
-//             </>
-//           )}
-//           <form className="flex flex-col gap-4">
-//             <div className="flex flex-col gap-3">
-//               <Label htmlFor="header">Header</Label>
-//               <Input id="header" defaultValue={item.header} />
-//             </div>
-//             <div className="grid grid-cols-2 gap-4">
-//               <div className="flex flex-col gap-3">
-//                 <Label htmlFor="type">Type</Label>
-//                 <Select defaultValue={item.type}>
-//                   <SelectTrigger id="type" className="w-full">
-//                     <SelectValue placeholder="Select a type" />
-//                   </SelectTrigger>
-//                   <SelectContent>
-//                     <SelectItem value="Table of Contents">
-//                       Table of Contents
-//                     </SelectItem>
-//                     <SelectItem value="Executive Summary">
-//                       Executive Summary
-//                     </SelectItem>
-//                     <SelectItem value="Technical Approach">
-//                       Technical Approach
-//                     </SelectItem>
-//                     <SelectItem value="Design">Design</SelectItem>
-//                     <SelectItem value="Capabilities">Capabilities</SelectItem>
-//                     <SelectItem value="Focus Documents">
-//                       Focus Documents
-//                     </SelectItem>
-//                     <SelectItem value="Narrative">Narrative</SelectItem>
-//                     <SelectItem value="Cover Page">Cover Page</SelectItem>
-//                   </SelectContent>
-//                 </Select>
-//               </div>
-//               <div className="flex flex-col gap-3">
-//                 <Label htmlFor="status">Status</Label>
-//                 <Select defaultValue={item.status}>
-//                   <SelectTrigger id="status" className="w-full">
-//                     <SelectValue placeholder="Select a status" />
-//                   </SelectTrigger>
-//                   <SelectContent>
-//                     <SelectItem value="Done">Done</SelectItem>
-//                     <SelectItem value="In Progress">In Progress</SelectItem>
-//                     <SelectItem value="Not Started">Not Started</SelectItem>
-//                   </SelectContent>
-//                 </Select>
-//               </div>
-//             </div>
-//             <div className="grid grid-cols-2 gap-4">
-//               <div className="flex flex-col gap-3">
-//                 <Label htmlFor="target">Target</Label>
-//                 <Input id="target" defaultValue={item.target} />
-//               </div>
-//               <div className="flex flex-col gap-3">
-//                 <Label htmlFor="limit">Limit</Label>
-//                 <Input id="limit" defaultValue={item.limit} />
-//               </div>
-//             </div>
-//             <div className="flex flex-col gap-3">
-//               <Label htmlFor="reviewer">Reviewer</Label>
-//               <Select defaultValue={item.reviewer}>
-//                 <SelectTrigger id="reviewer" className="w-full">
-//                   <SelectValue placeholder="Select a reviewer" />
-//                 </SelectTrigger>
-//                 <SelectContent>
-//                   <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
-//                   <SelectItem value="Jamik Tashpulatov">
-//                     Jamik Tashpulatov
-//                   </SelectItem>
-//                   <SelectItem value="Emily Whalen">Emily Whalen</SelectItem>
-//                 </SelectContent>
-//               </Select>
-//             </div>
-//           </form>
-//         </div>
-//         <DrawerFooter>
-//           <Button>Submit</Button>
-//           <DrawerClose asChild>
-//             <Button variant="outline">Done</Button>
-//           </DrawerClose>
-//         </DrawerFooter>
-//       </DrawerContent>
-//     </Drawer>
-//   )
-// }
