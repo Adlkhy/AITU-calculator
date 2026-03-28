@@ -96,8 +96,8 @@ export function SiteHeader() {
               <DropdownMenuItem onClick={() => handleItemClick('profile')}>
                 Profile
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleItemClick('final-grades')}>
-                Final Grades
+              <DropdownMenuItem onClick={() => handleItemClick('')}>
+                Settings
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => handleItemClick('logout')}>

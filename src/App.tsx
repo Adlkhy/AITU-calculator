@@ -12,7 +12,6 @@ import Profile from './pages/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useEffect } from 'react';
 import { useUser } from './hooks/useUser';
-import FinalGrades from './pages/FinalGrades';
 import TermOfService from './pages/TermOfService';
 import AI from './pages/AI';
 
@@ -43,11 +42,6 @@ function App() {
           <Route path="/profile" element={
             <ProtectedRoute>
               <Profile />
-            </ProtectedRoute>}
-            />
-          <Route path="/final-grades" element={
-            <ProtectedRoute>
-              <FinalGrades />
             </ProtectedRoute>}
             />
           <Route path="*" element={<NotFoundPage />} />

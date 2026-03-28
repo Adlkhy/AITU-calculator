@@ -377,14 +377,15 @@ export default function Navbar() {
               {(theme === 'dark' || theme === 'system') ?
                 <img src="/evalis-black.png" alt="logo" className="h-5 sm:h-6" /> : <img src="/evalis-white.png" alt="logo" className="h-5 sm:h-6" />
               }
+              <span className='sm:px-2'>|</span>
               {(theme === 'dark' || theme === 'system') ?
-                <img src="/white.png" alt="logo" className="h-5 sm:h-6 ms-2 " /> : <img src="/dark.png" alt="logo" className="h-5 sm:h-6 ms-2" />
+                <img src="/white.png" alt="logo" className="h-5 sm:h-6" /> : <img src="/dark.png" alt="logo" className="h-5 sm:h-6" />
               }
               </div>
             </motion.a>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center justify-around gap-1">
+            <div className="hidden lg:flex items-center justify-around gap-1">
               {navLinks.map((link, index) => (
                 <motion.a
                   key={link.label}
@@ -447,7 +448,7 @@ export default function Navbar() {
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-accent"
+                className="lg:hidden p-2 text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-accent"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -466,7 +467,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-16 z-40 md:hidden"
+            className="fixed inset-x-0 top-16 z-40 lg:hidden"
           >
             <div className="bg-background/95 backdrop-blur-xl border-b border-border p-4">
               <div className="flex flex-col gap-2">

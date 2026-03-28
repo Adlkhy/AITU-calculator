@@ -138,7 +138,7 @@ export default function Footer() {
 
         <Separator className="my-8" />
 
-        <div className="flex md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
+        <div className="flex md:flex-row justify-between items-center gap-4 text-xs sm:text-sm text-muted-foreground">
           <p>© 2026 Evalis. All rights reserved. <br className='md:hidden'/> Made by <a href="https://t.me/Adlkhy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-foreground">Adilkhan</a>.</p>
           <div className="flex gap-6">
             <Link to="/term-of-service" className="hover:text-foreground transition-colors">Terms of Service</Link>

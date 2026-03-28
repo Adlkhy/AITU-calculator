@@ -88,9 +88,9 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
       const rank = row.original.id;
       let badgeColor = "bg-gray-100 text-gray-800";
       
-      if (rank === 1) badgeColor = "bg-yellow-100 text-yellow-800";
-      else if (rank === 2) badgeColor = "bg-gray-100 text-gray-800";
-      else if (rank === 3) badgeColor = "bg-orange-100 text-orange-800";
+      if (rank === 1) badgeColor = "bg-[#FFD700] text-black";
+      else if (rank === 2) badgeColor = "bg-[#C0C0C0] text-black";
+      else if (rank === 3) badgeColor = "bg-[#FF8C00] text-black";
       
       return (
         <div className="flex items-center gap-2">
@@ -131,7 +131,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     header: "Group",
     cell: ({ row }) => (
       <div className="w-32">
-        <Badge variant="outline" className="text-muted-foreground px-1.5">
+        <Badge variant="outline" className="text-foreground px-1.5">
           {row.original.group}
         </Badge>
       </div>
@@ -144,22 +144,27 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
       const status = row.original.performance;
       let badgeVariant: "default" | "secondary" | "outline" = "secondary";
       let icon = null;
+      let style = "";
       
       if (status === "Nerd") {
         badgeVariant = "default";
+        style = "bg-green-100 text-green-800";
         icon = <IconMoodHappy className="w-4 h-4" />;
       } else if (status === "Survivor") {
         badgeVariant = "secondary";
+        style = "bg-blue-100 text-blue-800";
         icon = <IconMoodLookUp className="w-4 h-4" />;
       } else if (status === "At Risk") {
         badgeVariant = "outline";
+        style = "bg-orange-100 text-orange-800";
         icon = <IconMoodTongueWink className="w-4 h-4" />;
       } else {
+        style = "bg-red-100 text-red-800";
         icon = <IconMoodAnnoyed className="w-4 h-4" />;
       }
       
       return (
-        <Badge variant={badgeVariant} className="flex items-center gap-1 px-2">
+        <Badge variant={badgeVariant} className={`flex items-center gap-1 px-2 ${style}`}>
           {icon}
           {status}
         </Badge>
@@ -286,7 +291,7 @@ export function DataTable({
         value="person-id"
         className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
       >
-        <div className="overflow-hidden rounded-lg border">
+        <div className="overflow-hidden rounded-sm border">
           <DndContext
             collisionDetection={closestCenter}
             modifiers={[restrictToVerticalAxis]}

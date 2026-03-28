@@ -107,7 +107,7 @@ const GradeCategory = ({
               className="text-sm sm:text-lg font-bold font-mono px-3"
             />
           </div>
-          <div className="flex items-center gap-3 bg-background/50 w-full md:w-auto justify-between md:justify-start">
+          <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
             <div className="flex items-center gap-2">
               <Input
                 type="number"

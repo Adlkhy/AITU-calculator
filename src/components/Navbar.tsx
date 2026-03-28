@@ -65,8 +65,6 @@ const UserMenu = ({
       navigate('/profile', { replace: true });
     } else if (item === 'leaderboard') {
       navigate('/leaderboard', { replace: true });
-    }  else if (item === 'final-grades') {
-      navigate('/final-grades', { replace: true });
     } else {
       onItemClick?.(item);
     }
@@ -132,8 +130,8 @@ const UserMenu = ({
         <DropdownMenuItem onClick={() => handleItemClick('profile')}>
           Profile
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleItemClick('final-grades')}>
-          Final Grades
+        <DropdownMenuItem onClick={() => handleItemClick('')}>
+          Settings
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => handleItemClick('logout')}>
@@ -176,7 +174,7 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
       const checkWidth = () => {
         if (containerRef.current) {
           const width = containerRef.current.offsetWidth;
-          setIsMobile(width < 880);
+          setIsMobile(width < 900);
         }
       };
       checkWidth();

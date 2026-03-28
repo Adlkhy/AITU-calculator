@@ -188,9 +188,9 @@ export default function Leaderboard() {
               )}
 
               {/* Filter Controls */}
-              <div className="w-full px-4 lg:px-6 grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="w-full px-4 lg:px-6 flex flex-wrap gap-4">
                 <div className="">
-                  <Label htmlFor="year-filter" className="text-sm font-medium mb-2">
+                  <Label htmlFor="year-filter" className="text-sm font-medium pl-2 mb-2">
                     Course
                   </Label>
                   <Select
@@ -214,7 +214,7 @@ export default function Leaderboard() {
                 </div>
 
                 <div className="">
-                  <Label htmlFor="trimester-filter" className="text-sm font-medium mb-2">
+                  <Label htmlFor="trimester-filter" className="text-sm font-medium pl-2 mb-2">
                     Trimester
                   </Label>
                   <Select
@@ -236,7 +236,7 @@ export default function Leaderboard() {
                 </div>
 
                 <div className="">
-                  <Label htmlFor="group-filter" className="text-sm font-medium mb-2">
+                  <Label htmlFor="group-filter" className="text-sm font-medium pl-2 mb-2">
                     Group
                   </Label>
                   <Select

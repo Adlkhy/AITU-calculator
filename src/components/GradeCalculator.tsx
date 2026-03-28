@@ -90,8 +90,15 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
     return performanceData.reduce((acc, curr) => acc + curr.earned, 0);
   }, [performanceData]);
 
+  // Keep required-final targets hidden until the user enters at least one score.
+  const hasAnyScoreInput = useMemo(() => {
+    return Object.keys(scores).length > 0;
+  }, [scores]);
+
   // Calculate required final exam grade to achieve 70% and 90% final grade
   const calculateNeededFinalGrade = (targetGrade: number): number | null => {
+    if (!hasAnyScoreInput) return null;
+
     // Find the final exam category
     const finalCategory = data.breakdown.find(cat => 
       cat.name.toLowerCase().includes('final')
@@ -106,6 +113,8 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
     
     // Formula: earnedExcludingFinal + (neededFinalScore / 100 * finalExamWeight) = targetGrade
     // neededFinalScore = (targetGrade - earnedExcludingFinal) / finalExamWeight * 100
+    if (finalCategory.overallWeight <= 0) return null;
+
     const neededFinalScore = (targetGrade - earnedExcludingFinal) / finalCategory.overallWeight * 100;
 
     // Clamp only the lower bound; >100 means mathematically impossible but still informative.
@@ -115,16 +124,17 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const neededFor70 = useMemo(() => calculateNeededFinalGrade(70), [performanceData, data.breakdown]);
+  const neededFor70 = useMemo(() => calculateNeededFinalGrade(70), [performanceData, data.breakdown, hasAnyScoreInput]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const neededFor90 = useMemo(() => calculateNeededFinalGrade(90), [performanceData, data.breakdown]);
-
+  const neededFor90 = useMemo(() => calculateNeededFinalGrade(90), [performanceData, data.breakdown, hasAnyScoreInput]);
+  console.log('Needed for 70%:', neededFor70, 'Needed for 90%:', neededFor90);
   const panicLevelData = useMemo(() => {
     if (neededFor70 === null) {
       return {
         level: 'Unknown',
         emoji: '🤔',
-        message: 'Final exam category was not found in this syllabus.',
+        imgUrl: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2R2NXRtdm9uMmExNDlkeGxpMnUzaXpmZnptZ25paXNmdXluazhkdiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Ij5kcfI6YwcPCN26U2/giphy.gif',
+        message: 'Are you gonna type something?',
         badgeClassName: 'bg-muted text-muted-foreground border-border',
       };
     }
@@ -133,6 +143,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
       return {
         level: 'Chill',
         emoji: '😎',
+        imgUrl: 'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExbzRoOGR4dnJuNHM0aGZ6ZXpnaXpka3FkbXFuMm4wZDN0d3J2YmR2NiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/WndVjjHMZ8dAh9TrhP/giphy.gif',
         message: 'You could almost sleep through the exam.',
         badgeClassName: 'bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800',
       };
@@ -142,6 +153,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
       return {
         level: 'Focus',
         emoji: '📚',
+        imgUrl: 'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGZrc2Jkc3dhZWR5cmdyd2w2c2JsYXo0ZThtZ3R2ZGdnaWF3OTBiYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/fhAwk4DnqNgw8/giphy.gif',
         message: "Study a bit and you'll be fine.",
         badgeClassName: 'bg-sky-100 text-sky-800 border-sky-300 dark:bg-sky-950/40 dark:text-sky-300 dark:border-sky-800',
       };
@@ -151,6 +163,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
       return {
         level: 'Serious',
         emoji: '😬',
+        imgUrl: 'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHVnbWwyMHAwZW94azYxYjhuam9rZm85c3htM21kaHg5aGp4Nm5jdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JqNhxI8vX5COnaM9Bo/giphy.gif',
         message: 'Time to actually study.',
         badgeClassName: 'bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800',
       };
@@ -160,6 +173,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
       return {
         level: 'High Panic',
         emoji: '😰',
+        imgUrl: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExamkxM2VmZWhuM2o0Z2VyOWhiajR4ZDc3dDVvMndmeTJsN2xqc3BsOSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/1EghTrigJJhq8/giphy.gif',
         message: 'Cancel your weekend plans.',
         badgeClassName: 'bg-orange-100 text-orange-800 border-orange-300 dark:bg-orange-950/40 dark:text-orange-300 dark:border-orange-800',
       };
@@ -168,6 +182,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
     return {
       level: 'Extreme Panic',
       emoji: '💀',
+      imgUrl: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMnB4cThtMmRuOGE0cmFzeTlhM2s3MTBqYjEyMXMzYWI2M3cxMmViNSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/OmqRHI3lSX7jR97WjZ/giphy.gif',
       message: 'You either become a genius tonight or pray.',
       badgeClassName: 'bg-rose-100 text-rose-800 border-rose-300 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-800',
     };
@@ -520,6 +535,9 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
               </Badge>
             </CardHeader>
             <CardContent className="space-y-2">
+                {panicLevelData.imgUrl && (
+                  <img src={panicLevelData.imgUrl} alt="Panic Level" className="w-full object-cover rounded" />
+                )}
               <p className="text-sm text-muted-foreground font-medium">{panicLevelData.message}</p>
             </CardContent>
           </Card>
