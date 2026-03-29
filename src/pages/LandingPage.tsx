@@ -169,36 +169,42 @@ const features = [
   {
     icon: Calculator,
     title: 'Grade Calculator',
+    url: '/calculator',
     description:
       'Calculate your current grade, predict final marks, and set goals with our intuitive grade calculator.',
   },
   {
     icon: ScanFace,
     title: 'Attendance Tracker',
+    url: '/calculator/attendance',
     description:
       'Track your attendance and calculate how many classes you can miss without dropping below a passing grade.',
   },
   {
     icon: BadgeDollarSign,
     title: 'Budget Manager',
+    url: '/calculator/budget',
     description:
       'Track your expenses and income to manage your budget effectively.',
   },
   {
     icon: Sparkles,
     title: 'AI Template Maker',
+    url: '/ai',
     description:
       'Upload your syllabus and let our AI extract key info to create a personalized study template in seconds.',
     },
   {
     icon: ChartLine,
     title: 'Leadership Boards',
+    url: '/leaderboard',
     description:
       'Compete with friends and classmates on our public leaderboards. See how you stack up in your school or globally.',
     },
   {
     icon: GraduationCap,
     title: 'GPA Insights',
+    url: '/calculator/gpa',
     description:
       'Get detailed insights into your GPA, including projections and what-if scenarios to help you plan your academic future.',
   },
@@ -732,6 +738,7 @@ export default function Navbar() {
               variants={itemVariants}
               whileHover={{ y: -4, transition: { duration: 0.1 } }}
               className="group p-6 bg-card border border-border rounded-2xl hover:border-primary/30 hover:shadow-lg transition-all duration-300"
+              onClick={() => navigate(feature.url)}
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-colors">

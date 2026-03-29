@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Card_14 } from '@/components/ui/card-14'
+import { ShareCard } from '@/components/ShareCard'
 import { useUser } from '@/hooks/useUser'
 import { useLeaderboardData } from '@/hooks/useLeaderboardData'
 import { DataTable } from '@/components/shadcn/data-table'
@@ -170,6 +171,20 @@ export default function Leaderboard() {
                 </Card>
               )}
 
+              {/* Share Card */}
+              <div className="px-4 lg:px-6">
+                <ShareCard
+                  name={currentUserData?.name || "Fart"}
+                  rank={currentUserRank}
+                  gpa={parseFloat(currentUserGPA.toFixed(2))}
+                  percentage={leaderboardData.length > 0 ? Math.max(1, Math.round(((leaderboardData.length - currentUserRank + 1) / leaderboardData.length) * 100)) : 0}
+                  group={currentUserData?.group || "No group"}
+                  semester="Trimester 2"
+                  totalStudents={leaderboardData.length}
+                  // classAverage={75}
+                  avatarUrl={currentUserData?.avatarUrl}
+                />
+              </div>
 
               {/* Current User Stats */}
               {currentUserRank > 0 && (
