@@ -1,12 +1,5 @@
 import * as React from "react"
 import { useTheme } from "@/lib/useTheme"
-import {
-  IconAppWindow,
-  IconBrandTelegram,
-  IconMap,
-  IconPaw,
-  IconUsersGroup,
-} from "@tabler/icons-react"
 
 import { NavMain } from "@/components/shadcn/nav-main"
 import { NavSecondary } from "@/components/shadcn/nav-secondary"
@@ -23,19 +16,16 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { Link, useNavigate } from "react-router-dom"
-import { Calculator, Sparkles } from "lucide-react"
 
 const data = {
   navNavi: [
     {
       title: "Calculator",
       url: "/calculator",
-      icon: Calculator,
     },
     {
       title: "AI",
       url: "/ai",
-      icon: Sparkles,
     }
   ],
   navMain: [
@@ -47,39 +37,24 @@ const data = {
     {
       title: "AITU Connect",
       url: "https://t.me/astanait_forum",
-      icon: IconUsersGroup,
     },
     {
       title: "AITU Map",
-      url: "https://aitumap.webspace.cat/",
-      icon: IconMap,
-    },
-    {
-      title: "Prof Ratings",
-      url: "https://teacherratings.vercel.app/",
-      icon: IconAppWindow,
-    },
-    {
-      title: "SyllaBuses",
-      url: "https://syllabus-pearl.vercel.app/",
-      icon: IconAppWindow,
+      url: "https://yuujiso.github.io/aitumap/",
     },
     {
       title: "SyllaBusesTG",
       url: "https://t.me/aitu_syllabus",
-      icon: IconBrandTelegram,
     },
     // {
     //   title: "My TG Channel",
     //   url: "https://t.me/safemys",
-    //   icon: IconBrandTelegram,
     // },
   ],
   navSecondary: [
     {
       title: "404",
       url: "/404",
-      icon: IconPaw,
     },
   ],
 }
@@ -119,7 +94,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton tooltip={item.title}>
                     <Link to={item.url} className="flex items-center w-full gap-2">
-                      {item.icon && <item.icon />}
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>

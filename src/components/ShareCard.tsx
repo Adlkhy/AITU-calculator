@@ -1,7 +1,9 @@
 import { useRef, useCallback } from "react"
 import { motion } from "framer-motion"
 import { toPng } from "html-to-image"
-import { Star, Diamond, TrendingUp, Zap, ArrowUpCircle, Shield, ArrowUp, Share2, ArrowRight } from "lucide-react"
+import { Star, Diamond, TrendingUp, Zap, ArrowUpCircle, Shield, ArrowUp, Share2, ArrowRight, GraduationCap } from "lucide-react"
+import { ChartContainer, type ChartConfig } from "./ui/chart"
+import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts"
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -27,6 +29,13 @@ export type ShareCardProps = {
   classAverage?: number
   onExport?: () => void
 }
+
+const chartConfig = {
+  grade: {
+    label: "Average",
+    color: "hsl(var(--primary))",
+  },
+} satisfies ChartConfig
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -54,37 +63,6 @@ const ArchetypeIcon = ({ badge, className }: { badge: ArchetypeBadge; className?
     "Survivor": <Shield className={className} />,
   }
   return icons[badge]
-}
-
-// ─── Radial Progress Ring ─────────────────────────────────────────────────────
-
-function ProgressRing({ percentage, isGold }: { percentage: number; isGold: boolean }) {
-  const size = 88
-  const strokeWidth = 8
-  const r = (size - strokeWidth) / 2
-  const circ = 2 * Math.PI * r
-  const offset = circ - (Math.min(100, Math.max(0, percentage)) / 100) * circ
-
-  return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-90 transform">
-      <circle
-        cx={size / 2} cy={size / 2} r={r}
-        className="fill-none stroke-white/10"
-        strokeWidth={strokeWidth}
-      />
-      <motion.circle
-        cx={size / 2} cy={size / 2} r={r}
-        className="fill-none drop-shadow-lg"
-        stroke={isGold ? "#F5B800" : "#8B5CF6"}
-        strokeWidth={strokeWidth}
-        strokeLinecap="round"
-        strokeDasharray={circ}
-        initial={{ strokeDashoffset: circ }}
-        animate={{ strokeDashoffset: offset }}
-        transition={{ duration: 1.4, ease: "easeOut", delay: 0.4 }}
-      />
-    </svg>
-  )
 }
 
 // ─── Main Component ───────────────────────────────────────────────────────────
@@ -150,24 +128,21 @@ export function ShareCard({
       {/* ── CARD TO EXPORT ── */}
       <div
         ref={cardRef}
-        className={`relative w-[420px] bg-[#0C0C13] rounded-[2rem] border ${theme.border} overflow-hidden flex flex-col items-center p-8 z-10 ${isTopThree ? theme.glow : 'shadow-2xl'}`}
+        className={`relative bg-card rounded-md border ${theme.border} overflow-hidden flex flex-col items-center p-8 z-10 ${isTopThree ? theme.glow : 'shadow-2xl'}`}
       >
-        {/* Ambient background glow */}
-        <div className={`absolute inset-0 opacity-20 pointer-events-none radial-gradient-glow ${isGold ? 'bg-amber-500/20' : 'bg-violet-500/20'} blur-[100px] rounded-full scale-150 -top-1/2`} />
-        
-        {/* Subtle Grid overlay */}
-        <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at center, white 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
-
         <div className="relative z-10 w-full flex flex-col items-center">
-          
           {/* 1. RANK */}
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-            <h1 className={`text-7xl font-black tracking-tighter leading-none ${theme.text} drop-shadow-md`}>
+            <h1 className={`text-5xl font-black font-mono tracking-tighter leading-none ${theme.text} drop-shadow-md`}>
               #{rank}
             </h1>
-            <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-white/40 mt-2">
-              {isGold ? "Top Performer" : "Leaderboard"}
+            <p className="text-xs font-bold tracking-[0.25em] uppercase text-muted-foreground mt-2">
+              Leaderboard
             </p>
+            <div className={`mt-4 inline-flex items-center gap-2 ${theme.bg} border ${theme.border} rounded-full px-4 py-1.5`}>
+            <ArchetypeIcon badge={archetype} className={`w-3.5 h-3.5 ${theme.text}`} />
+            <span className={`text-xs font-bold uppercase tracking-wider ${theme.text}`}>{archetype}</span>
+          </div>
           </motion.div>
 
           {/* 2. AVATAR */}
@@ -185,33 +160,65 @@ export function ShareCard({
 
           {/* 3. NAME + GROUP */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center mb-6">
-            <h2 className="text-xl font-bold text-white tracking-tight">{name}</h2>
-            <p className="text-sm text-white/40 mt-1">{group}</p>
+            <h2 className="text-xl font-bold text-foreground tracking-tight">{name}</h2>
+            <p className="text-sm text-muted-foreground font-mono mt-1">{group}</p>
           </motion.div>
 
           {/* 4. STATS GRID */}
-          <div className="w-full grid grid-cols-[1fr_1px_1fr] bg-white/[0.03] border border-white/10 rounded-2xl mb-5 overflow-hidden backdrop-blur-sm">
-            <div className="p-4 text-center flex flex-col justify-center">
-              <span className="text-[10px] tracking-[0.2em] uppercase text-white/30 mb-1">GPA</span>
-              <span className={`text-4xl font-black ${theme.text}`}>{gpa.toFixed(2)}</span>
-              <span className="text-[10px] text-white/30 mt-1">of 4.0</span>
+          <div className="w-full flex flex-col mb-2 overflow-hidden">
+            <div className="bg-secondary rounded-md p-4 flex items-center justify-between">
+                <div className="flex items-center gap-5">
+                  <div className="w-12 h-12 rounded-full bg-accent-foreground flex items-center justify-center text-tertiary">
+                    <GraduationCap className="w-6 h-6 text-accent" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">Grade Point Average</p>
+                    <h3 className="text-2xl font-extrabold tracking-tight font-mono">{gpa.toFixed(2)} <span className="text-base font-normal">/ 4.0</span></h3>
+                  </div>
+                </div>
             </div>
-            <div className="bg-white/10" />
             <div className="p-4 flex flex-col items-center justify-center relative">
-               <span className="text-[10px] tracking-[0.2em] uppercase text-white/30 mb-2">Average</span>
-               <div className="relative w-[88px] h-[88px] flex items-center justify-center">
-                 <div className="absolute inset-0">
-                    <ProgressRing percentage={percentage} isGold={isGold} />
-                 </div>
-                 <span className="text-lg font-bold text-white relative z-10">{percentage.toFixed(1)}%</span>
-               </div>
+               <span className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-2">Average</span>
+               <ChartContainer config={chartConfig} className="w-[240px] h-[160px] aspect-square">
+                <RadialBarChart
+                  data={[{ average: percentage }]}
+                  startAngle={90}
+                  endAngle={90 + (percentage / 100) * 360}
+                  innerRadius={45}
+                  outerRadius={62}
+                >
+                  <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
+                    <Label
+                      content={({ viewBox }) => {
+                        if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                          return (
+                            <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle" dominantBaseline="middle">
+                              <tspan
+                                x={viewBox.cx}
+                                y={viewBox.cy}
+                                fill="#F8FAFC"
+                                fontSize={18}
+                                fontWeight={700}
+                              >
+                                {`${percentage.toFixed(1)}%`}
+                              </tspan>
+                            </text>
+                          )
+                        }
+                        return null
+                      }}
+                    />
+                  </PolarRadiusAxis>
+                  <RadialBar dataKey="average" cornerRadius={8} fill={isGold ? "#F5B800" : "#8B5CF6"} background />
+                </RadialBarChart>
+              </ChartContainer>
             </div>
           </div>
 
           {/* 5. COMPARISON INSIGHT */}
           <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} className="w-full bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3 mb-5 flex items-center gap-3">
             <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0">
-              <ArrowUp className="w-3.5 h-3.5 text-emerald-400" />
+              <ArrowUp className="w-3 h-3 text-emerald-400" />
             </div>
             <p className="text-sm text-emerald-400 font-medium leading-tight">
               {comparison}
@@ -221,21 +228,15 @@ export function ShareCard({
             </p>
           </motion.div>
 
-          {/* 6. ARCHETYPE BADGE */}
-          <div className={`inline-flex items-center gap-2 ${theme.bg} border ${theme.border} rounded-full px-4 py-1.5 mb-6`}>
-            <ArchetypeIcon badge={archetype} className={`w-3.5 h-3.5 ${theme.text}`} />
-            <span className={`text-xs font-bold uppercase tracking-wider ${theme.text}`}>{archetype}</span>
-          </div>
-
           {/* 7. CONTEXT */}
-          <p className="text-xs text-white/30 mb-6">
+          <p className="text-xs text-muted-foreground mb-6">
             {semester} · {totalStudents} students
           </p>
 
           {/* 8. CTA BANNER */}
-          <div className="w-full bg-white/5 border border-white/10 rounded-xl p-3 flex items-center justify-between">
-            <span className="text-sm text-white/50 italic">Can you beat me?</span>
-            <span className={`text-xs flex items-center font-bold ${theme.text}`}>evaiis.vercel.app <ArrowRight className="w-4"/></span>
+          <div className="w-full bg-card border border-border rounded-xl p-3 flex items-center justify-between">
+            <span className="text-sm text-muted-foreground italic">Where u at?</span>
+            <span className={`text-xs flex items-center font-bold ${theme.text}`}><ArrowRight className="w-4"/> evaiis.vercel.app</span>
           </div>
 
         </div>

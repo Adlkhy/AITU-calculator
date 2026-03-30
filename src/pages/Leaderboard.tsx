@@ -8,8 +8,17 @@ import { AppSidebar } from "@/components/shadcn/app-sidebar"
 import { DotLoader } from '@/components/shadcn/gsap/dot-loader'
 import { Podium } from '@/components/shadcn/podium'
 import { SiteHeader } from "@/components/shadcn/site-header"
-import { Info } from 'lucide-react'
+import { Info, Share2 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet'
 import {
   SidebarInset,
   SidebarProvider,
@@ -81,7 +90,7 @@ export default function Leaderboard() {
     group: user.group,
     grade: (selectedTrimester && [1, 2, 3].includes(selectedTrimester)
       ? (user.gpaByTrimester[`trimester${selectedTrimester}` as keyof typeof user.gpaByTrimester] ?? 0)
-      : (user.averageGPA ?? 0)).toString(),
+      : (user.averageGPA ?? 0)),
     avatarUrl: user.avatarUrl,
   }))
 
@@ -89,6 +98,12 @@ export default function Leaderboard() {
   const currentUserData = leaderboardData.find((u) => u.isCurrentUser)
   const currentUserRank = currentUserData?.id || 0
   const currentUserGPA = currentUserData?.averageGPA || 0
+  const currentUserTrimesterGPA = selectedTrimester && currentUserData
+    ? (currentUserData.gpaByTrimester[`trimester${selectedTrimester}` as keyof typeof currentUserData.gpaByTrimester] ?? 0)
+    : null 
+  const currentUserPersentage = leaderboardData.length > 0 && currentUserRank > 0
+    ? Math.max(1, Math.round(((leaderboardData.length - currentUserRank + 1) / leaderboardData.length) * 100))
+    : 0
 
   const game = [
     [14, 7, 0, 8, 6, 13, 20],
@@ -171,24 +186,46 @@ export default function Leaderboard() {
                 </Card>
               )}
 
-              {/* Share Card */}
-              <div className="px-4 lg:px-6">
-                <ShareCard
-                  name={currentUserData?.name || "Fart"}
-                  rank={currentUserRank}
-                  gpa={parseFloat(currentUserGPA.toFixed(2))}
-                  percentage={leaderboardData.length > 0 ? Math.max(1, Math.round(((leaderboardData.length - currentUserRank + 1) / leaderboardData.length) * 100)) : 0}
-                  group={currentUserData?.group || "No group"}
-                  semester="Trimester 2"
-                  totalStudents={leaderboardData.length}
-                  // classAverage={75}
-                  avatarUrl={currentUserData?.avatarUrl}
-                />
-              </div>
 
               {/* Current User Stats */}
               {currentUserRank > 0 && (
-                <div className="px-4 lg:px-6">
+                <div className="relative px-4 lg:px-6">
+                  {/* Share Card */}
+                  <div className="absolute bottom-2 right-6 lg:right-8 z-50">
+                    <Sheet>
+                      <SheetTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="icon-sm"
+                          className="rounded-full"
+                          aria-label="Open share card"
+                        >
+                          <Share2 className="size-4" />
+                        </Button>
+                      </SheetTrigger>
+                      <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
+                        <SheetHeader>
+                          <SheetTitle>Share Your Rank</SheetTitle>
+                          <SheetDescription>
+                            Share your leaderboard snapshot.
+                          </SheetDescription>
+                        </SheetHeader>
+                        <div className="px-4 pb-6">
+                          <ShareCard
+                            name={currentUserData?.name || "Fart"}
+                            rank={currentUserRank}
+                            gpa={currentUserTrimesterGPA !== null ? parseFloat(currentUserTrimesterGPA.toFixed(2)) : parseFloat(currentUserGPA.toFixed(2))}
+                            percentage={currentUserPersentage}
+                            group={currentUserData?.group || "No group"}
+                            semester={selectedTrimester ? `Trimester ${selectedTrimester}` : "Overall"}
+                            totalStudents={leaderboardData.length}
+                            classAverage={85}
+                            avatarUrl={currentUserData?.avatarUrl}
+                          />
+                        </div>
+                      </SheetContent>
+                    </Sheet>
+                  </div>
                   <Card_14
                     currentUserRank={currentUserRank}
                     currentUserAverage={currentUserGPA.toFixed(2)}

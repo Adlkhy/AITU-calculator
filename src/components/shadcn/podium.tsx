@@ -8,7 +8,7 @@ type PodiumSourceEntry = {
   id: number
   name: string
   group: string
-  grade: string
+  grade: number
   avatarUrl?: string
 }
 
@@ -30,10 +30,9 @@ function getInitials(name: string): string {
     .join('')
 }
 
-function parseProgress(grade: string): number {
-  const numeric = Number.parseFloat(grade)
-  if (Number.isNaN(numeric)) return 0
-  return Math.max(0, Math.min(100, numeric))
+function calculateGPAtoPercentage(grade: number): number {
+  // Assuming GPA is on a 4.0 scale, convert to percentage
+  return Math.max(0, Math.min(100, (grade / 4.0) * 100));
 }
 
 function createPodiumEntries(data: PodiumSourceEntry[]): PodiumEntry[] {
@@ -49,7 +48,7 @@ function createPodiumEntries(data: PodiumSourceEntry[]): PodiumEntry[] {
       group: item.group,
       avatarUrl: item.avatarUrl ?? '',
       initials: getInitials(item.name),
-      progress: parseProgress(item.grade),
+      progress: calculateGPAtoPercentage(item.grade),
     }
   })
 }

@@ -10,7 +10,6 @@ type Card14Props = {
   currentUserAverage: string
   leaderboardData: ReturnType<typeof useLeaderboardData>["leaderboardData"]
 }
-
 const chartConfig = {
   grade: {
     label: "Average",
@@ -44,19 +43,21 @@ export const Card_14 = ({ currentUserRank, currentUserAverage, leaderboardData }
         <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_160px] sm:items-center">
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <Avatar className="size-10 border border-border/70">
+              <div className="relative w-20">
+              <Avatar className="size-20 border-2 border-primary">
                 <AvatarImage src={currentUser?.avatarUrl ?? ""} alt={`${currentUser?.name ?? "User"} avatar`} />
                 <AvatarFallback>{getInitials(currentUser?.name ?? "User")}</AvatarFallback>
               </Avatar>
+              <Badge variant="secondary" className="absolute -bottom-2 -right-2 text-xs font-mono">#{currentUserRank} Rank</Badge>
+              </div>
               <div className="min-w-0">
-                <p className="truncate text-sm font-semibold">{currentUser?.name ?? "Current User"}</p>
-                <p className="truncate text-xs text-muted-foreground">{currentUser?.group ?? "No group"}</p>
+                <p className="truncate text-xl font-semibold">{currentUser?.name ?? "Current User"}</p>
+                <p className="truncate text-md text-muted-foreground">{currentUser?.group ?? "No group"}</p>
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge variant="secondary" className="font-mono">#{currentUserRank} Rank</Badge>
-              <Badge variant="outline" className="font-mono">{currentUserAverage} Avg</Badge>
+            <div className="flex flex-wrap items-center mt-6 gap-2">
+              <Badge variant="outline" className="font-mono">{currentUserAverage}/4.0 Avg</Badge>
               <Badge variant="outline" className="font-mono">Top {percentile}%</Badge>
             </div>
 
