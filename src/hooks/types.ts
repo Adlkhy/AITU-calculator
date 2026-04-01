@@ -16,6 +16,8 @@ export interface SubjectEntry {
   name: string;
   /** Full official course name used by react-helmet for the <title> tag */
   courseName: string;
+  /** Instructor name */
+  teacher?: string;
   /** One- or two-sentence description for the card body and meta description */
   description: string;
   /**

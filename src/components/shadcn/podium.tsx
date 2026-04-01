@@ -57,6 +57,7 @@ function accentByRank(rank: PodiumEntry['rank']) {
   if (rank === 1) {
     return {
       badgeClass: 'bg-[#FFD700] text-black border-yellow-500/60',
+      bg: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255, 215, 36, 0.25), transparent 70%)',
       ringClass: 'ring-[#FFD700]',
       progressClass: 'bg-[#FFD700]',
       cardClass: 'border-[#FFD700] shadow-yellow-500/10 md:shadow-yellow-500/20',
@@ -70,6 +71,7 @@ function accentByRank(rank: PodiumEntry['rank']) {
   if (rank === 2) {
     return {
       badgeClass: 'bg-[#C0C0C0] text-black border-gray-500/60',
+      bg: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(192, 192, 192, 0.25), transparent 70%)',
       ringClass: 'ring-[#C0C0C0]',
       progressClass: 'bg-[#C0C0C0]',
       cardClass: 'border-[#C0C0C0] shadow-gray-500/10',
@@ -82,6 +84,7 @@ function accentByRank(rank: PodiumEntry['rank']) {
 
   return {
     badgeClass: 'bg-[#FF8C00] text-black border-orange-500/60',
+    bg: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255, 140, 0, 0.25), transparent 70%)',
     ringClass: 'ring-[#FF8C00]',
     progressClass: 'bg-[#FF8C00]',
     cardClass: 'border-[#FF8C00] shadow-orange-500/10',
@@ -98,6 +101,9 @@ function HeroPodiumCard({ entry }: { entry: PodiumEntry }) {
 
   return (
     <Card
+      style={{
+        background: `${accent.bg}, var(--background)`,
+      }}
       className={`w-full md:max-w-sm py-5 text-center backdrop-blur supports-[backdrop-filter]:bg-card/90 transition-all ${accent.cardClass} ${accent.heightClass} ${accent.order}`}
     >
       <CardContent className="flex h-full flex-col items-center justify-center gap-4 px-5">
@@ -107,10 +113,15 @@ function HeroPodiumCard({ entry }: { entry: PodiumEntry }) {
         >
           {rankLabel}
         </Badge>
+        <div className="relative mt-5">
+        {entry.rank === 1 && (
+          <img src='/crown.png' alt="Place crown" className="w-24 absolute z-20 -top-14" />
+        )}
         <Avatar className={`ring-4 ${accent.avatarSize} ${accent.ringClass}`}>
           <AvatarImage src={entry.avatarUrl} alt={`${entry.name} avatar`} />
           <AvatarFallback>{entry.initials}</AvatarFallback>
         </Avatar>
+        </div>
         <div className="space-y-1 max-h-16 overflow-hidden">
           <p className="text-base font-semibold leading-tight">{entry.name}</p>
           <p className={`text-sm font-medium ${accent.pointsClass}`}>{entry.group}</p>

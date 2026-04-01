@@ -1,9 +1,9 @@
 import { useRef, useCallback } from "react"
 import { motion } from "framer-motion"
 import { toPng } from "html-to-image"
-import { Star, Diamond, TrendingUp, Zap, ArrowUpCircle, Shield, ArrowUp, Share2, ArrowRight, GraduationCap } from "lucide-react"
-import { ChartContainer, type ChartConfig } from "./ui/chart"
-import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts"
+import { Star, Diamond, TrendingUp, Zap, ArrowUpCircle, Shield, ArrowUp, Share2, GraduationCap } from "lucide-react"
+// import { ChartContainer, type ChartConfig } from "./ui/chart"
+// import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts"
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -30,12 +30,12 @@ export type ShareCardProps = {
   onExport?: () => void
 }
 
-const chartConfig = {
-  grade: {
-    label: "Average",
-    color: "hsl(var(--primary))",
-  },
-} satisfies ChartConfig
+// const chartConfig = {
+//   grade: {
+//     label: "Average",
+//     color: "hsl(var(--primary))",
+//   },
+// } satisfies ChartConfig
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -130,6 +130,21 @@ export function ShareCard({
         ref={cardRef}
         className={`relative bg-card rounded-md border ${theme.border} overflow-hidden flex flex-col items-center p-8 z-10 ${isTopThree ? theme.glow : 'shadow-2xl'}`}
       >
+        {isGold ? (
+          <div
+          className="absolute inset-0 z-10"
+            style={{
+              background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(251, 191, 36, 0.25), transparent 70%), var(--background)",
+            }}
+          />
+        ) : (
+          <div
+          className="absolute inset-0 z-10"
+          style={{
+            background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(139, 92, 246, 0.25), transparent 70%), var(--background)",
+          }}
+          /> 
+        )}
         <div className="relative z-10 w-full flex flex-col items-center">
           {/* 1. RANK */}
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
@@ -166,10 +181,10 @@ export function ShareCard({
 
           {/* 4. STATS GRID */}
           <div className="w-full flex flex-col mb-2 overflow-hidden">
-            <div className="bg-secondary rounded-md p-4 flex items-center justify-between">
+            <div className="rounded-md border-1 border-muted-foreground bg-card p-4 flex items-center justify-between">
                 <div className="flex items-center gap-5">
-                  <div className="w-12 h-12 rounded-full bg-accent-foreground flex items-center justify-center text-tertiary">
-                    <GraduationCap className="w-6 h-6 text-accent" />
+                  <div className="w-12 h-12 rounded-full bg-foreground flex items-center justify-center text-tertiary">
+                    <GraduationCap className="w-6 h-6 text-background" />
                   </div>
                   <div>
                     <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">Grade Point Average</p>
@@ -177,7 +192,9 @@ export function ShareCard({
                   </div>
                 </div>
             </div>
-            <div className="p-4 flex flex-col items-center justify-center relative">
+
+
+            {/* <div className="p-4 flex flex-col items-center justify-center relative">
                <span className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-2">Average</span>
                <ChartContainer config={chartConfig} className="w-[240px] h-[160px] aspect-square">
                 <RadialBarChart
@@ -212,11 +229,11 @@ export function ShareCard({
                   <RadialBar dataKey="average" cornerRadius={8} fill={isGold ? "#F5B800" : "#8B5CF6"} background />
                 </RadialBarChart>
               </ChartContainer>
-            </div>
+            </div> */}
           </div>
 
           {/* 5. COMPARISON INSIGHT */}
-          <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} className="w-full bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3 mb-5 flex items-center gap-3">
+          <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} className="w-full bg-emerald-500/10 border border-emerald-500/20 rounded-md p-3 mb-5 flex items-center gap-3">
             <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0">
               <ArrowUp className="w-3 h-3 text-emerald-400" />
             </div>
@@ -234,9 +251,9 @@ export function ShareCard({
           </p>
 
           {/* 8. CTA BANNER */}
-          <div className="w-full bg-card border border-border rounded-xl p-3 flex items-center justify-between">
-            <span className="text-sm text-muted-foreground italic">Where u at?</span>
-            <span className={`text-xs flex items-center font-bold ${theme.text}`}><ArrowRight className="w-4"/> evaiis.vercel.app</span>
+          <div className="w-full bg-card border border-border rounded-xl p-3 flex flex-col items-center justify-between">
+            <span className="text-sm text-muted-foreground italic">Your Rank is waiting for you!</span>
+            <span className={`text-xs flex items-center font-bold ${theme.text}`}>evaiis.vercel.app/leaderboard</span>
           </div>
 
         </div>

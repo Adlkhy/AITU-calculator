@@ -219,7 +219,7 @@ export default function Leaderboard() {
                             group={currentUserData?.group || "No group"}
                             semester={selectedTrimester ? `Trimester ${selectedTrimester}` : "Overall"}
                             totalStudents={leaderboardData.length}
-                            classAverage={85}
+                            classAverage={70}
                             avatarUrl={currentUserData?.avatarUrl}
                           />
                         </div>

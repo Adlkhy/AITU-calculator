@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { ArrowRight, BookOpen, Search, Wrench } from 'lucide-react';
+import { ArrowDown, ArrowRight, BookOpen, Search, Wrench } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -40,7 +40,7 @@ function SubjectCard({ subject }: { subject: SubjectEntry }) {
       aria-label={`Open ${subject.name} calculator`}
     >
       <Card className="h-full transition-colors duration-200 hover:border-primary/60 hover:bg-accent/30 cursor-pointer">
-        <CardHeader className="pb-2">
+        <CardHeader className="">
           <div className="flex items-center justify-between gap-2">
             <Badge
               variant={isTemplate ? 'default' : 'secondary'}
@@ -53,7 +53,13 @@ function SubjectCard({ subject }: { subject: SubjectEntry }) {
               )}
             </Badge>
           </div>
-          <CardTitle className="text-base mt-2">{subject.name}</CardTitle>
+          <CardTitle className="text-base flex flex-col mt-2">{subject.name}
+            {subject.teacher && (
+              <span className="text-muted-foreground text-sm">
+                by {subject.teacher}
+              </span>
+            )}
+          </CardTitle>
         </CardHeader>
 
         <CardContent className="flex-1">
@@ -112,7 +118,8 @@ export default function SubjectDirectory() {
     return subjects.filter((subject) => {
       const subjectName = subject.name.toLowerCase();
       const subjectSlug = subject.slug.toLowerCase();
-      return subjectName.includes(query) || subjectSlug.includes(query);
+      const teacherName = subject.teacher?.toLowerCase() || '';
+      return subjectName.includes(query) || subjectSlug.includes(query) || teacherName.includes(query);
     });
   }, [subjects, searchQuery]);
 
@@ -146,20 +153,31 @@ export default function SubjectDirectory() {
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">
               Grade Calculator
             </h1>
-            <p className="text-muted-foreground text-base sm:text-lg max-w-2xl">
-              Select a subject to calculate your grade across attestations and the final exam.
-              All calculators follow the standard <strong>30 / 30 / 40</strong> grading policy shown in the syllabus.
+            <p className="text-muted-foreground text-base sm:text-lg max-w-2xl lg:max-w-3xl">
+              Select a subject to calculate your grade across attestations and the final exam. If you don't see your subject, you can create a custom calculator using the <Link to="/ai" className="text-primary hover:underline">AI builder</Link>.
+              Or check out the <a href='#tools' className="text-primary hover:underline">custom calculator</a>.
             </p>
 
-            <div className="relative mt-6 max-w-xl">
+            <div className='flex flex-col w-full sm:flex-row items-end gap-6 justify-between'>
+            <div className="relative mt-6 w-full sm:max-w-sm">
               <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
-                placeholder="Search by subject name or slug"
+                placeholder="Search by subject name, slug, or teacher"
                 className="pl-9"
-                aria-label="Search subjects by name or slug"
+                aria-label="Search subjects by name, slug, or teacher name"
               />
+            </div>
+            <div className='w-56'>
+              <h5 className="text-sm flex justify-end font-medium text-muted-foreground mb-1">
+                Looking for something else?
+              </h5>
+              <a href="#tools" className="flex justify-end items-center text-sm text-primary hover:underline">
+                <ArrowDown className='w-4 h-4'/>
+                View Tools
+              </a>
+            </div>
             </div>
           </header>
 
