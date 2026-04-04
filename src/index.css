@@ -113,7 +113,7 @@
   --shadow-2xl: 0px 2px 3px 0px hsl(0 0% 0% / 0.40);
 }
 
-.love {
+.custom {
   --background: oklch(0.98 0.015 15);
   --foreground: oklch(0.35 0.04 15);
   --card: oklch(0.98 0.015 15);

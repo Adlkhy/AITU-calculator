@@ -63,8 +63,8 @@ const UserMenu = ({
       navigate('/', { replace: true });
     } else if (item === 'profile') {
       navigate('/profile', { replace: true });
-    } else if (item === 'leaderboard') {
-      navigate('/leaderboard', { replace: true });
+    } else if (item === 'settings') {
+      navigate('/settings', { replace: true });
     } else {
       onItemClick?.(item);
     }
@@ -130,7 +130,7 @@ const UserMenu = ({
         <DropdownMenuItem onClick={() => handleItemClick('profile')}>
           Profile
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleItemClick('')}>
+        <DropdownMenuItem onClick={() => handleItemClick('settings')}>
           Settings
         </DropdownMenuItem>
         <DropdownMenuSeparator />

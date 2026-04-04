@@ -19,6 +19,7 @@ interface LoginFormProps extends React.ComponentProps<"div"> {
   error?: string;
   loading?: boolean;
   onSubmit: (e: React.FormEvent) => void;
+  onForgotPassword: (email: string) => void;
 }
 export function LoginForm({
   className,
@@ -29,6 +30,7 @@ export function LoginForm({
   error,
   loading,
   onSubmit,
+  onForgotPassword,
   ...props
 }: LoginFormProps) {
   return (
@@ -61,8 +63,11 @@ export function LoginForm({
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
                   <a
-                    href="#"
-                    className="ml-auto text-sm underline-offset-2 hover:underline"
+                    className="ml-auto text-sm cursor-pointer underline-offset-2 hover:underline"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onForgotPassword(email);
+                    }}
                   >
                     Forgot your password?
                   </a>

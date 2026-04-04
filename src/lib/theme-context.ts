@@ -1,6 +1,6 @@
 import { createContext } from "react"
 
-export type Theme = "dark" | "light" | "system" | "love"
+export type Theme = "dark" | "light" | "system" | "custom"
 
 export type ThemeProviderState = {
   theme: Theme

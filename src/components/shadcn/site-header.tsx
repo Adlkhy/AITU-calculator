@@ -19,10 +19,8 @@ export function SiteHeader() {
       navigate('/', { replace: true });
     } else if (item === 'profile') {
       navigate('/profile', { replace: true });
-    } else if (item === 'calculator') {
-      navigate('/calculator', { replace: true });
-    }  else if (item === 'final-grades') {
-      navigate('/final-grades', { replace: true });
+    } else if (item === 'settings') {
+      navigate('/settings', { replace: true });
     }
   };
   const getUserName = () => {
@@ -96,7 +94,7 @@ export function SiteHeader() {
               <DropdownMenuItem onClick={() => handleItemClick('profile')}>
                 Profile
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleItemClick('')}>
+              <DropdownMenuItem onClick={() => handleItemClick('settings')}>
                 Settings
               </DropdownMenuItem>
               <DropdownMenuSeparator />

@@ -29,9 +29,9 @@ export function ModeToggle() {
               : "scale-0 rotate-90"
           }`} />
 
-          {/* Love theme icon */}
+          {/* Custom theme icon */}
           <Heart className={`absolute h-[1.2rem] w-[1.2rem] transition-all ${
-            theme === "love" 
+            theme === "custom" 
               ? "scale-100 rotate-0" 
               : "scale-0 rotate-90"
           }`} />
@@ -46,8 +46,8 @@ export function ModeToggle() {
         <DropdownMenuItem onClick={() => setTheme("dark")}>
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("love")}>
-          Love
+        <DropdownMenuItem onClick={() => setTheme("custom")}>
+          Custom
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
           System

@@ -28,6 +28,15 @@ export default function LoginPage() {
     setLoading(false);
   };
 
+  const handleForgotPassword = async (email: string) => {
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${window.location.origin}/reset-password`,
+  });
+
+  if (error) setError(error.message);
+  else toast.success('Check your email for the reset link!');
+  };
+
   return (
     <div className="bg-background flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm md:max-w-4xl">
@@ -40,6 +49,7 @@ export default function LoginPage() {
           error={error}
           loading={loading}
           onSubmit={handleLogin}
+          onForgotPassword={handleForgotPassword}
         />
       </div>
     </div>

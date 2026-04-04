@@ -70,14 +70,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
+              className="cursor-pointer hover: data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <div onClick={() => navigate("/calculator", { replace: true })}>
               {(theme === 'dark' || theme === 'system') ?
                 <img src="/evalis-black.png" alt="logo" className="h-5 sm:h-6" /> : <img src="/evalis-white.png" alt="logo" className="h-5 sm:h-6" />
               }
+              <span className="px-2">|</span>
               {theme === 'dark' || theme === 'system' ?
-                <img src="/white.png" alt="logo" className="h-5 sm:h-6 ms-2" /> : <img src="/dark.png" alt="logo" className="h-5 sm:h-6 ms-2" />
+                <img src="/white.png" alt="logo" className="h-5 sm:h-6" /> : <img src="/dark.png" alt="logo" className="h-5 sm:h-6" />
               }</div>
             </SidebarMenuButton>
           </SidebarMenuItem>

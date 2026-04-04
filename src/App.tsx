@@ -14,6 +14,8 @@ import { useEffect } from 'react';
 import { useUser } from './hooks/useUser';
 import TermOfService from './pages/TermOfService';
 import AI from './pages/AI';
+import Settings from './pages/Settings';
+import ResetPasswordPage from './pages/ResetPassword';
 
 function App() {
   const { user, loading, session } = useUser();
@@ -35,6 +37,7 @@ function App() {
           <Route path="/calculator/:subjectSlug" element={<SubjectCalculator />} />
           <Route path="/login" element={<Login />} />
           <Route path='/signup' element={<Signup />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/term-of-service" element={<TermOfService />} />
           <Route path="/ai" element={<AI />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
@@ -42,6 +45,11 @@ function App() {
           <Route path="/profile" element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>}
+            />
+          <Route path="/settings" element={
+            <ProtectedRoute>
+              <Settings />
             </ProtectedRoute>}
             />
           <Route path="*" element={<NotFoundPage />} />
