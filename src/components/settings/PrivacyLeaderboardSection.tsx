@@ -23,7 +23,7 @@ type PrivacyLeaderboardSectionProps = {
   value: PrivacySettings
   hasChanges: boolean
   onChange: (nextValue: PrivacySettings) => void
-  onSave: () => void
+  onSave: () => Promise<void>
 }
 
 export function PrivacyLeaderboardSection({
@@ -84,22 +84,6 @@ export function PrivacyLeaderboardSection({
             Public: visible to everyone. Group only: visible inside your group. Private:
             only visible to you.
           </p>
-        </div>
-
-        <div className="flex items-start justify-between gap-4 rounded-lg border border-border/70 p-4">
-          <div className="space-y-1">
-            <Label htmlFor="show-stats-publicly" className="text-sm font-medium">
-              Show my stats publicly
-            </Label>
-            <p className="text-muted-foreground text-xs">
-              Shares grade trends and score totals where your profile is visible.
-            </p>
-          </div>
-          <Switch
-            id="show-stats-publicly"
-            checked={value.showStatsPublicly}
-            onCheckedChange={(checked) => onChange({ ...value, showStatsPublicly: checked })}
-          />
         </div>
       </CardContent>
 

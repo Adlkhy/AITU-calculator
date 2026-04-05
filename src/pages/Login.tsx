@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { LoginForm } from "@/components/login-form"
 import { useNavigate } from "react-router-dom";
@@ -28,14 +28,33 @@ export default function LoginPage() {
     setLoading(false);
   };
 
-  const handleForgotPassword = async (email: string) => {
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${window.location.origin}/reset-password`,
-  });
+  const handleForgotPassword = async () => {
+    if (!email) {
+      toast.error("Please enter your email to reset password.");
+      return;
+    }
 
-  if (error) setError(error.message);
-  else toast.success('Check your email for the reset link!');
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
+    toast.success("Password reset email sent. Check your inbox.");
   };
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        navigate('/reset-password');
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
 
   return (
     <div className="bg-background flex min-h-svh flex-col items-center justify-center p-6 md:p-10">

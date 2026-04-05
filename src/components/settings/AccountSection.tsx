@@ -37,12 +37,6 @@ export function AccountSection({ email }: AccountSectionProps) {
             Email is managed through authentication and cannot be edited here.
           </p>
         </div>
-
-        <div className="flex flex-wrap gap-3">
-          <Button type="button" variant="outline">
-            Change password
-          </Button>
-        </div>
       </CardContent>
     </Card>
   )

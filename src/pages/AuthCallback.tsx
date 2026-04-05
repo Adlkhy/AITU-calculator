@@ -5,6 +5,14 @@ import { useNavigate } from 'react-router-dom';
 export default function AuthCallback() {
   const navigate = useNavigate();
   useEffect(() => {
+    const hashParams = new URLSearchParams(window.location.hash.replace('#', ''));
+    const searchParams = new URLSearchParams(window.location.search);
+    const authType = hashParams.get('type') || searchParams.get('type');
+
+    if (authType === 'recovery') {
+      navigate('/reset-password', { replace: true });
+      return;
+    }
 
   // console.log('Current URL:', window.location.href);
   // console.log('URL hash:', window.location.hash);

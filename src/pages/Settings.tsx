@@ -12,16 +12,16 @@ import type { SettingsData, SettingsSectionKey } from "@/components/settings/typ
 import { useTheme } from "@/lib/useTheme"
 import { useLeaderboardData } from "@/hooks/useLeaderboardData"
 
-const initialMockSettings: SettingsData = {
+const defaultSettings: SettingsData = {
 	publicProfile: {
-		name: "Adil Khan",
-		avatarUrl: "https://github.com/shadcn.png",
-		bio: "CS student focused on consistent grades and clean study systems.",
-		socialLinks: ["https://github.com/adilkhan", "https://t.me/adilkhan"],
-		group: "CS-SST-24",
+		name: "",
+		avatarUrl: "https://i.pinimg.com/736x/57/e2/5c/57e25c3c048bfa751bc767282ee02087.jpg",
+		bio: "",
+		socialLinks: [""],
+		group: "",
 	},
 	account: {
-		email: "adil.khan@evalis.app",
+		email: "",
 	},
 	appearance: {
 		theme: "dark",
@@ -37,11 +37,32 @@ function isDifferent<T>(current: T, saved: T) {
 	return JSON.stringify(current) !== JSON.stringify(saved)
 }
 
+type DbPrivacy = {
+	participate?: boolean
+	visibility?: "public" | "group" | "private"
+	show_stats?: boolean
+}
+
+function normalizePrivacyFromDb(value: unknown): SettingsData["privacy"] {
+	const maybePrivacy = (value && typeof value === "object" ? value : {}) as DbPrivacy
+
+	return {
+		participateInLeaderboard: maybePrivacy.participate ?? true,
+		visibility:
+			maybePrivacy.visibility === "public" ||
+			maybePrivacy.visibility === "group" ||
+			maybePrivacy.visibility === "private"
+				? maybePrivacy.visibility
+				: "group",
+		showStatsPublicly: maybePrivacy.show_stats ?? false,
+	}
+}
+
 export default function Settings() {
 	const { setTheme } = useTheme()
 	const { user } = useUser()
-	const [settings, setSettings] = useState<SettingsData>(initialMockSettings)
-	const [savedSettings, setSavedSettings] = useState<SettingsData>(initialMockSettings)
+	const [settings, setSettings] = useState<SettingsData>(defaultSettings)
+	const [savedSettings, setSavedSettings] = useState<SettingsData>(defaultSettings)
 	const [activeSection, setActiveSection] = useState<SettingsSectionKey>("public-profile")
 	const [savingProfile, setSavingProfile] = useState(false)
 
@@ -51,6 +72,10 @@ export default function Settings() {
 
 	useEffect(() => {
 		if (!user) return
+
+		let isCancelled = false
+
+		const hydrateSettings = async () => {
 
 		const socialLinksFromMetadata = Array.isArray(user.user_metadata?.social_links)
 			? (user.user_metadata.social_links as string[])
@@ -69,22 +94,45 @@ export default function Settings() {
 					: [""]
 
 		const hydratedSettings: SettingsData = {
-			...initialMockSettings,
+			...defaultSettings,
 			publicProfile: {
-				...initialMockSettings.publicProfile,
+				...defaultSettings.publicProfile,
 				name: user.user_metadata?.full_name ?? "",
 				avatarUrl:
-					user.user_metadata?.avatar_url ?? initialMockSettings.publicProfile.avatarUrl,
+					user.user_metadata?.avatar_url ?? defaultSettings.publicProfile.avatarUrl,
 				socialLinks: resolvedSocialLinks,
-				group: user.user_metadata?.group ?? initialMockSettings.publicProfile.group,
+				group: user.user_metadata?.group ?? defaultSettings.publicProfile.group,
 			},
 			account: {
-				email: user.email ?? initialMockSettings.account.email,
+				email: user.email ?? defaultSettings.account.email,
 			},
 		}
 
+		try {
+			const { data: profileData, error: profileError } = await supabase
+				.from("profiles")
+				.select("privacy")
+				.eq("id", user.id)
+				.single()
+
+			if (!profileError && profileData?.privacy) {
+				hydratedSettings.privacy = normalizePrivacyFromDb(profileData.privacy)
+			}
+		} catch (error) {
+			console.error("Error hydrating privacy settings:", error)
+		}
+
+		if (isCancelled) return
+
 		setSettings(hydratedSettings)
 		setSavedSettings(hydratedSettings)
+		}
+
+		hydrateSettings()
+
+		return () => {
+			isCancelled = true
+		}
 	}, [user])
 
 	const sectionHasChanges = useMemo(
@@ -223,12 +271,27 @@ export default function Settings() {
 									privacy: nextValue,
 								}))
 							}
-							onSave={() =>
+							onSave={async () => {
+								if (user?.id) {
+									const { error: privacyUpdateError } = await supabase
+										.from("profiles")
+										.update({
+											privacy: {
+												participate: settings.privacy.participateInLeaderboard,
+												visibility: settings.privacy.visibility,
+												show_stats: settings.privacy.showStatsPublicly,
+											},
+										})
+										.eq("id", user.id)
+
+									if (privacyUpdateError) throw privacyUpdateError
+								}
+
 								setSavedSettings((prevSaved) => ({
 									...prevSaved,
 									privacy: settings.privacy,
 								}))
-							}
+							}}
 						/>
 
 						<DangerZoneSection />

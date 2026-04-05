@@ -9,21 +9,49 @@ import { toast, Toaster } from 'sonner';
 
 export default function ResetPasswordPage() {
   const [newPassword, setNewPassword] = useState('');
+  const [isRecoverySessionReady, setIsRecoverySessionReady] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
   const navigate = useNavigate();
 
-  // This is critical — Supabase sets the session from the URL token
   useEffect(() => {
-    supabase.auth.onAuthStateChange((event, session) => {
+    const initializeRecoverySession = async () => {
+      const { data, error: sessionError } = await supabase.auth.getSession();
+
+      if (sessionError) {
+        setError('Unable to verify your reset link. Please request a new one.');
+        return;
+      }
+
+      if (data.session) {
+        setIsRecoverySessionReady(true);
+      }
+    };
+
+    initializeRecoverySession();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'PASSWORD_RECOVERY') {
-        // Session is now active, user can set new password
-        console.log('Recovery session active:', session);
+        setIsRecoverySessionReady(!!session);
       }
     });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const handleReset = async () => {
+  const handleReset = async (e: React.FormEvent) => {
+    e.preventDefault();
     setError(undefined);
+
+    if (!isRecoverySessionReady) {
+      toast.error('Reset link is invalid or expired. Request a new one.');
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      toast.error('Password must be at least 8 characters long.');
+      return;
+    }
+
     const { error } = await supabase.auth.updateUser({
       password: newPassword,
     });

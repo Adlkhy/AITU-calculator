@@ -178,6 +178,7 @@ export function PublicProfileSection({
                   size="icon"
                   onClick={() => removeSocialLink(index)}
                   aria-label="Remove social link"
+                  className="hover:text-destructive"
                 >
                   <Trash2 className="size-4" />
                 </Button>

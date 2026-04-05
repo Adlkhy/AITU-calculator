@@ -77,6 +77,7 @@ export const schema = z.object({
   performance: z.string(),
   grade: z.string(),
   avatarUrl: z.string().optional(),
+  isGhost: z.boolean().optional(),
 })
 
 const columns: ColumnDef<z.infer<typeof schema>>[] = [
@@ -106,6 +107,16 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     header: "Student Name",
     enableHiding: false,
     cell: ({ row }) => {
+      if (row.original.isGhost) {
+        return (
+          <div className="flex items-center gap-3 opacity-40">
+            <Avatar className="hidden h-9 w-9 sm:flex">
+              <AvatarFallback>?</AvatarFallback>
+            </Avatar>
+            <div className="text-muted-foreground font-medium">Anonymous</div>
+          </div>
+        );
+      }
       const avatarUrl = row.original.avatarUrl;
       const name = row.original.name;
       const initials = name

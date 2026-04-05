@@ -81,6 +81,7 @@ export default function Leaderboard() {
       ? (user.gpaByTrimester[`trimester${selectedTrimester}` as keyof typeof user.gpaByTrimester] ?? 0).toString()
       : (user.averageGPA ?? 0).toString(),
     avatarUrl: user.avatarUrl,
+    isGhost: user.isGhost,
   }))
 
   // Transform data for Podium
