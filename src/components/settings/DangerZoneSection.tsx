@@ -1,4 +1,7 @@
 import { useState } from "react"
+import { Loader2 } from "lucide-react"
+import { useNavigate } from "react-router-dom"
+import { toast } from "sonner"
 
 import {
   AlertDialog,
@@ -21,12 +24,103 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useUser } from "@/hooks/useUser"
+import { supabase } from "@/lib/supabaseClient"
 
 export function DangerZoneSection() {
+  const navigate = useNavigate()
+  const { user } = useUser()
+
+  const [leaveDialogOpen, setLeaveDialogOpen] = useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [isLeavingLeaderboard, setIsLeavingLeaderboard] = useState(false)
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false)
   const [deleteConfirmation, setDeleteConfirmation] = useState("")
 
   const canDelete = deleteConfirmation === "DELETE"
+
+  const handleLeaveLeaderboard = async () => {
+    if (!user) {
+      toast.error("You must be signed in to leave the leaderboard")
+      return
+    }
+
+    try {
+      setIsLeavingLeaderboard(true)
+
+      const { error } = await supabase
+        .from("transcript_imports")
+        .delete()
+        .eq("user_id", user.id)
+
+      if (error) throw error
+
+      setLeaveDialogOpen(false)
+      navigate("/")
+      toast.success("You've left the leaderboard")
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to leave leaderboard"
+      toast.error(message)
+    } finally {
+      setIsLeavingLeaderboard(false)
+    }
+  }
+
+  const handleDeleteAccount = async () => {
+    if (!user) {
+      toast.error("You must be signed in to delete your account")
+      return
+    }
+
+    try {
+      setIsDeletingAccount(true)
+
+      const { error: finalGradesError } = await supabase
+        .from("final_grades")
+        .delete()
+        .eq("user_id", user.id)
+      if (finalGradesError) throw finalGradesError
+
+      const { error: calculatorsError } = await supabase
+        .from("calculators")
+        .delete()
+        .eq("user_id", user.id)
+      if (calculatorsError) throw calculatorsError
+
+      const { error: transcriptImportsError } = await supabase
+        .from("transcript_imports")
+        .delete()
+        .eq("user_id", user.id)
+      if (transcriptImportsError) throw transcriptImportsError
+
+      const { error: profilesError } = await supabase
+        .from("profiles")
+        .delete()
+        .eq("id", user.id)
+      if (profilesError) throw profilesError
+
+      const { error: edgeFunctionError } = await supabase.functions.invoke("delete-user", {
+        body: { userId: user.id },
+      })
+
+      if (edgeFunctionError) {
+        throw edgeFunctionError
+      }
+
+      const { error: signOutError } = await supabase.auth.signOut()
+      if (signOutError) throw signOutError
+
+      setDeleteDialogOpen(false)
+      setDeleteConfirmation("")
+      navigate("/")
+      toast.success("Account deleted")
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to delete account"
+      toast.error(message)
+    } finally {
+      setIsDeletingAccount(false)
+    }
+  }
 
   return (
     <Card
@@ -50,9 +144,14 @@ export function DangerZoneSection() {
             </p>
           </div>
 
-          <AlertDialog>
+          <AlertDialog open={leaveDialogOpen} onOpenChange={setLeaveDialogOpen}>
             <AlertDialogTrigger asChild>
-              <Button type="button" variant="outline" className="border-destructive/50">
+              <Button
+                type="button"
+                variant="outline"
+                className="border-destructive/50"
+                disabled={isLeavingLeaderboard || isDeletingAccount}
+              >
                 Leave leaderboard
               </Button>
             </AlertDialogTrigger>
@@ -65,9 +164,23 @@ export function DangerZoneSection() {
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction className="bg-destructive hover:bg-destructive/90">
-                  Confirm leave
+                <AlertDialogCancel disabled={isLeavingLeaderboard}>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={async (event) => {
+                    event.preventDefault()
+                    await handleLeaveLeaderboard()
+                  }}
+                  disabled={isLeavingLeaderboard}
+                  className="bg-destructive hover:bg-destructive/90"
+                >
+                  {isLeavingLeaderboard ? (
+                    <span className="inline-flex items-center gap-2">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Leaving...
+                    </span>
+                  ) : (
+                    "Confirm leave"
+                  )}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -85,7 +198,7 @@ export function DangerZoneSection() {
 
           <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
             <AlertDialogTrigger asChild>
-              <Button type="button" variant="destructive">
+              <Button type="button" variant="destructive" disabled={isDeletingAccount || isLeavingLeaderboard}>
                 Delete account
               </Button>
             </AlertDialogTrigger>
@@ -109,16 +222,23 @@ export function DangerZoneSection() {
               </div>
 
               <AlertDialogFooter>
-                <AlertDialogCancel onClick={() => setDeleteConfirmation("")}>Cancel</AlertDialogCancel>
+                <AlertDialogCancel disabled={isDeletingAccount} onClick={() => setDeleteConfirmation("")}>Cancel</AlertDialogCancel>
                 <AlertDialogAction
-                  disabled={!canDelete}
-                  onClick={() => {
-                    setDeleteDialogOpen(false)
-                    setDeleteConfirmation("")
+                  disabled={!canDelete || isDeletingAccount}
+                  onClick={async (event) => {
+                    event.preventDefault()
+                    await handleDeleteAccount()
                   }}
                   className="bg-destructive hover:bg-destructive/90"
                 >
-                  Permanently delete
+                  {isDeletingAccount ? (
+                    <span className="inline-flex items-center gap-2">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Deleting...
+                    </span>
+                  ) : (
+                    "Permanently delete"
+                  )}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>

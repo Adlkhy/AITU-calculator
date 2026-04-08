@@ -1021,7 +1021,7 @@ export default function Navbar() {
                         : "bg-muted text-muted-foreground"
                     )}
                   >
-                    <img src={p.avatar} className="w-full h-full rounded-full object-cover" />
+                    <img src={p.avatar} alt='avatar photo' className="w-full h-full rounded-full object-cover" />
                   </div>
                   <div className="min-w-0">
                     <p className="text-sm font-medium truncate">{p.name}</p>

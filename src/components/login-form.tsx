@@ -122,7 +122,7 @@ export function LoginForm({
           <div className="bg-muted relative hidden md:block">
             <img
               src="/why1.jpeg"
-              alt="Image"
+              alt="Login Image"
               className="bg-secondary absolute inset-0 h-full w-full object-cover dark:brightness-[0.5]"
             />
           </div>
