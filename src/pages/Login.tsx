@@ -56,9 +56,12 @@ export default function LoginPage() {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
+
   return (
-    <div className="bg-background flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
-      <div className="w-full max-w-sm md:max-w-4xl">
+    <div className="relative flex min-h-svh items-center justify-center overflow-hidden px-4 py-8 md:px-10">
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,var(--card),var(--accent)_38%,var(--background)_72%)]" />
+      <div className="absolute inset-x-0 top-0 -z-10 h-64 bg-[radial-gradient(circle_at_center,color-mix(in_oklch,var(--primary)_16%,transparent),transparent_70%)] blur-3xl" />
+      <div className="w-full max-w-6xl">
         <Toaster position="top-center" theme="system" />
         <LoginForm 
           email={email}
