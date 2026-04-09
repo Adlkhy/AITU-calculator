@@ -13,7 +13,6 @@ export type PublicProfileSettings = {
   name: string
   avatarUrl: string
   bio: string
-  socialLinks: string[]
   group: string
 }
 

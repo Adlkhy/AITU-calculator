@@ -100,7 +100,6 @@ export default function Profile() {
 
   const profileName = user.user_metadata?.full_name || "User"
   const profileAvatar = user.user_metadata?.avatar_url || "https://github.com/shadcn.png"
-  const socialLink = user.user_metadata?.social_link as string | undefined
 
   return (
     <>
@@ -116,16 +115,6 @@ export default function Profile() {
                 <div>
                   <h2 className="text-2xl font-bold">{profileName}</h2>
                   <p className="text-muted-foreground">{user.email}</p>
-                  {socialLink && (
-                    <a
-                      href={socialLink}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-primary text-sm underline mt-1 block"
-                    >
-                      Social
-                    </a>
-                  )}
                 </div>
               </div>
 

@@ -70,9 +70,9 @@ export function LoginForm({
             <div className="relative z-10 flex h-full flex-col justify-between rounded-md border border-white/35 p-5 text-white md:p-8">
               <div className="text-5xl font-semibold leading-none tracking-tight text-white/95">*</div>
               <div className="max-w-sm space-y-3">
-                <p className="text-sm font-medium text-white/80">You can easily</p>
-                <p className="text-3xl font-semibold leading-tight tracking-tight text-white md:text-[2.15rem]">
-                 Track every win. <br /> Outrank your class. <br /> See your future grade.
+                <p className="text-sm font-medium text-white/80">Latin</p>
+                <p className="text-2xl font-semibold leading-tight tracking-tight text-white lg:text-[2.15rem]">
+                 <span className="italic">'Per Aspera Ad Astra.'</span> <br /> Through challenges, to the stars.
                 </p>
               </div>
             </div>

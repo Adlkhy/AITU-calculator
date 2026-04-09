@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { Plus, Trash2 } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -68,26 +67,6 @@ export function PublicProfileSection({
 }: PublicProfileSectionProps) {
   const [showAvatarPicker, setShowAvatarPicker] = useState(false)
 
-  const updateSocialLink = (index: number, nextLink: string) => {
-    const next = [...value.socialLinks]
-    next[index] = nextLink
-    onChange({ ...value, socialLinks: next })
-  }
-
-  const addSocialLink = () => {
-    onChange({ ...value, socialLinks: [...value.socialLinks, ""] })
-  }
-
-  const removeSocialLink = (index: number) => {
-    if (value.socialLinks.length === 1) {
-      onChange({ ...value, socialLinks: [""] })
-      return
-    }
-
-    const next = value.socialLinks.filter((_, itemIndex) => itemIndex !== index)
-    onChange({ ...value, socialLinks: next })
-  }
-
   return (
     <Card id="public-profile" className="border-border/70 shadow-none">
       <CardHeader>
@@ -155,37 +134,6 @@ export function PublicProfileSection({
             </div>
           </div>
         )}
-
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <Label>Social links</Label>
-            <Button type="button" variant="outline" size="sm" onClick={addSocialLink}>
-              <Plus className="size-4" />
-              Add link
-            </Button>
-          </div>
-          <div className="space-y-2">
-            {value.socialLinks.map((link, index) => (
-              <div key={`social-${index}`} className="flex gap-2">
-                <Input
-                  value={link}
-                  onChange={(event) => updateSocialLink(index, event.target.value)}
-                  placeholder="https://github.com/username"
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => removeSocialLink(index)}
-                  aria-label="Remove social link"
-                  className="hover:text-destructive"
-                >
-                  <Trash2 className="size-4" />
-                </Button>
-              </div>
-            ))}
-          </div>
-        </div>
 
         <div className="space-y-2">
           <Label htmlFor="public-group">Group</Label>

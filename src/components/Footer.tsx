@@ -1,37 +1,25 @@
 import { Link } from 'react-router-dom';
 import { Separator } from './ui/separator';
 import { useTheme } from '@/lib/useTheme';
-// import { useState, useEffect } from 'react';
-// import { CopyButton } from './animate-ui/components/buttons/copy';
-// import { toast } from 'sonner';
-// import {
-//   Popover,
-//   PopoverContent,
-//   PopoverTrigger,
-// } from '@/components/ui/popover';
+import { useState, useEffect } from 'react';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 
 export default function Footer() {
   const { theme } = useTheme();
-  // const [isOpen, setIsOpen] = useState(false);
-  // const [copied, setCopied] = useState(false);
-  // const cardNumber = ""; 
+  const [isOpen, setIsOpen] = useState(false);
 
-  // useEffect(() => {
-  //   if (isOpen) {
-  //     const timer = setTimeout(() => {
-  //       setIsOpen(false);
-  //       setCopied(false);
-  //     }, 5000);
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [isOpen]);
-
-  // const handleCopy = () => {
-  //   navigator.clipboard.writeText(cardNumber.replace(/\s/g, ''));
-  //   setCopied(true);
-  //   toast.success("Card number copied!");
-  //   setTimeout(() => setCopied(false), 2000);
-  // };
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setTimeout(() => {
+        setIsOpen(false);
+      }, 10000);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
 
   return (
     <footer className="bg-background text-foreground border-t border-dashed border-border ">
@@ -60,7 +48,7 @@ export default function Footer() {
                 >
                   Telegram
                 </a>
-                {/* <Popover open={isOpen} onOpenChange={setIsOpen}>
+                <Popover open={isOpen} onOpenChange={setIsOpen}>
                   <PopoverTrigger asChild>
                     <button 
                       className="flex gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 group"
@@ -74,23 +62,16 @@ export default function Footer() {
                         <p className="text-sm font-semibold flex items-center gap-2">
                           Support Project
                         </p>
-                        <p className="text-xs text-muted-foreground">Click to copy card number</p>
+                        <p className="text-xs text-muted-foreground">Scan the QR code to donate</p>
+                        <figure className="w-full rounded-sm overflow-hidden">
+                        <img src="/halyk.png" alt="Donate QR Code" className="w-full my-2 rounded-sm" />
+                        <figcaption className="text-xs text-muted-foreground text-center">Halyk Bank (Adilkhan)</figcaption>
+                        </figure>
                       </div>
-                      <button
-                        onClick={handleCopy}
-                        className="w-full flex items-center justify-between p-2 rounded-md bg-muted hover:bg-accent transition-colors border group/card"
-                      >
-                        <span className="font-mono text-sm">{cardNumber}</span>
-                        {copied ? (
-                          <CopyButton content={cardNumber} copied={copied} size="xs"/>
-                        ) : (
-                          <CopyButton content={cardNumber} copied={copied} size="xs"/>
-                        )}
-                      </button>
                       <p className="text-[11px] italic text-center text-primary">Thanks for support!</p>
                     </div>
                   </PopoverContent>
-                </Popover> */}
+                </Popover>
             </div>
           </div>
           {/* Navigation Section */}

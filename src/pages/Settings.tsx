@@ -17,7 +17,6 @@ const defaultSettings: SettingsData = {
 		name: "",
 		avatarUrl: "https://i.pinimg.com/736x/57/e2/5c/57e25c3c048bfa751bc767282ee02087.jpg",
 		bio: "",
-		socialLinks: [""],
 		group: "",
 	},
 	account: {
@@ -77,22 +76,6 @@ export default function Settings() {
 
 		const hydrateSettings = async () => {
 
-		const socialLinksFromMetadata = Array.isArray(user.user_metadata?.social_links)
-			? (user.user_metadata.social_links as string[])
-			: []
-
-		const singleSocialLink =
-			typeof user.user_metadata?.social_link === "string"
-				? user.user_metadata.social_link
-				: ""
-
-		const resolvedSocialLinks =
-			socialLinksFromMetadata.length > 0
-				? socialLinksFromMetadata
-				: singleSocialLink
-					? [singleSocialLink]
-					: [""]
-
 		const hydratedSettings: SettingsData = {
 			...defaultSettings,
 			publicProfile: {
@@ -100,7 +83,6 @@ export default function Settings() {
 				name: user.user_metadata?.full_name ?? "",
 				avatarUrl:
 					user.user_metadata?.avatar_url ?? defaultSettings.publicProfile.avatarUrl,
-				socialLinks: resolvedSocialLinks,
 				group: user.user_metadata?.group ?? defaultSettings.publicProfile.group,
 			},
 			account: {
@@ -189,18 +171,10 @@ export default function Settings() {
 								try {
 									setSavingProfile(true)
 
-									const sanitizedLinks = settings.publicProfile.socialLinks
-										.map((link) => link.trim())
-										.filter(Boolean)
-
-									const primarySocialLink = sanitizedLinks[0] ?? ""
-
 									const { error: userUpdateError } = await supabase.auth.updateUser({
 										data: {
 											full_name: settings.publicProfile.name,
 											avatar_url: settings.publicProfile.avatarUrl,
-											social_link: primarySocialLink,
-											social_links: sanitizedLinks,
 										},
 									})
 
@@ -220,8 +194,6 @@ export default function Settings() {
 										...prevSettings,
 										publicProfile: {
 											...prevSettings.publicProfile,
-											socialLinks:
-												sanitizedLinks.length > 0 ? sanitizedLinks : [""],
 										},
 									}))
 
@@ -229,8 +201,6 @@ export default function Settings() {
 										...prevSaved,
 										publicProfile: {
 											...settings.publicProfile,
-											socialLinks:
-												sanitizedLinks.length > 0 ? sanitizedLinks : [""],
 										},
 									}))
 								} catch (error) {
