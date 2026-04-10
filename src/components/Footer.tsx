@@ -56,14 +56,14 @@ export default function Footer() {
                       <span>Donate</span>
                     </button>
                   </PopoverTrigger>
-                  <PopoverContent side="top" align="start" className="w-64 p-4 shadow-xl border-dashed">
+                  <PopoverContent side="top" align="start" className="w-36 p-2.5 md:w-64 md:p-4 shadow-xl border-dashed">
                     <div className="space-y-3">
                       <div className="space-y-1">
                         <p className="text-sm font-semibold flex items-center gap-2">
                           Support Project
                         </p>
                         <p className="text-xs text-muted-foreground">Scan the QR code to donate</p>
-                        <figure className="w-full rounded-sm overflow-hidden">
+                        <figure className="w-full overflow-hidden">
                         <img src="/halyk.png" alt="Donate QR Code" className="w-full my-2 rounded-sm" />
                         <figcaption className="text-xs text-muted-foreground text-center">Halyk Bank (Adilkhan)</figcaption>
                         </figure>

@@ -85,9 +85,9 @@ const UserMenu = ({
       <Button 
         variant="ghost" 
         className="h-9 px-4"
-        onClick={() => navigate('/login')}
+        onClick={() => navigate('/signup')}
       >
-        Login
+        Sign Up
       </Button>
     );
   }
@@ -314,8 +314,8 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
                 <Button 
                   variant="secondary" 
                   className="h-9 px-4"
-                  onClick={() => navigate('/login')}
-                >Login
+                  onClick={() => navigate('/signup')}
+                >Sign Up
                 </Button>)}
               <div id="user-menu-btn">
                 <UserMenu onItemClick={onUserItemClick} />

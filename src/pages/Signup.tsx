@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { SignupForm } from "@/components/signup-form";
 import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from 'sonner';
+import { minecraftToast } from "@/components/ui/minecraft-toast";
 
 export default function SignupPage() {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ export default function SignupPage() {
     if (error) {
       toast.error(error.message);
     } else {
-      toast.success("Account created successfully!");
+      minecraftToast.success("Account created successfully!");
       navigate("/calculator", { replace: true });
     }
     setLoading(false);

@@ -1255,11 +1255,11 @@ export default function Navbar() {
               <Button
                 asChild
                 size="lg"
-                onClick={() => navigate('/calculator')}
+                onClick={() => navigate('/signup')}
                 className="bg-foreground text-background hover:bg-foreground/90 rounded-full px-8! h-11! text-base group"
               >
                 <div className="cursor-pointer">
-                  Try It Now
+                  Sign Up
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </div>
               </Button>
@@ -1271,9 +1271,9 @@ export default function Navbar() {
                 variant="outline"
                 size="lg"
                 className="rounded-full px-8! h-11! text-base bg-transparent border-border hover:text-primary hover:bg-accent"
-                onClick={() => navigate('/leaderboard')}
+                onClick={() => navigate('/calculator')}
               ><div className='cursor-pointer'>
-                Leaderboard
+                Calculator
                 </div>
               </Button>
             </motion.div>
@@ -1298,6 +1298,4 @@ export default function Navbar() {
   );
 }
 
-
-// hero section
 
