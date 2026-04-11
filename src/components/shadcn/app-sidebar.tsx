@@ -1,6 +1,6 @@
 import * as React from "react"
 import { useTheme } from "@/lib/useTheme"
-
+import { HowToGuide } from "../HowToGuide"
 import { NavMain } from "@/components/shadcn/nav-main"
 import { NavSecondary } from "@/components/shadcn/nav-secondary"
 // import { NavUser } from "@/components/shadcn/nav-user"
@@ -107,7 +107,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           Links
         </h3>
         <NavMain items={data.navMain}/>
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        <div className="mt-auto">
+        <HowToGuide />
+        <NavSecondary items={data.navSecondary} />
+        </div>
       </SidebarContent>
     </Sidebar>
   )
