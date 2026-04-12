@@ -85,29 +85,44 @@ export default function SubjectDirectory() {
   const { subjects, isLoading, error } = useSubjectsIndex();
   const [searchQuery, setSearchQuery] = useState('');
 
-  const midtermCountdown = useMemo(() => {
+  const examCountdown = useMemo(() => {
+    const msInDay = 1000 * 60 * 60 * 24;
     const now = new Date();
-    const currentYear = now.getFullYear();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-    const nextMidtermDate = new Date(currentYear, 3, 13);
-    if (now > nextMidtermDate) {
-      nextMidtermDate.setFullYear(currentYear + 1);
+    const buildSchedule = (year: number) => ([
+      { name: 'Midterm week', start: new Date(year, 3, 13), end: new Date(year, 3, 20) }, // Apr 13-20
+      { name: 'Endterm week', start: new Date(year, 4, 18), end: new Date(year, 4, 24) }, // May 18-24
+      { name: 'Finals', start: new Date(year, 4, 25), end: new Date(year, 5, 6) },        // May 25-Jun 6
+    ]);
+
+    const formatRange = (start: Date, end: Date) =>
+      `${start.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} – ${end.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+
+    let schedule = buildSchedule(today.getFullYear());
+
+    // If the whole season is over, show next year's schedule
+    if (today > schedule[schedule.length - 1].end) {
+      schedule = buildSchedule(today.getFullYear() + 1);
     }
 
-    const msInDay = 1000 * 60 * 60 * 24;
-    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const startOfMidterm = new Date(
-      nextMidtermDate.getFullYear(),
-      nextMidtermDate.getMonth(),
-      nextMidtermDate.getDate(),
-    );
+    const current = schedule.find((item) => today >= item.start && today <= item.end);
+    if (current) {
+      return {
+        mode: 'ongoing' as const,
+        title: `${current.name} started May the Force be with you`,
+        dateLabel: formatRange(current.start, current.end),
+      };
+    }
 
-    const daysLeft = Math.round((startOfMidterm.getTime() - startOfToday.getTime()) / msInDay);
+    const next = schedule.find((item) => today < item.start)!;
+    const daysLeft = Math.round((next.start.getTime() - today.getTime()) / msInDay);
 
     return {
-      dateLabel: `April 13, ${nextMidtermDate.getFullYear()}`,
+      mode: 'upcoming' as const,
+      title: `Next: ${next.name}`,
+      dateLabel: formatRange(next.start, next.end),
       daysLeft,
-      isToday: daysLeft === 0,
     };
   }, []);
 
@@ -143,9 +158,9 @@ export default function SubjectDirectory() {
         <div className="max-w-6xl mx-auto min-h-screen px-4 pt-10 pb-16 sm:px-8 sm:pt-14">
           {/* Countdown */}
           <div className="mb-6 inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
-            {midtermCountdown.isToday
-              ? `Midterm day is today (${midtermCountdown.dateLabel})`
-              : `Midterm day: ${midtermCountdown.dateLabel} • ${midtermCountdown.daysLeft} day${midtermCountdown.daysLeft === 1 ? '' : 's'} left`}
+            {examCountdown.mode === 'ongoing'
+              ? `${examCountdown.title} (${examCountdown.dateLabel})`
+              : `${examCountdown.title}: ${examCountdown.dateLabel} • ${examCountdown.daysLeft} day${examCountdown.daysLeft === 1 ? '' : 's'} left`}
           </div>
 
           {/* Page header */}
