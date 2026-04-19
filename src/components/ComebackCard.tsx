@@ -1,0 +1,121 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent } from "@/components/ui/card"
+import { useLeaderboardData } from "@/hooks/useLeaderboardData"
+
+type ComebackCardProps = {
+  leaderboardData: ReturnType<typeof useLeaderboardData>["leaderboardData"]
+}
+
+function getInitials(name: string): string {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("")
+}
+
+type ComebackInfo = {
+  student: ReturnType<typeof useLeaderboardData>["leaderboardData"][number]
+  improvement: number
+  fromTrimester: 1 | 2
+  toTrimester: 2 | 3
+}
+
+function getBestComeback(
+  data: ReturnType<typeof useLeaderboardData>["leaderboardData"]
+): ComebackInfo | null {
+  return data.reduce<ComebackInfo | null>((best, student) => {
+    const t1 = student.gpaByTrimester.trimester1
+    const t2 = student.gpaByTrimester.trimester2
+    const t3 = student.gpaByTrimester.trimester3
+
+    const deltas: Array<{
+      improvement: number
+      fromTrimester: 1 | 2
+      toTrimester: 2 | 3
+    }> = []
+
+    if (t1 !== null && t2 !== null && t2 > t1) {
+      deltas.push({ improvement: t2 - t1, fromTrimester: 1, toTrimester: 2 })
+    }
+
+    if (t2 !== null && t3 !== null && t3 > t2) {
+      deltas.push({ improvement: t3 - t2, fromTrimester: 2, toTrimester: 3 })
+    }
+
+    if (deltas.length === 0) {
+      return best
+    }
+
+    const studentBestDelta = deltas.reduce((max, current) =>
+      current.improvement > max.improvement ? current : max
+    )
+
+    if (!best || studentBestDelta.improvement > best.improvement) {
+      return {
+        student,
+        improvement: studentBestDelta.improvement,
+        fromTrimester: studentBestDelta.fromTrimester,
+        toTrimester: studentBestDelta.toTrimester,
+      }
+    }
+
+    return best
+  }, null)
+}
+
+export const ComebackCard = ({ leaderboardData }: ComebackCardProps) => {
+  const bestComeback = getBestComeback(leaderboardData)
+  const totalStudents = leaderboardData.length
+
+  return (
+    <Card className="relative overflow-hidden border-border p-0 bg-card">
+      <CardContent className="relative z-10 p-4 sm:p-5">
+        <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_160px] sm:items-center">
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="relative w-20">
+              <Avatar className="size-20 border-2 border-primary">
+                <AvatarImage src={bestComeback?.student.avatarUrl ?? ""} alt={`${bestComeback?.student.name ?? "Student"} avatar`} />
+                <AvatarFallback>{getInitials(bestComeback?.student.name ?? "Student")}</AvatarFallback>
+              </Avatar>
+              {bestComeback && (
+                <Badge variant="secondary" className="absolute -bottom-2 -right-2 text-xs font-mono">
+                  +{bestComeback.improvement.toFixed(2)}
+                </Badge>
+              )}
+              </div>
+              <div className="min-w-0">
+                <p className="truncate text-xl font-semibold">{bestComeback?.student.name ?? "No comeback yet"}</p>
+                <p className="truncate text-md text-muted-foreground">{bestComeback?.student.group ?? "No group"}</p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center mt-6 gap-2">
+              {bestComeback ? (
+                <>
+                  <Badge variant="outline" className="font-mono">
+                    Trimester {bestComeback.fromTrimester} to {bestComeback.toTrimester}
+                  </Badge>
+                  <Badge variant="outline" className="font-mono">
+                    {bestComeback.student.gpaByTrimester[`trimester${bestComeback.toTrimester}`]!.toFixed(2)}/4.0 now
+                  </Badge>
+                </>
+              ) : (
+                <Badge variant="outline" className="font-mono">No positive trimester increase</Badge>
+              )}
+            </div>
+
+            <p className="text-sm text-muted-foreground">
+              {bestComeback
+                ? `Most comebacked student out of ${totalStudents} students, counting only GPA increases.`
+                : `No student has a positive jump from trimester 1 to 2 or 2 to 3 among ${totalStudents} students.`}
+            </p>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}

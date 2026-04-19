@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Card_14 } from '@/components/ui/card-14'
 import { ShareCard } from '@/components/ShareCard'
+import { ComebackCard } from '@/components/ComebackCard'
+import { ConsistentCard } from '@/components/ConsistentCard'
+import { FastestClimberCard } from '@/components/FastestClimberCard'
 import { useUser } from '@/hooks/useUser'
 import { useLeaderboardData } from '@/hooks/useLeaderboardData'
 import { DataTable } from '@/components/shadcn/data-table'
@@ -227,11 +230,22 @@ export default function Leaderboard() {
                       </SheetContent>
                     </Sheet>
                   </div>
+                  <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
                   <Card_14
                     currentUserRank={currentUserRank}
                     currentUserAverage={currentUserGPA.toFixed(2)}
                     leaderboardData={leaderboardData}
                   />
+                  <ComebackCard
+                    leaderboardData={leaderboardData}
+                  />
+                  <ConsistentCard
+                    leaderboardData={leaderboardData}
+                  />
+                  <FastestClimberCard
+                    leaderboardData={allData}
+                  />
+                  </div>
                 </div>
               )}
 

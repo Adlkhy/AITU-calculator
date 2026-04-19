@@ -53,6 +53,79 @@ interface RankedUser extends LeaderboardCandidate {
   performanceForTrimester: string;
 }
 
+const MIN_LEADERBOARD_SIZE = 24;
+
+type SeededUserPreset = {
+  name: string;
+  group: string;
+  year: string;
+  gpaByTrimester: {
+    trimester1: number;
+    trimester2: number;
+    trimester3: number;
+  };
+};
+
+const SEEDED_USER_PRESETS: SeededUserPreset[] = [
+  { name: 'Ayan', group: 'SE-2301', year: 'Senior (3rd year)', gpaByTrimester: { trimester1: 3.92, trimester2: 3.88, trimester3: 3.95 } },
+  { name: 'Maya', group: 'SE-2302', year: 'Senior (3rd year)', gpaByTrimester: { trimester1: 3.86, trimester2: 3.81, trimester3: 3.9 } },
+  { name: 'Lina', group: 'BDA-2303', year: 'Senior (3rd year)', gpaByTrimester: { trimester1: 3.78, trimester2: 3.74, trimester3: 3.8 } },
+  { name: 'Arman', group: 'ITM-2201', year: 'Junior (2nd year)', gpaByTrimester: { trimester1: 3.62, trimester2: 3.68, trimester3: 3.71 } },
+  { name: 'Sana', group: 'ITM-2202', year: 'Junior (2nd year)', gpaByTrimester: { trimester1: 3.58, trimester2: 3.55, trimester3: 3.63 } },
+  { name: 'Jules', group: 'CS-2204', year: 'Junior (2nd year)', gpaByTrimester: { trimester1: 3.49, trimester2: 3.53, trimester3: 3.56 } },
+  { name: 'Nika', group: 'SE-2205', year: 'Junior (2nd year)', gpaByTrimester: { trimester1: 3.45, trimester2: 3.47, trimester3: 3.5 } },
+  { name: 'Omar', group: 'BDA-2206', year: 'Junior (2nd year)', gpaByTrimester: { trimester1: 3.33, trimester2: 3.39, trimester3: 3.42 } },
+  { name: 'Iris', group: 'IT-2401', year: 'Freshman (1st year)', gpaByTrimester: { trimester1: 3.29, trimester2: 3.24, trimester3: 3.35 } },
+  { name: 'Tariq', group: 'IT-2402', year: 'Freshman (1st year)', gpaByTrimester: { trimester1: 3.21, trimester2: 3.26, trimester3: 3.19 } },
+  { name: 'Elina', group: 'DJ-2403', year: 'Freshman (1st year)', gpaByTrimester: { trimester1: 3.14, trimester2: 3.2, trimester3: 3.18 } },
+  { name: 'Maksat', group: 'DJ-2404', year: 'Freshman (1st year)', gpaByTrimester: { trimester1: 3.08, trimester2: 3.12, trimester3: 3.16 } },
+  { name: 'Noel', group: 'MT-2405', year: 'Freshman (1st year)', gpaByTrimester: { trimester1: 2.98, trimester2: 3.03, trimester3: 3.07 } },
+  { name: 'Ari', group: 'MT-2406', year: 'Freshman (1st year)', gpaByTrimester: { trimester1: 2.93, trimester2: 2.97, trimester3: 3.01 } },
+  { name: 'Hana', group: 'SE-2407', year: 'Freshman (1st year)', gpaByTrimester: { trimester1: 2.82, trimester2: 2.9, trimester3: 2.94 } },
+  { name: 'Kai', group: 'SE-2408', year: 'Freshman (1st year)', gpaByTrimester: { trimester1: 2.74, trimester2: 2.79, trimester3: 2.83 } },
+  { name: 'Vera', group: 'CS-2409', year: 'Freshman (1st year)', gpaByTrimester: { trimester1: 2.69, trimester2: 2.73, trimester3: 2.77 } },
+  { name: 'Rei', group: 'CS-2410', year: 'Freshman (1st year)', gpaByTrimester: { trimester1: 2.61, trimester2: 2.66, trimester3: 2.7 } },
+  { name: 'Dina', group: 'BDA-2411', year: 'Freshman (1st year)', gpaByTrimester: { trimester1: 2.54, trimester2: 2.58, trimester3: 2.63 } },
+  { name: 'Arda', group: 'BDA-2412', year: 'Freshman (1st year)', gpaByTrimester: { trimester1: 2.44, trimester2: 2.51, trimester3: 2.48 } },
+  { name: 'Liam', group: 'ITM-2413', year: 'Freshman (1st year)', gpaByTrimester: { trimester1: 2.33, trimester2: 2.39, trimester3: 2.35 } },
+  { name: 'Mira', group: 'ITM-2414', year: 'Freshman (1st year)', gpaByTrimester: { trimester1: 2.22, trimester2: 2.3, trimester3: 2.27 } },
+  { name: 'Niko', group: 'IIOT-2415', year: 'Freshman (1st year)', gpaByTrimester: { trimester1: 2.08, trimester2: 2.15, trimester3: 2.12 } },
+  { name: 'Zara', group: 'IIOT-2416', year: 'Freshman (1st year)', gpaByTrimester: { trimester1: 1.96, trimester2: 2.01, trimester3: 2.06 } },
+  { name: 'Pavel', group: 'ST-2417', year: 'Freshman (1st year)', gpaByTrimester: { trimester1: 1.88, trimester2: 1.94, trimester3: 1.99 } },
+  { name: 'Sora', group: 'ST-2418', year: 'Freshman (1st year)', gpaByTrimester: { trimester1: 1.74, trimester2: 1.81, trimester3: 1.86 } },
+  { name: 'Toma', group: 'DJ-2419', year: 'Freshman (1st year)', gpaByTrimester: { trimester1: 1.59, trimester2: 1.64, trimester3: 1.71 } },
+  { name: 'Aila', group: 'MT-2420', year: 'Freshman (1st year)', gpaByTrimester: { trimester1: 1.36, trimester2: 1.44, trimester3: 1.52 } },
+];
+
+function createSeededLeaderboardUsers(currentUserId?: string): LeaderboardCandidate[] {
+  return SEEDED_USER_PRESETS.map((preset, index) => {
+    const averageGPA = getAverageGPA({ gpa: preset.gpaByTrimester });
+
+    return {
+      id: 0,
+      userId: `seed-user-${index + 1}`,
+      name: preset.name,
+      email: `seed${index + 1}@leaderboard.local`,
+      avatarUrl: `https://api.dicebear.com/9.x/dylan/svg?seed=${encodeURIComponent(preset.name)}&backgroundColor=29e051,619eff,ffa6e6,b6e3f4,c0aede,d1d4f9&mood=happy,hopeful,neutral,superHappy`,
+      group: preset.group,
+      year: preset.year,
+      performance: calculatePerformance(averageGPA),
+      gpaByTrimester: {
+        trimester1: preset.gpaByTrimester.trimester1,
+        trimester2: preset.gpaByTrimester.trimester2,
+        trimester3: preset.gpaByTrimester.trimester3,
+      },
+      averageGPA,
+      isCurrentUser: currentUserId === `seed-user-${index + 1}`,
+      privacy: {
+        participate: true,
+        visibility: 'public',
+        showStats: true,
+      },
+    };
+  });
+}
+
 function normalizePrivacy(value: unknown): NormalizedPrivacy {
   const maybePrivacy = (value && typeof value === 'object' ? value : {}) as DbPrivacy;
 
@@ -156,6 +229,12 @@ export function useLeaderboardData(
           privacy,
         });
       });
+
+      if (users.length < MIN_LEADERBOARD_SIZE) {
+        const seededUsers = createSeededLeaderboardUsers(currentUser?.id);
+        const neededCount = MIN_LEADERBOARD_SIZE - users.length;
+        users.push(...seededUsers.slice(0, neededCount));
+      }
 
       // Apply filters
       let filtered: LeaderboardCandidate[] = users;
