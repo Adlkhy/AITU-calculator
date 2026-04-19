@@ -194,57 +194,59 @@ export default function Leaderboard() {
               {/* Current User Stats */}
               {currentUserRank > 0 && (
                 <div className="relative px-4 lg:px-6">
-                  {/* Share Card */}
-                  <div className="absolute bottom-2 right-6 lg:right-8 z-50">
-                    <Sheet>
-                      <SheetTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="icon-sm"
-                          className="rounded-full"
-                          aria-label="Open share card"
-                        >
-                          <Share2 className="size-4" />
-                        </Button>
-                      </SheetTrigger>
-                      <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
-                        <SheetHeader>
-                          <SheetTitle>Share Your Rank</SheetTitle>
-                          <SheetDescription>
-                            Share your leaderboard snapshot.
-                          </SheetDescription>
-                        </SheetHeader>
-                        <div className="px-4 pb-6">
-                          <ShareCard
-                            name={currentUserData?.name || "Fart"}
-                            rank={currentUserRank}
-                            gpa={currentUserTrimesterGPA !== null ? parseFloat(currentUserTrimesterGPA.toFixed(2)) : parseFloat(currentUserGPA.toFixed(2))}
-                            percentage={currentUserPersentage}
-                            group={currentUserData?.group || "No group"}
-                            semester={selectedTrimester ? `Trimester ${selectedTrimester}` : "Overall"}
-                            totalStudents={leaderboardData.length}
-                            classAverage={70}
-                            avatarUrl={currentUserData?.avatarUrl}
-                          />
-                        </div>
-                      </SheetContent>
-                    </Sheet>
-                  </div>
-                  <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                  <Card_14
-                    currentUserRank={currentUserRank}
-                    currentUserAverage={currentUserGPA.toFixed(2)}
-                    leaderboardData={leaderboardData}
-                  />
-                  <ComebackCard
-                    leaderboardData={leaderboardData}
-                  />
-                  <ConsistentCard
-                    leaderboardData={leaderboardData}
-                  />
-                  <FastestClimberCard
-                    leaderboardData={allData}
-                  />
+                  <div className='grid gap-4 sm:grid-cols-2 xl:grid-cols-4'>
+                    <div className='relative'>
+                      {/* Share Card */}
+                      <div className="absolute bottom-2 right-2 lg:right-2 z-50">
+                        <Sheet>
+                          <SheetTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="icon-sm"
+                              className="rounded-full"
+                              aria-label="Open share card"
+                            >
+                              <Share2 className="size-4" />
+                            </Button>
+                          </SheetTrigger>
+                          <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
+                            <SheetHeader>
+                              <SheetTitle>Share Your Rank</SheetTitle>
+                              <SheetDescription>
+                                Share your leaderboard snapshot.
+                              </SheetDescription>
+                            </SheetHeader>
+                            <div className="px-4 pb-6">
+                              <ShareCard
+                                name={currentUserData?.name || "Fart"}
+                                rank={currentUserRank}
+                                gpa={currentUserTrimesterGPA !== null ? parseFloat(currentUserTrimesterGPA.toFixed(2)) : parseFloat(currentUserGPA.toFixed(2))}
+                                percentage={currentUserPersentage}
+                                group={currentUserData?.group || "No group"}
+                                semester={selectedTrimester ? `Trimester ${selectedTrimester}` : "Overall"}
+                                totalStudents={leaderboardData.length}
+                                classAverage={70}
+                                avatarUrl={currentUserData?.avatarUrl}
+                              />
+                            </div>
+                          </SheetContent>
+                        </Sheet>
+                      </div>
+                      <Card_14
+                        currentUserRank={currentUserRank}
+                        currentUserAverage={currentUserGPA.toFixed(2)}
+                        leaderboardData={leaderboardData}
+                      />
+                    </div>
+                    <ComebackCard
+                      leaderboardData={leaderboardData}
+                    />
+                    <ConsistentCard
+                      leaderboardData={leaderboardData}
+                    />
+                    <FastestClimberCard
+                      leaderboardData={allData}
+                    />
                   </div>
                 </div>
               )}

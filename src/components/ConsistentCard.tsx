@@ -78,11 +78,11 @@ export const ConsistentCard = ({ leaderboardData }: ConsistentCardProps) => {
   return (
     <Card className="relative overflow-hidden border-border p-0 bg-card">
       <CardContent className="relative z-10 p-4 sm:p-5">
-        <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_160px] sm:items-center">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="relative w-20">
-                <Avatar className="size-20 border-2 border-primary">
+        <div className="">
+          <div className="space-y-4 flex items-start justify-between">
+            <div className="flex items-center gap-1 sm:gap-2">
+              <div className="relative w-18 sm:w-20">
+                <Avatar className="size-14 sm:size-16 border-2 border-primary">
                   <AvatarImage
                     src={mostConsistent?.student.avatarUrl ?? ""}
                     alt={`${mostConsistent?.student.name ?? "Student"} avatar`}
@@ -90,44 +90,44 @@ export const ConsistentCard = ({ leaderboardData }: ConsistentCardProps) => {
                   <AvatarFallback>{getInitials(mostConsistent?.student.name ?? "Student")}</AvatarFallback>
                 </Avatar>
                 {mostConsistent && (
-                  <Badge variant="secondary" className="absolute -bottom-2 -right-2 text-xs font-mono">
+                  <Badge variant="secondary" className="absolute -bottom-2 -right-2 text-[10px] sm:text-xs font-mono">
                     {mostConsistent.averageStepChange.toFixed(2)} avg
                   </Badge>
                 )}
               </div>
               <div className="min-w-0">
-                <p className="truncate text-xl font-semibold">
+                <p className="truncate text-sm sm:text-base font-semibold">
                   {mostConsistent?.student.name ?? "No consistent student yet"}
                 </p>
-                <p className="truncate text-md text-muted-foreground">
+                <p className="truncate text-xs sm:text-sm text-muted-foreground">
                   {mostConsistent?.student.group ?? "No group"}
                 </p>
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center mt-6 gap-2">
+            <div className="flex flex-col items-end gap-2">
               {mostConsistent ? (
                 <>
-                  <Badge variant="outline" className="font-mono">
+                  <Badge variant="outline" className="text-[10px] md:text-sm font-mono">
                     Trimester {mostConsistent.startTrimester} to {mostConsistent.endTrimester}
                   </Badge>
-                  <Badge variant="outline" className="font-mono">
+                  <Badge variant="outline" className="text-[10px] md:text-sm font-mono">
                     +{mostConsistent.totalChange.toFixed(2)} total drift
                   </Badge>
                 </>
               ) : (
-                <Badge variant="outline" className="font-mono">
+                <Badge variant="outline" className="text-[10px] md:text-sm font-mono">
                   No steady student found
                 </Badge>
               )}
             </div>
 
+          </div>
             <p className="text-sm text-muted-foreground">
               {mostConsistent
                 ? `Most consistent student out of ${totalStudents} students, with no GPA drops and the smallest average step change.`
                 : `No student kept a non-decreasing pace across the available trimesters among ${totalStudents} students.`}
             </p>
-          </div>
         </div>
       </CardContent>
     </Card>

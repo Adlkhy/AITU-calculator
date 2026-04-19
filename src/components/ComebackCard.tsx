@@ -73,47 +73,47 @@ export const ComebackCard = ({ leaderboardData }: ComebackCardProps) => {
   return (
     <Card className="relative overflow-hidden border-border p-0 bg-card">
       <CardContent className="relative z-10 p-4 sm:p-5">
-        <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_160px] sm:items-center">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="relative w-20">
-              <Avatar className="size-20 border-2 border-primary">
+        <div className="">
+          <div className="space-y-4 flex items-start justify-between">
+            <div className="flex items-center gap-1 sm:gap-2">
+              <div className="relative w-18 sm:w-20">
+              <Avatar className="size-14 sm:size-16 border-2 border-primary">
                 <AvatarImage src={bestComeback?.student.avatarUrl ?? ""} alt={`${bestComeback?.student.name ?? "Student"} avatar`} />
                 <AvatarFallback>{getInitials(bestComeback?.student.name ?? "Student")}</AvatarFallback>
               </Avatar>
               {bestComeback && (
-                <Badge variant="secondary" className="absolute -bottom-2 -right-2 text-xs font-mono">
+                <Badge variant="secondary" className="absolute -bottom-2 -right-0 text-[10px] sm:text-xs font-mono">
                   +{bestComeback.improvement.toFixed(2)}
                 </Badge>
               )}
               </div>
               <div className="min-w-0">
-                <p className="truncate text-xl font-semibold">{bestComeback?.student.name ?? "No comeback yet"}</p>
-                <p className="truncate text-md text-muted-foreground">{bestComeback?.student.group ?? "No group"}</p>
+                <p className="truncate text-sm sm:text-base font-semibold">{bestComeback?.student.name ?? "No comeback yet"}</p>
+                <p className="truncate text-xs sm:text-sm text-muted-foreground">{bestComeback?.student.group ?? "No group"}</p>
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center mt-6 gap-2">
+            <div className="flex flex-col items-end gap-2">
               {bestComeback ? (
                 <>
-                  <Badge variant="outline" className="font-mono">
-                    Trimester {bestComeback.fromTrimester} to {bestComeback.toTrimester}
-                  </Badge>
-                  <Badge variant="outline" className="font-mono">
+                  <Badge variant="outline" className="text-[10px] md:text-sm font-mono">
                     {bestComeback.student.gpaByTrimester[`trimester${bestComeback.toTrimester}`]!.toFixed(2)}/4.0 now
+                  </Badge>
+                  <Badge variant="outline" className="text-[10px] md:text-sm font-mono">
+                    Trimester {bestComeback.fromTrimester} to {bestComeback.toTrimester}
                   </Badge>
                 </>
               ) : (
-                <Badge variant="outline" className="font-mono">No positive trimester increase</Badge>
+                <Badge variant="outline" className="text-[10px] md:text-sm font-mono">No positive trimester increase</Badge>
               )}
             </div>
 
+          </div>
             <p className="text-sm text-muted-foreground">
               {bestComeback
                 ? `Most comebacked student out of ${totalStudents} students, counting only GPA increases.`
                 : `No student has a positive jump from trimester 1 to 2 or 2 to 3 among ${totalStudents} students.`}
             </p>
-          </div>
         </div>
       </CardContent>
     </Card>
