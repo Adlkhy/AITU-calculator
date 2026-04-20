@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 // import { ChartContainer, type ChartConfig } from "@/components/ui/chart"
 import { useLeaderboardData } from "@/hooks/useLeaderboardData"
 // import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts"
@@ -38,8 +38,12 @@ export const Card_14 = ({ currentUserRank, currentUserAverage, leaderboardData }
   const percentile = totalStudents > 0 ? Math.max(1, Math.round(((totalStudents - currentUserRank + 1) / totalStudents) * 100)) : 0
 
   return (
-    <Card className="relative h-full overflow-hidden border-border p-0 bg-card">
+    <Card className="relative h-full overflow-hidden border-border p-0 bg-[#FFC09F]">
       <CardContent className="relative z-10 p-4 sm:p-5">
+        <CardHeader className="p-0">
+          <h3 className="text-lg font-semibold text-black">Your Performance</h3>
+        </CardHeader>
+
         <div className="">
           <div className="space-y-4 flex items-start justify-between">
             <div className="flex items-center gap-1 sm:gap-2">
@@ -51,18 +55,18 @@ export const Card_14 = ({ currentUserRank, currentUserAverage, leaderboardData }
               <Badge variant="secondary" className="absolute -right-1 -bottom-2 sm:-right-2 text-[10px] sm:text-xs font-mono">#{currentUserRank} Rank</Badge>
               </div>
               <div className="min-w-0">
-                <p className="truncate text-sm sm:text-base font-semibold">{currentUser?.name ?? "Current User"}</p>
-                <p className="truncate text-xs text-muted-foreground">{currentUser?.group ?? "No group"}</p>
+                <p className="truncate text-sm sm:text-base text-black font-semibold">{currentUser?.name ?? "Current User"}</p>
+                <p className="truncate text-xs text-black">{currentUser?.group ?? "No group"}</p>
               </div>
             </div>
 
             <div className="flex flex-col items-end gap-2">
-              <Badge variant="outline" className="text-[10px] md:text-sm font-mono">Top {percentile}%</Badge>
-              <Badge variant="outline" className="text-[10px] md:text-sm font-mono">{currentUserAverage}/4.0 Avg</Badge>
+              <Badge variant="outline" className="text-[10px] text-black border-black md:text-sm font-mono">Top {percentile}%</Badge>
+              <Badge variant="outline" className="text-[10px] text-black border-black md:text-sm font-mono">{currentUserAverage}/4.0 Avg</Badge>
             </div>
 
           </div>
-            <p className="max-w-2xs text-sm text-muted-foreground">
+            <p className="max-w-2xs text-sm text-black">
               You are currently ranked #{currentUserRank} out of {totalStudents} students with an average GPA of {currentUserAverage}.
             </p>
 
