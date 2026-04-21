@@ -66,7 +66,7 @@ export const Card_14 = ({ currentUserRank, currentUserAverage, leaderboardData }
             </div>
 
           </div>
-            <p className="max-w-2xs text-sm text-black">
+            <p className="text-sm text-black">
               You are currently ranked #{currentUserRank} out of {totalStudents} students with an average GPA of {currentUserAverage}.
             </p>
 

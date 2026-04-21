@@ -14,6 +14,8 @@ import { SiteHeader } from "@/components/shadcn/site-header"
 import { Info, Share2 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { MotionCarousel } from '@/components/animate-ui/components/motion-carousel'
+import { type EmblaOptionsType } from 'embla-carousel'
 import {
   Sheet,
   SheetContent,
@@ -37,6 +39,13 @@ import { Label } from "@/components/ui/label"
 
 export default function Leaderboard() {
   const { user: currentUser } = useUser()
+
+  // Carousel options
+  const carouselOptions: EmblaOptionsType = {
+    loop: true,
+    align: 'center',
+    skipSnaps: false,
+  }
 
   // Filter states
   const [selectedTrimester, setSelectedTrimester] = useState<number | null>(null)
@@ -85,6 +94,7 @@ export default function Leaderboard() {
       : (user.averageGPA ?? 0).toString(),
     avatarUrl: user.avatarUrl,
     isGhost: user.isGhost,
+    isCurrentUser: user.isCurrentUser,
   }))
 
   // Transform data for Podium
@@ -108,6 +118,57 @@ export default function Leaderboard() {
   const currentUserPersentage = leaderboardData.length > 0 && currentUserRank > 0
     ? Math.max(1, Math.round(((leaderboardData.length - currentUserRank + 1) / leaderboardData.length) * 100))
     : 0
+
+  const leaderboardCardSlides = [
+    (
+      <div className="relative">
+        <div className="absolute bottom-2 right-2 lg:right-2 z-50">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon-sm"
+                className="rounded-full"
+                aria-label="Open share card"
+              >
+                <Share2 className="size-4" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
+              <SheetHeader>
+                <SheetTitle>Share Your Rank</SheetTitle>
+                <SheetDescription>
+                  Share your leaderboard snapshot.
+                </SheetDescription>
+              </SheetHeader>
+              <div className="px-4 pb-6">
+                <ShareCard
+                  name={currentUserData?.name || "Student"}
+                  rank={currentUserRank}
+                  gpa={currentUserTrimesterGPA !== null ? parseFloat(currentUserTrimesterGPA.toFixed(2)) : parseFloat(currentUserGPA.toFixed(2))}
+                  percentage={currentUserPersentage}
+                  group={currentUserData?.group || "No group"}
+                  semester={selectedTrimester ? `Trimester ${selectedTrimester}` : "Overall"}
+                  totalStudents={leaderboardData.length}
+                  classAverage={70}
+                  avatarUrl={currentUserData?.avatarUrl}
+                />
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+
+        <Card_14
+          currentUserRank={currentUserRank}
+          currentUserAverage={currentUserGPA.toFixed(2)}
+          leaderboardData={leaderboardData}
+        />
+      </div>
+    ),
+    <ComebackCard leaderboardData={leaderboardData} />,
+    <ConsistentCard leaderboardData={leaderboardData} />,
+    <FastestClimberCard leaderboardData={allData} />,
+  ]
 
   const game = [
     [14, 7, 0, 8, 6, 13, 20],
@@ -190,64 +251,14 @@ export default function Leaderboard() {
                 </Card>
               )}
 
-
               {/* Current User Stats */}
               {currentUserRank > 0 && (
-                <div className="relative px-4 lg:px-6">
-                  <div className='grid gap-4 sm:grid-cols-2 xl:grid-cols-4'>
-                    <div className='relative'>
-                      {/* Share Card */}
-                      <div className="absolute bottom-2 right-2 lg:right-2 z-50">
-                        <Sheet>
-                          <SheetTrigger asChild>
-                            <Button
-                              variant="outline"
-                              size="icon-sm"
-                              className="rounded-full"
-                              aria-label="Open share card"
-                            >
-                              <Share2 className="size-4" />
-                            </Button>
-                          </SheetTrigger>
-                          <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
-                            <SheetHeader>
-                              <SheetTitle>Share Your Rank</SheetTitle>
-                              <SheetDescription>
-                                Share your leaderboard snapshot.
-                              </SheetDescription>
-                            </SheetHeader>
-                            <div className="px-4 pb-6">
-                              <ShareCard
-                                name={currentUserData?.name || "Fart"}
-                                rank={currentUserRank}
-                                gpa={currentUserTrimesterGPA !== null ? parseFloat(currentUserTrimesterGPA.toFixed(2)) : parseFloat(currentUserGPA.toFixed(2))}
-                                percentage={currentUserPersentage}
-                                group={currentUserData?.group || "No group"}
-                                semester={selectedTrimester ? `Trimester ${selectedTrimester}` : "Overall"}
-                                totalStudents={leaderboardData.length}
-                                classAverage={70}
-                                avatarUrl={currentUserData?.avatarUrl}
-                              />
-                            </div>
-                          </SheetContent>
-                        </Sheet>
-                      </div>
-                      <Card_14
-                        currentUserRank={currentUserRank}
-                        currentUserAverage={currentUserGPA.toFixed(2)}
-                        leaderboardData={leaderboardData}
-                      />
-                    </div>
-                    <ComebackCard
-                      leaderboardData={leaderboardData}
-                    />
-                    <ConsistentCard
-                      leaderboardData={leaderboardData}
-                    />
-                    <FastestClimberCard
-                      leaderboardData={allData}
-                    />
-                  </div>
+                <div className="flex items-center justify-center px-4 lg:px-6">
+                  <MotionCarousel
+                    slides={leaderboardCardSlides}
+                    labels={['1', '2', '3', '4']}
+                    options={carouselOptions}
+                  />
                 </div>
               )}
 

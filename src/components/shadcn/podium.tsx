@@ -63,7 +63,7 @@ function accentByRank(rank: PodiumEntry['rank']) {
       cardClass: 'border-[#FFD700] shadow-yellow-500/10 md:shadow-yellow-500/20',
       pointsClass: 'text-yellow-500',
       heightClass: 'min-h-[200px] sm:min-h-[240px] md:min-h-[280px]',
-      avatarSize: 'size-12 sm:size-16 md:size-24',
+      avatarSize: 'size-16 sm:size-18 md:size-24',
       order: 'order-2',
     }
   }
@@ -77,7 +77,7 @@ function accentByRank(rank: PodiumEntry['rank']) {
       cardClass: 'border-[#C0C0C0] shadow-gray-500/10',
       pointsClass: 'text-foreground',
       heightClass: 'min-h-[180px] sm:min-h-[210px] md:min-h-[240px]',
-      avatarSize: 'size-12 sm:size-16 md:size-20',
+      avatarSize: 'size-14 sm:size-16 md:size-20',
       order: 'order-3',
     }
   }
@@ -104,29 +104,35 @@ function HeroPodiumCard({ entry }: { entry: PodiumEntry }) {
       style={{
         background: `${accent.bg}, var(--background)`,
       }}
-      className={`min-w-0 flex-1 basis-0 py-3 text-center backdrop-blur supports-[backdrop-filter]:bg-card/90 transition-all sm:py-4 md:max-w-sm md:py-5 ${accent.cardClass} ${accent.heightClass} ${accent.order}`}
+      className={`flex flex-col min-w-0 flex-1 basis-0 py-3 text-center backdrop-blur supports-[backdrop-filter]:bg-card/90 transition-all sm:py-4 md:max-w-sm md:py-5 ${accent.cardClass} ${accent.heightClass} ${accent.order}`}
     >
-      <CardContent className="flex h-full flex-col items-center justify-center gap-2 px-2 sm:gap-3 sm:px-4 md:gap-4 md:px-5">
+      <CardContent className="flex flex-1 flex-col items-center justify-between gap-2 px-2 sm:gap-3 sm:px-4 md:gap-4 md:px-5">
+        
         <Badge
           className={`border text-[9px] uppercase tracking-[0.1em] sm:text-[11px] sm:tracking-[0.12em] ${accent.badgeClass}`}
           variant="outline"
         >
           {rankLabel}
         </Badge>
-        <div className="relative mt-2 sm:mt-3 md:mt-5">
-        {entry.rank === 1 && (
-          <img src='/crown.png' alt="Place crown" className="absolute z-20 -top-6 w-10 sm:-top-11 sm:w-16 md:-top-14 md:w-24" />
-        )}
-        <Avatar className={`ring-4 ${accent.avatarSize} ${accent.ringClass}`}>
-          <AvatarImage src={entry.avatarUrl} alt={`${entry.name} avatar`} />
-          <AvatarFallback>{entry.initials}</AvatarFallback>
-        </Avatar>
+
+        <div className="flex flex-col items-center gap-2 sm:gap-3">
+          <div className="relative mt-2 sm:mt-3 md:mt-5">
+            {entry.rank === 1 && (
+              <img src='/crown.png' alt="Place crown" className="absolute z-20 -top-9 w-16 sm:-top-11 sm:w-16 md:-top-14 md:w-24" />
+            )}
+            <Avatar className={`ring-4 ${accent.avatarSize} ${accent.ringClass}`}>
+              <AvatarImage src={entry.avatarUrl} alt={`${entry.name} avatar`} />
+              <AvatarFallback>{entry.initials}</AvatarFallback>
+            </Avatar>
+          </div>
+          
+          <div className="max-h-14 space-y-0.5 overflow-hidden sm:max-h-16 sm:space-y-1">
+            <p className="text-[11px] font-semibold leading-tight sm:text-sm md:text-base">{entry.name}</p>
+            <p className={`text-[10px] font-medium sm:text-xs md:text-sm ${accent.pointsClass}`}>{entry.group}</p>
+          </div>
         </div>
-        <div className="max-h-14 space-y-0.5 overflow-hidden sm:max-h-16 sm:space-y-1">
-          <p className="text-[11px] font-semibold leading-tight sm:text-sm md:text-base">{entry.name}</p>
-          <p className={`text-[10px] font-medium sm:text-xs md:text-sm ${accent.pointsClass}`}>{entry.group}</p>
-        </div>
-        <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+
+        <div className="h-2 w-full overflow-hidden rounded-full bg-muted mt-auto">
           <div className={`h-full rounded-full ${accent.progressClass}`} style={{ width: `${entry.progress}%` }} />
         </div>
       </CardContent>
@@ -139,7 +145,7 @@ export function HeroPodium({ data }: { data: PodiumSourceEntry[] }): React.React
 
   return (
     <section className="relative px-4 lg:px-6" data-purpose="hero-podium">
-      <div className="relative mx-auto flex max-w-7xl flex-row flex-nowrap items-stretch justify-center gap-2 overflow-hidden py-5 sm:gap-3 md:items-end md:gap-6">
+      <div className="relative mx-auto flex max-w-7xl flex-row flex-nowrap items-end justify-center gap-2 overflow-hidden py-5 sm:gap-3 md:gap-6">
         {podiumEntries.map((entry) => (
           <HeroPodiumCard key={entry.rank} entry={entry} />
         ))}

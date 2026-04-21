@@ -78,6 +78,7 @@ export const schema = z.object({
   grade: z.string(),
   avatarUrl: z.string().optional(),
   isGhost: z.boolean().optional(),
+  isCurrentUser: z.boolean().optional(),
 })
 
 const columns: ColumnDef<z.infer<typeof schema>>[] = [
@@ -207,13 +208,15 @@ function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
   const { transform, transition, setNodeRef, isDragging } = useSortable({
     id: row.original.id,
   })
-
+  const isCurrentUser = row.original.isCurrentUser
   return (
     <TableRow
       data-state={row.getIsSelected() && "selected"}
       data-dragging={isDragging}
       ref={setNodeRef}
-      className="relative z-0 data-[dragging=true]:z-10 data-[dragging=true]:opacity-80"
+      className={`relative z-0 data-[dragging=true]:z-10 data-[dragging=true]:opacity-80 ${
+        isCurrentUser ? "bg-card hover:bg-muted/50"  : ""
+      }`}
       style={{
         transform: CSS.Transform.toString(transform),
         transition: transition,
