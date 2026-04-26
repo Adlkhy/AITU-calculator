@@ -4,6 +4,7 @@ import Footer from '@/components/Footer';
 import { ModeToggle } from '@/components/mode-toggle';
 import { useTheme } from "@/lib/useTheme";
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import {
   Menu, X, 
   Sparkles, ArrowRight, 
@@ -362,6 +363,14 @@ export default function Navbar() {
 
   return (
     <>
+      <Helmet>
+        <title>Master Your Grade with Evalis</title>
+        <meta
+          name="description"
+          content="Calculate your grades, manage your budget, and climb the leaderboard. Everything a student needs in one minimal, powerful platform."
+        />
+        <link rel="canonical" href="https://evaiis.vercel.app/" />
+      </Helmet>
       <motion.header
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
