@@ -56,7 +56,6 @@ export interface SyllabusData {
   }[];
   breakdown: GradingCategory[];
   totalWeightNote?: string;
-  key: string; 
 }
 
 export interface ParsedResponse {

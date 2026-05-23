@@ -10,12 +10,16 @@ import Leaderboard from './pages/Leaderboard';
 import NotFoundPage from './components/NotFoundPage';
 import Profile from './pages/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminRoute from './components/AdminRoute';
 import { useEffect } from 'react';
 import { useUser } from './hooks/useUser';
 import TermOfService from './pages/TermOfService';
 import AI from './pages/AI';
 import Settings from './pages/Settings';
 import ResetPasswordPage from './pages/ResetPassword';
+import ModerationQueuePage from './pages/admin/ModerationQueuePage';
+import ModerationDetailPage from './pages/admin/ModerationDetailPage';
+import SubmitSyllabusPage from './pages/SubmitSyllabusPage';
 
 function App() {
   const { user, loading, session } = useUser();
@@ -40,6 +44,11 @@ function App() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/term-of-service" element={<TermOfService />} />
           <Route path="/ai" element={<AI />} />
+          <Route path="/syllabus/submit" element={
+            <ProtectedRoute>
+              <SubmitSyllabusPage />
+            </ProtectedRoute>}
+          />
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/profile" element={
@@ -52,6 +61,16 @@ function App() {
               <Settings />
             </ProtectedRoute>}
             />
+          <Route path="/admin/moderation" element={
+            <AdminRoute>
+              <ModerationQueuePage />
+            </AdminRoute>}
+          />
+          <Route path="/admin/moderation/:id" element={
+            <AdminRoute>
+              <ModerationDetailPage />
+            </AdminRoute>}
+          />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>

@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "smoke:admin-generate": "node scripts/smoke-admin-generate.mjs",
+    "check:moderation-pipeline": "npm run lint && npm run build"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

@@ -1,5 +1,6 @@
 // // import { GlowEffect } from '@/components/ui/glow-button';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { FileUpload } from '../components/FileUpload';
 import { GradeCalculator } from '../components/GradeCalculator';
 import { parseSyllabus } from '../services/geminiService';
@@ -66,6 +67,14 @@ const App: React.FC = () => {
         <p className="text-lg text-foreground text-center max-w-3xl mx-auto">
           Don't guess your grades. Upload your syllabus and let AI build your custom grade tracker instantly.
         </p>
+        <div className="mt-4 text-center">
+          <Link
+            to="/syllabus/submit"
+            className="text-sm text-primary hover:underline"
+          >
+            Want an official public template? Submit your syllabus for admin review.
+          </Link>
+        </div>
       </header>
 
       <section>

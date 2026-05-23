@@ -120,6 +120,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
       }
       const avatarUrl = row.original.avatarUrl;
       const name = row.original.name;
+      const isCurrentUser = row.original.isCurrentUser;
       const initials = name
         .split(' ')
         .filter(Boolean)
@@ -133,7 +134,17 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
             <AvatarImage src={avatarUrl} alt={name} />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
-          <div className="font-medium">{name}</div>
+          <div className="flex items-center gap-2 font-medium">
+            <span>{name}</span>
+            {isCurrentUser && (
+              <Badge
+                variant="outline"
+                className="h-5 rounded-full border-primary/40 bg-primary/10 px-1.5 text-[10px] font-semibold uppercase tracking-wide text-primary"
+              >
+                You
+              </Badge>
+            )}
+          </div>
         </div>
       );
     },

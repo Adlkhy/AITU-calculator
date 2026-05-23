@@ -10,6 +10,7 @@ import { Navbar08 } from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useSubjectsIndex } from '@/hooks/useSubjectTemplate';
 import type { SubjectEntry } from '@/hooks/types';
+import { Button } from '@/components/ui/button';
 
 // ─── Loading skeleton ────────────────────────────────────────────────────────
 
@@ -184,7 +185,15 @@ export default function SubjectDirectory() {
                 aria-label="Search subjects by name, slug, or teacher name"
               />
             </div>
-            <div className='w-56'>
+            <div className="flex w-full justify-end">
+              <Link to="/syllabus/submit" className="ml-auto">
+             <Button variant="default" className=" mt-3" >
+               Suggest a subject
+             </Button>
+              </Link>
+             </div>
+            </div>
+            <div className='w-full justify-end mt-4'>
               <h5 className="text-sm flex justify-end font-medium text-muted-foreground mb-1">
                 Looking for something else?
               </h5>
@@ -192,7 +201,6 @@ export default function SubjectDirectory() {
                 <ArrowDown className='w-4 h-4'/>
                 View Tools
               </a>
-            </div>
             </div>
           </header>
 
