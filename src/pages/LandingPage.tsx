@@ -28,7 +28,8 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { SeoMeta, createSiteUrl } from '@/lib/seo';
+import { SeoMeta } from '@/lib/seo';
+import { createSiteUrl } from '@/lib/siteUrl';
 
 const navLinks = [
   { label: 'Testimonials', href: '#testimonials' },
@@ -170,7 +171,7 @@ const features = [
   {
     icon: Calculator,
     title: 'Grade Calculator',
-    url: '/final-calculator',
+    url: '/calculator',
     description:
       'Calculate your current grade, predict final marks, and set goals with our intuitive grade calculator.',
   },
@@ -822,8 +823,8 @@ export default function Navbar() {
               className="space-y-6"
             >
               <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
-                Academic Tools for AITU Students
-                <span className="block italic text-primary">Built for Evalis</span>
+                Generate Templates
+                <span className="block italic text-primary">with AI</span>
               </h2>
               <p className="max-w-xl text-base md:text-xl text-muted-foreground">
                 Upload your syllabus and Evalis will build a personalized grade template around your AITU course structure.
@@ -1158,9 +1159,9 @@ export default function Navbar() {
           className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16"
         ><div className='max-w-2xl'>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-            Academic Tools for AITU Students
+            Three steps to
             <br />
-            <span className="text-primary">in three steps</span>
+            <span className="text-primary">Academic Success</span>
           </h2>
           <p className="text-base md:text-xl max-w-[600px] text-muted-foreground mx-auto">
             Use Evalis to calculate GPA, track grade progress, and organize your student workload with less friction.
@@ -1290,8 +1291,8 @@ export default function Navbar() {
             of Your Grades?
           </h2>
 
-          <p className="text-base sm:text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
-            Join AITU students who use Evalis to stay on top of GPA, final grades, and academic planning.
+          <p className="text-base sm:text-lg text-muted-foreground mb-10 max-w-xl mx-auto">
+            Join thousands of AITU students who use Evalis to stay on top of GPA and academic planning.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -1317,7 +1318,7 @@ export default function Navbar() {
                 className="rounded-full px-8! h-11! text-base bg-transparent border-border hover:text-primary hover:bg-accent"
                   onClick={() => navigate('/grade-tracker')}
               ><div className='cursor-pointer'>
-                  Grade Tracker
+                  Calculator
                 </div>
               </Button>
             </motion.div>

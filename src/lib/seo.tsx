@@ -1,28 +1,9 @@
 import type { ReactNode } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { createSiteUrl } from './siteUrl';
 
 const SITE_NAME = 'Evalis';
 const DEFAULT_IMAGE_PATH = '/meta_image.png';
-const DEFAULT_SITE_URL = 'https://evaiis.vercel.app';
-
-function getSiteOrigin() {
-  const envSiteUrl = import.meta.env.VITE_SITE_URL as string | undefined;
-
-  if (envSiteUrl) {
-    return envSiteUrl.replace(/\/$/, '');
-  }
-
-  if (typeof window !== 'undefined' && window.location.origin) {
-    return window.location.origin.replace(/\/$/, '');
-  }
-
-  return DEFAULT_SITE_URL;
-}
-
-function createSiteUrl(path = '/') {
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-  return `${getSiteOrigin()}${normalizedPath}`;
-}
 
 type SeoMetaProps = {
   title: string;
