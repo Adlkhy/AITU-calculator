@@ -241,6 +241,9 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
                       <Link to="/calculator/gpa" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
                         GPA
                       </Link>
+                      <Link to="/calculator/final-grade" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
+                        Final Grade
+                      </Link>
                       <Link to="/calculator/attendance" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
                         Attendance
                       </Link>
@@ -261,18 +264,18 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
               <div className="flex items-center">
                 <button
                   id="navbar-logo-btn"
-                  onClick={() => navigate('/calculator')}
+                    onClick={() => navigate('/grade-tracker')}
                   className="flex items-center space-x-2 cursor-pointer"
                 >
                   <div className="text-2xl md:hidden">
                     {logo}
                   </div>
                   {(theme === 'dark' || theme === 'system') ?
-                    <img src="/evalis-black.png" alt="logo" className="h-5 sm:h-6 hidden md:inline" /> : <img src="/evalis-white.png" alt="logo" className="h-5 sm:h-6 hidden md:inline" />
+                      <img src="/evalis-black.png" alt="Evalis" className="h-5 sm:h-6 hidden md:inline" loading="eager" decoding="async" /> : <img src="/evalis-white.png" alt="Evalis" className="h-5 sm:h-6 hidden md:inline" loading="eager" decoding="async" />
                   }
                   <span className='px-2 hidden md:inline'>|</span>
                   {theme === 'dark' || theme === 'system' ?
-                  <img src="/white.png" alt="logo" className="h-6 hidden md:inline" /> : <img src="/dark.png" alt="logo" className="h-6 hidden md:inline" />
+                    <img src="/white.png" alt="AITU student tools" className="h-6 hidden md:inline" loading="eager" decoding="async" /> : <img src="/dark.png" alt="AITU student tools" className="h-6 hidden md:inline" loading="eager" decoding="async" />
                   }
                 </button>
               </div>
@@ -280,8 +283,8 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
             {!isMobile && (
               <div className="flex flex-1 items-center justify-around gap-1">
                   {/* User menu - UPDATED */}
-                  <Link to="/calculator/gpa" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-base font-medium">
-                    GPA
+                  <Link to="/calculator/final-grade" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-base font-medium">
+                    Final
                   </Link>
                   <Link to="/calculator/attendance" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-base font-medium">
                     Attendance

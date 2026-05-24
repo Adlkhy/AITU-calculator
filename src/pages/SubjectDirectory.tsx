@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { useMemo, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { ArrowDown, ArrowRight, BookOpen, Search, Wrench } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -11,6 +10,7 @@ import Footer from '@/components/Footer';
 import { useSubjectsIndex } from '@/hooks/useSubjectTemplate';
 import type { SubjectEntry } from '@/hooks/types';
 import { Button } from '@/components/ui/button';
+import { SeoMeta } from '@/lib/seo';
 
 // ─── Loading skeleton ────────────────────────────────────────────────────────
 
@@ -144,14 +144,18 @@ export default function SubjectDirectory() {
 
   return (
     <>
-      <Helmet>
-        <title>Grade Calculator — AITU Subject Directory | Evalis</title>
-        <meta
-          name="description"
-          content="Choose from 15+ AITU subject grade calculators including Calculus, Programming, ADS, Discrete Math, and more. Track your attestation scores and final grade instantly."
-        />
-        <link rel="canonical" href="https://evaiis.vercel.app/calculator/" />
-      </Helmet>
+      <SeoMeta
+        title="Grade Tracking for AITU Students | Evalis"
+        description="Choose from AITU subject grade calculators including Calculus, Programming, ADS, Discrete Math, and more. Track attestation scores and final grades with Evalis."
+        path="/grade-tracker"
+        keywords={[
+          'AITU calculator',
+          'AITU GPA calculator',
+          'Astana IT University GPA',
+          'AITU student tools',
+          'Evalis',
+        ]}
+      />
 
       <Navbar08/>
 
@@ -167,10 +171,10 @@ export default function SubjectDirectory() {
           {/* Page header */}
           <header className="mb-10">
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">
-              Grade Calculator
+              Grade Tracking for AITU Students
             </h1>
             <p className="text-muted-foreground text-base sm:text-lg max-w-2xl lg:max-w-3xl">
-              Select a subject to calculate your grade across attestations and the final exam. If you don't see your subject, you can create a custom calculator using the <Link to="/ai" className="text-primary hover:underline">AI builder</Link>.
+              Select a subject to calculate your grade across attestations and the final exam. Evalis keeps AITU student tools organized in one modern grade tracker. If you don't see your subject, you can create a custom calculator using the <Link to="/ai" className="text-primary hover:underline">AI builder</Link>.
               Or check out the <a href='#tools' className="text-primary hover:underline">custom calculator</a>.
             </p>
 

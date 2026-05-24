@@ -218,6 +218,15 @@
     "tags": ["ALL"]
   },
   {
+    "slug": "final-grade",
+    "name": "Final Grade Calculator",
+    "courseName": "Final Grade Calculator",
+    "description": "Calculate your final course grade based on all assessment components.",
+    "file": null,
+    "type": "tool",
+    "tags": ["ALL"]
+  },
+  {
     "slug": "gpa",
     "name": "GPA Calculator",
     "courseName": "GPA Calculator",

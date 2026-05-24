@@ -36,6 +36,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
+import { SeoMeta } from '@/lib/seo'
 
 export default function Leaderboard() {
   const { user: currentUser } = useUser()
@@ -231,6 +232,19 @@ export default function Leaderboard() {
     >
       <AppSidebar variant="inset" />
       <SidebarInset>
+        <SeoMeta
+          title="AITU Leaderboard | Evalis"
+          description="Compare GPA trends and rank progress with Evalis, the AITU student leaderboard and academic tracker."
+          path="/leaderboard"
+          keywords={[
+            'AITU GPA calculator',
+            'Astana IT University GPA',
+            'AITU student tools',
+            'AITU leaderboard',
+            'Astana IT University student ranking',
+            'Evalis',
+          ]}
+        />
         <SiteHeader />
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">

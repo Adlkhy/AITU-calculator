@@ -6,6 +6,7 @@ import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast, Toaster } from 'sonner';
+import { SeoMeta } from '@/lib/seo';
 
 export default function ResetPasswordPage() {
   const [newPassword, setNewPassword] = useState('');
@@ -66,6 +67,13 @@ export default function ResetPasswordPage() {
   };
 
   return (
+    <>
+      <SeoMeta
+        title="Reset Password | Evalis"
+        description="Reset your Evalis password to access your AITU grade tracking tools again."
+        path="/reset-password"
+        noindex
+      />
     <div className="bg-background flex min-h-svh flex-col items-center justify-center p-4 md:p-6">
       <div className="w-full max-w-sm md:max-w-xl">
         <Toaster position="top-center" theme="system" />
@@ -112,5 +120,6 @@ export default function ResetPasswordPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

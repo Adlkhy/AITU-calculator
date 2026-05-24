@@ -29,7 +29,7 @@ export default function Footer() {
           <div className="col-span-2 max-w-md space-y-4 md:items-start">
             <div className='flex items-center justify-between '>
             {(theme === 'dark' || theme === 'system') ?
-              <img src="/evalis-black.png" alt="logo" className="h-6 pointer-events-none" /> : <img src="/evalis-white.png" alt="logo" className="h-6 pointer-events-none" />
+              <img src="/evalis-black.png" alt="Evalis" className="h-6 pointer-events-none" loading="lazy" decoding="async" /> : <img src="/evalis-white.png" alt="Evalis" className="h-6 pointer-events-none" loading="lazy" decoding="async" />
             }
             <blockquote className="text-sm italic text-muted-foreground ">
               Per Aspera Ad Astra 
@@ -82,7 +82,7 @@ export default function Footer() {
                 <Link to="/" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Landing</Link>
               </li>
               <li>
-                <Link to="/calculator" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Calculator</Link>
+                <Link to="/grade-tracker" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Grade Tracker</Link>
               </li>
               <li>
                 <Link to="/ai" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">AI Tool</Link>

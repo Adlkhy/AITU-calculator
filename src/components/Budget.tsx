@@ -18,6 +18,7 @@ import {
 } from 'recharts';
 import { ChartContainer, type ChartConfig } from '@/components/ui/chart';
 import { ChartTooltipContent } from '@/components/ui/chart';
+import { SeoMeta } from '@/lib/seo';
 
 // --- BUDGET TYPE DEFINITIONS ---
 interface IncomeSource {
@@ -264,6 +265,18 @@ export default function BudgetPlanner() {
   };
 
   return (
+    <>
+    <SeoMeta
+      title="Student Budget Planner | Evalis"
+      description="Track expenses, grants, and savings with Evalis, the student budget planner built for AITU students."
+      path="/calculator/budget"
+      keywords={[
+        'AITU student tools',
+        'Evalis',
+        'budget calculator',
+        'Astana IT University',
+      ]}
+    />
     <div className="max-w-6xl mx-auto w-full space-y-8">
       {/* HEADER */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -389,5 +402,6 @@ export default function BudgetPlanner() {
         </div>
       </div>
     </div>
+    </>
   );
 }

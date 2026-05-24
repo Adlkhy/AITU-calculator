@@ -1,9 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { SeoMeta } from '@/lib/seo';
 export default function Profile() {
   const navigate = useNavigate();
   return (
+    <>
+      <SeoMeta
+        title="Terms of Service | Evalis"
+        description="Read the terms for using Evalis, the AITU student tools platform."
+        path="/term-of-service"
+      />
     <div className="text-foreground min-h-screen font-sans p-4 mb-8 sm:p-8">
       <div className="max-w-4xl mx-auto">
         <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
@@ -95,5 +102,6 @@ export default function Profile() {
         </div>
       </div>
     </div>
+    </>
   );
 }

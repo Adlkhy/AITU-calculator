@@ -1,5 +1,4 @@
 import { useParams, Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { ArrowLeft, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Navbar08 } from '@/components/Navbar';
@@ -11,6 +10,7 @@ import Attendance from '@/components/Attendance';
 import GPA from '@/components/GPA';
 import { DotLoader } from '@/components/shadcn/gsap/dot-loader';
 import { useSubjectTemplate } from '@/hooks/useSubjectTemplate';
+import { SeoMeta } from '@/lib/seo';
 
 // ─── Loading state ──────────────────────────────────────────────────────────
 
@@ -48,10 +48,12 @@ function LoadingScreen() {
 function NotFoundScreen({ slug }: { slug: string }) {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-6 px-4">
-      <Helmet>
-        <title>Subject Not Found | Evalis</title>
-        <meta name="robots" content="noindex" />
-      </Helmet>
+      <SeoMeta
+        title="Subject Not Found | Evalis"
+        description="The requested calculator could not be found on Evalis."
+        path="/calculator"
+        noindex
+      />
 
       <AlertCircle className="size-12 text-muted-foreground" />
       <div className="text-center max-w-sm">
@@ -76,10 +78,12 @@ function NotFoundScreen({ slug }: { slug: string }) {
 function ErrorScreen() {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-6 px-4">
-      <Helmet>
-        <title>Error | Evalis</title>
-        <meta name="robots" content="noindex" />
-      </Helmet>
+      <SeoMeta
+        title="Error | Evalis"
+        description="Evalis could not load the requested calculator template."
+        path="/calculator"
+        noindex
+      />
 
       <AlertCircle className="size-12 text-destructive" />
       <div className="text-center max-w-sm">
@@ -137,24 +141,35 @@ export default function SubjectCalculator() {
 
   const pageTitle = subject
     ? `${subject.courseName} Grade Calculator | Evalis`
-    : 'Grade Calculator | Evalis';
+    : 'Evalis — AITU GPA Calculator & Student Tools';
 
   const pageDescription = subject
     ? subject.description
     : 'Calculate your AITU course grade with Evalis.';
 
   const canonicalSlug = subjectSlug ?? '';
+  const canonicalPath = subjectSlug === 'gpa'
+    ? '/gpa-calculator'
+    : subjectSlug === 'custom'
+      ? '/final-calculator'
+      : subjectSlug === 'attendance'
+        ? '/calculator/attendance'
+        : subjectSlug === 'budget'
+          ? '/calculator/budget'
+          : `/calculator/${canonicalSlug}`;
 
   return (
     <>
-      <Helmet>
-        <title>{pageTitle}</title>
-        <meta name="description" content={pageDescription} />
-        <link
-          rel="canonical"
-          href={`https://evaiis.vercel.app/calculator/${canonicalSlug}`}
-        />
-      </Helmet>
+      <SeoMeta
+        title={pageTitle}
+        description={pageDescription}
+        path={canonicalPath}
+        keywords={[
+          'AITU GPA calculator',
+          'Astana IT University GPA',
+          'Evalis',
+        ]}
+      />
 
       <Navbar08/>
 

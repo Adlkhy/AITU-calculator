@@ -1,7 +1,12 @@
 User-agent: *
 Allow: /
 Disallow: /profile
-Disallow: Disallow: /search/
+Disallow: /search/
+Disallow: /settings
+Disallow: /admin/
+Disallow: /syllabus/submit
+Disallow: /auth/
+Disallow: /reset-password
 User-agent: GPTBot
 Disallow: /
 User-agent: Google-Extended

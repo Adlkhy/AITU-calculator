@@ -1,6 +1,7 @@
 import { supabase } from '../lib/supabaseClient';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SeoMeta } from '@/lib/seo';
 
 export default function AuthCallback() {
   const navigate = useNavigate();
@@ -75,11 +76,19 @@ export default function AuthCallback() {
   }, [navigate]);
 
   return (
+    <>
+      <SeoMeta
+        title="Authentication Callback | Evalis"
+        description="Finalizing your Evalis authentication session."
+        path="/auth/callback"
+        noindex
+      />
     <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
           <p className="mt-4 text-foreground">Processing authentication... don't move, eyes on me</p>
         </div>
       </div>
+    </>
   );
 }

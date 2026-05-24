@@ -4,7 +4,6 @@ import Footer from '@/components/Footer';
 import { ModeToggle } from '@/components/mode-toggle';
 import { useTheme } from "@/lib/useTheme";
 import { useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import {
   Menu, X, 
   Sparkles, ArrowRight, 
@@ -29,6 +28,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { SeoMeta, createSiteUrl } from '@/lib/seo';
 
 const navLinks = [
   { label: 'Testimonials', href: '#testimonials' },
@@ -170,7 +170,7 @@ const features = [
   {
     icon: Calculator,
     title: 'Grade Calculator',
-    url: '/calculator',
+    url: '/final-calculator',
     description:
       'Calculate your current grade, predict final marks, and set goals with our intuitive grade calculator.',
   },
@@ -205,7 +205,7 @@ const features = [
   {
     icon: GraduationCap,
     title: 'GPA Insights',
-    url: '/calculator/gpa',
+    url: '/gpa-calculator',
     description:
       'Get detailed insights into your GPA, including projections and what-if scenarios to help you plan your academic future.',
   },
@@ -352,6 +352,35 @@ export default function Navbar() {
 
   const row1 = testimonials.slice(0, 5);
   const row2 = testimonials.slice(5);
+  const siteDescription = 'Evalis is a modern GPA calculator and student toolkit for Astana IT University (AITU) students. Calculate GPA, track grades, and manage academic performance.';
+  const structuredData = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'Evalis',
+      url: createSiteUrl('/'),
+      description: siteDescription,
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: `${createSiteUrl('/grade-tracker')}?q={search_term_string}`,
+        'query-input': 'required name=search_term_string',
+      },
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: 'Evalis',
+      applicationCategory: 'EducationalApplication',
+      operatingSystem: 'Web',
+      url: createSiteUrl('/'),
+      description: siteDescription,
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+      },
+    },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -363,14 +392,21 @@ export default function Navbar() {
 
   return (
     <>
-      <Helmet>
-        <title>Master Your Grade with Evalis</title>
-        <meta
-          name="description"
-          content="Calculate your grades, manage your budget, and climb the leaderboard. Everything a student needs in one minimal, powerful platform."
-        />
-        <link rel="canonical" href="https://evaiis.vercel.app/" />
-      </Helmet>
+      <SeoMeta
+        title="Evalis — AITU GPA Calculator & Student Tools"
+        description={siteDescription}
+        path="/"
+        keywords={[
+          'AITU GPA calculator',
+          'Astana IT University GPA',
+          'Astana IT University',
+          'AITU calculator',
+          'AITU student tools',
+          'GPA calculator Kazakhstan',
+          'Evalis',
+        ]}
+        jsonLd={structuredData}
+      />
       <motion.header
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -390,11 +426,11 @@ export default function Navbar() {
             >
               <div className="flex items-center gap-2">
               {(theme === 'dark' || theme === 'system') ?
-                <img src="/evalis-black.png" alt="logo" className="h-5 sm:h-6" /> : <img src="/evalis-white.png" alt="logo" className="h-5 sm:h-6" />
+                <img src="/evalis-black.png" alt="Evalis logo" className="h-5 sm:h-6" loading="eager" decoding="async" /> : <img src="/evalis-white.png" alt="Evalis logo" className="h-5 sm:h-6" loading="eager" decoding="async" />
               }
               <span className='sm:px-2'>|</span>
               {(theme === 'dark' || theme === 'system') ?
-                <img src="/white.png" alt="logo" className="h-5 sm:h-6" /> : <img src="/dark.png" alt="logo" className="h-5 sm:h-6" />
+                <img src="/white.png" alt="AITU student tools" className="h-5 sm:h-6" loading="eager" decoding="async" /> : <img src="/dark.png" alt="AITU student tools" className="h-5 sm:h-6" loading="eager" decoding="async" />
               }
               </div>
             </motion.a>
@@ -444,7 +480,7 @@ export default function Navbar() {
                 <Button
                   asChild
                   className="bg-foreground text-background hover:bg-foreground/90 rounded-full px-4"
-                  onClick={() => navigate('/calculator')}
+                  onClick={() => navigate('/grade-tracker')}
                 >
                   <div className="cursor-pointer flex items-center gap-1">
                     Try It Now
@@ -505,7 +541,7 @@ export default function Navbar() {
                   transition={{ delay: 0.25 }}
                   className="pt-2"
                 >
-                  <Button className="cursor-pointer w-full bg-foreground text-background hover:bg-foreground/90 rounded-full" onClick={() => { navigate('/calculator'); setIsMobileMenuOpen(false); }}>
+                  <Button className="cursor-pointer w-full bg-foreground text-background hover:bg-foreground/90 rounded-full" onClick={() => { navigate('/grade-tracker'); setIsMobileMenuOpen(false); }}>
                     Try It Now
                   </Button>
                 </motion.div>
@@ -552,8 +588,7 @@ export default function Navbar() {
             variants={itemVariants}
             className="text-base sm:text-xl text-muted-foreground max-w-xs sm:max-w-2xl mx-auto mb-8"
           >
-            Calculate grades, manage your budget, and climb the leaderboard. 
-            Everything a student needs in one minimal, powerful platform.
+            Evalis helps Astana IT University students calculate GPA, track grades, and manage academic progress in one modern, independent toolkit.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -565,7 +600,7 @@ export default function Navbar() {
               asChild
               variant="default"
               size="default"
-              onClick={() => navigate('/calculator')}
+              onClick={() => navigate('/grade-tracker')}
               className="bg-foreground text-background hover:bg-foreground/90 px-8! h-11! rounded-full text-base group"
             >
               <div className="flex font-medium items-center gap-1 cursor-pointer">
@@ -786,12 +821,12 @@ export default function Navbar() {
               transition={{ duration: 0.55 }}
               className="space-y-6"
             >
-              <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
-                Generate templates in 
-                <span className="block italic text-primary">Seconds</span>
-              </h1>
+              <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+                Academic Tools for AITU Students
+                <span className="block italic text-primary">Built for Evalis</span>
+              </h2>
               <p className="max-w-xl text-base md:text-xl text-muted-foreground">
-                Just upload an image of syllabus and our AI will generate a personalized grade calculator template based on your course structure.
+                Upload your syllabus and Evalis will build a personalized grade template around your AITU course structure.
               </p>
               <div className="flex flex-wrap gap-3">
                 <Button
@@ -922,13 +957,13 @@ export default function Navbar() {
           className="text-center space-y-5 mb-14"
         >
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight max-w-2xl mx-auto">
-            Your rank is waiting.
+            Grade Tracking
             <br />
-            <span className="text-muted-foreground font-semibold">Will you claim it?</span>
+            <span className="text-muted-foreground font-semibold">for AITU students</span>
           </h2>
       
           <p className="text-muted-foreground text-base max-w-md mx-auto leading-relaxed">
-            Every grade you log moves you up the global rankings. See where you stand against your peers.
+            Track GPA trends, compare progress, and keep your academic record organized with Evalis.
           </p>
       
           <Button
@@ -958,7 +993,7 @@ export default function Navbar() {
             <div className="flex-1 flex justify-center">
               <div className="flex items-center gap-2 bg-background/70 rounded-md px-3 py-1 text-xs text-muted-foreground border w-52 sm:w-64 justify-center">
                 <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 shrink-0" />
-                evaiis.vercel.app/leaderboard
+                {createSiteUrl('/leaderboard').replace('https://', '')}
               </div>
             </div>
             <div className="w-16" /> 
@@ -1123,12 +1158,12 @@ export default function Navbar() {
           className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16"
         ><div className='max-w-2xl'>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-            Three Steps to
+            Academic Tools for AITU Students
             <br />
-            <span className="text-primary">Clarity</span>
+            <span className="text-primary">in three steps</span>
           </h2>
           <p className="text-base md:text-xl max-w-[600px] text-muted-foreground mx-auto">
-            Upload your syllabus, customize your template, and start calculating your grades with confidence.
+            Use Evalis to calculate GPA, track grade progress, and organize your student workload with less friction.
           </p>
           </div>
         </motion.div>
@@ -1256,7 +1291,7 @@ export default function Navbar() {
           </h2>
 
           <p className="text-base sm:text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
-            Join thousands of students who are mastering their grades with Evalis.
+            Join AITU students who use Evalis to stay on top of GPA, final grades, and academic planning.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -1280,9 +1315,9 @@ export default function Navbar() {
                 variant="outline"
                 size="lg"
                 className="rounded-full px-8! h-11! text-base bg-transparent border-border hover:text-primary hover:bg-accent"
-                onClick={() => navigate('/calculator')}
+                  onClick={() => navigate('/grade-tracker')}
               ><div className='cursor-pointer'>
-                Calculator
+                  Grade Tracker
                 </div>
               </Button>
             </motion.div>

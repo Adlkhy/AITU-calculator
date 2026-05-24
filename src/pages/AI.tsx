@@ -13,6 +13,7 @@ import type { SyllabusData } from '../hooks/types';
 import Footer from '@/components/Footer';
 // import CircularGallery from '@/components/shadcn/gsap/CircularGallary';
 import { BadgeAlert, CircleArrowLeft} from 'lucide-react';
+import { SeoMeta } from '@/lib/seo';
 
 const App: React.FC = () => {
   const [syllabusData, setSyllabusData] = useState<SyllabusData | null>(null);
@@ -48,6 +49,19 @@ const App: React.FC = () => {
 
   return (
     <>
+    <SeoMeta
+      title="AI Grade Template Maker | Evalis"
+      description="Upload a syllabus and let Evalis generate a personalized grade template for AITU coursework."
+      path="/ai"
+      keywords={[
+        'AITU student tools',
+        'Evalis',
+        'AI grade template',
+        'Astana IT University',
+        'syllabus parser',
+        'AITU calculator',
+      ]}
+    />
     <Navbar08 />
     <div className="max-w-6xl min-h-screen mx-auto w-full">
       {/* Header */}

@@ -4,6 +4,7 @@ import { SignupForm } from "@/components/signup-form";
 import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from 'sonner';
 import { minecraftToast } from "@/components/ui/minecraft-toast";
+import { SeoMeta } from '@/lib/seo';
 
 export default function SignupPage() {
   const navigate = useNavigate();
@@ -58,6 +59,13 @@ export default function SignupPage() {
   };
 
   return (
+    <>
+      <SeoMeta
+        title="Sign Up | Evalis"
+        description="Create an Evalis account to save grades, track GPA, and use AITU student tools."
+        path="/signup"
+        noindex
+      />
     <div className="relative flex min-h-svh items-center justify-center overflow-hidden px-4 py-8 md:px-10">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,var(--card),var(--accent)_38%,var(--background)_72%)]" />
       <div className="absolute inset-x-0 top-0 -z-10 h-64 bg-[radial-gradient(circle_at_center,color-mix(in_oklch,var(--primary)_16%,transparent),transparent_70%)] blur-3xl" />
@@ -78,5 +86,6 @@ export default function SignupPage() {
         />
       </div>
     </div>
+    </>
   )
 }

@@ -8,6 +8,7 @@ import {
   PieChart, Pie, Cell, Tooltip as RechartsTooltip
 } from 'recharts';
 import { ChartContainer, type ChartConfig } from './ui/chart';
+import { SeoMeta } from '@/lib/seo';
 
 // --- TYPE DEFINITIONS ---
 interface GradeItem {
@@ -492,6 +493,18 @@ export default function DynamicGradeCalculator() {
   }));
 
   return (
+    <>
+    <SeoMeta
+      title="Custom Calculator | Evalis"
+      description="Create and customize grading structures with Evalis' Custom Calculator. Use to model term breakdowns and required final scores."
+      path="/calculator/custom"
+      keywords={[
+        'custom calculator',
+        'grade calculator',
+        'Evalis',
+        'AITU'
+      ]}
+    />
     <div className="max-w-5xl mx-auto w-full space-y-8">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="space-y-1">
@@ -649,5 +662,6 @@ export default function DynamicGradeCalculator() {
         </Card>
       </div>
     </div>
+    </>
   );
 }

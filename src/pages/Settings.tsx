@@ -11,6 +11,7 @@ import { supabase } from "@/lib/supabaseClient"
 import type { SettingsData, SettingsSectionKey } from "@/components/settings/types"
 import { useTheme } from "@/lib/useTheme"
 import { useLeaderboardData } from "@/hooks/useLeaderboardData"
+import { SeoMeta } from '@/lib/seo'
 
 const defaultSettings: SettingsData = {
 	publicProfile: {
@@ -136,6 +137,12 @@ export default function Settings() {
 
 	return (
     <>
+		<SeoMeta
+			title="Settings | Evalis"
+			description="Adjust your Evalis appearance, privacy, and account settings."
+			path="/settings"
+			noindex
+		/>
     <Navbar08 />
 		<main className="min-h-screen bg-background py-6 text-foreground sm:py-10">
 			<div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">

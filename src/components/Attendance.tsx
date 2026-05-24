@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import { Input } from "./ui/input";
+import { SeoMeta } from '@/lib/seo';
 
 const totalWeeks = 10;
 const hoursPerClass = 2;
@@ -42,6 +43,18 @@ export default function AttendanceTracker() {
   }, [classesPerWeek, missedClasses]);
 
   return (
+    <>
+    <SeoMeta
+      title="Attendance Tracker | Evalis"
+      description="Track class attendance for AITU courses with Evalis and see how attendance affects your academic progress."
+      path="/calculator/attendance"
+      keywords={[
+        'AITU student tools',
+        'Evalis',
+        'Astana IT University',
+        'AITU calculator',
+      ]}
+    />
     <div className="max-w-6xl mx-auto w-full">
       <div className="mb-6 space-y-1">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground">
@@ -104,5 +117,6 @@ export default function AttendanceTracker() {
         </CardContent>
       </Card>
     </div>
+    </>
   );
 }

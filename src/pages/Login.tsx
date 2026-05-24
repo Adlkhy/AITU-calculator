@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { LoginForm } from "@/components/login-form"
 import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from 'sonner';
+import { SeoMeta } from '@/lib/seo';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -58,6 +59,13 @@ export default function LoginPage() {
 
 
   return (
+    <>
+      <SeoMeta
+        title="Login | Evalis"
+        description="Log in to Evalis to save grades, track GPA, and use your AITU student tools."
+        path="/login"
+        noindex
+      />
     <div className="relative flex min-h-svh items-center justify-center overflow-hidden px-4 py-8 md:px-10">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,var(--card),var(--accent)_38%,var(--background)_72%)]" />
       <div className="absolute inset-x-0 top-0 -z-10 h-64 bg-[radial-gradient(circle_at_center,color-mix(in_oklch,var(--primary)_16%,transparent),transparent_70%)] blur-3xl" />
@@ -75,5 +83,6 @@ export default function LoginPage() {
         />
       </div>
     </div>
+    </>
   )
 }

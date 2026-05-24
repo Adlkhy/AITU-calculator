@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { Card, CardContent, CardTitle, CardDescription } from './ui/card';
 import { Input } from './ui/input';
 import { Plus, Trash2 } from "lucide-react";
+import { SeoMeta } from '@/lib/seo';
 
 export type SubjectRow = {
   id: number;
@@ -126,6 +127,19 @@ export default function GpaCalculator() {
   }, [addRow, rows.length]);
 
   return (
+    <>
+    <SeoMeta
+      title="AITU GPA Calculator | Evalis"
+      description="Calculate and track your GPA with Evalis, the modern AITU GPA calculator for student progress and grade planning."
+      path="/gpa-calculator"
+      keywords={[
+        'AITU GPA calculator',
+        'Astana IT University GPA',
+        'GPA calculator Kazakhstan',
+        'Astana IT University',
+        'Evalis',
+      ]}
+    />
     <div className="max-w-6xl mx-auto w-full">
       <div className="mb-6 space-y-1 ">
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
@@ -356,5 +370,6 @@ export default function GpaCalculator() {
         </CardContent>
       </Card>
     </div>
+    </>
   );
 }
