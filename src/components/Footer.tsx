@@ -76,7 +76,7 @@ export default function Footer() {
           </div>
           {/* Navigation Section */}
           <div className="space-y-4 col-span-1 md:items-start">
-            <h4 className="font-bold">Navigation</h4>
+            <h3 className="font-bold">Navigation</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <Link to="/" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Landing</Link>
@@ -95,7 +95,7 @@ export default function Footer() {
 
           {/* Legal Section */}
           <div className="space-y-4 md:items-start">
-            <h4 className="font-bold">Legal</h4>
+            <h3 className="font-bold">Legal</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <Link to="/term-of-service" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">Terms of Service</Link>
@@ -108,7 +108,7 @@ export default function Footer() {
 
           {/* Partners */}
           <div className="space-y-4 md:items-start">
-            <h4 className="font-bold">Partners</h4>
+            <h3 className="font-bold">Partners</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <Link to="https://t.me/astanait_forum" target="_blank" rel="noopener noreferrer" className="hover:text-foreground hover:pl-1.5 transition-all duration-300">AITU Connect</Link>

@@ -19,10 +19,10 @@
     <meta name="twitter:description" content="Evalis is a modern GPA calculator and student toolkit for Astana IT University (AITU) students. Calculate GPA, track grades, and manage academic performance." />
     <meta name="twitter:image" content="/meta_image.png" />
     <link rel="canonical" href="https://evaiis.vercel.app/" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Google Fonts are managed by Vite during build; avoid runtime preconnect. -->
     <link rel="preload" as="image" href="/meta_image.png" />
-    <script crossOrigin="anonymous" src="https://tweakcn.com/live-preview.min.js"></script>
+    <!-- Preload main stylesheet (Vite will rewrite hashed name in production via plugins) -->
+    <link rel="preload" as="style" href="/src/index.css" />
   </head>
   <body>
     <div id="root"></div>

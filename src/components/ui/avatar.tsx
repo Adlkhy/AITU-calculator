@@ -27,6 +27,8 @@ function AvatarImage({
     <AvatarPrimitive.Image
       data-slot="avatar-image"
       className={cn("aspect-square size-full", className)}
+      // Ensure external avatar images are requested without credentials/cookies to avoid third-party cookies
+      crossOrigin={props.crossOrigin ?? 'anonymous'}
       {...props}
     />
   )

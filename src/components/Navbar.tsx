@@ -215,21 +215,21 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
               {/* Mobile menu trigger */}
               {isMobile && (
                 <Sheet>
-                  <SheetTrigger asChild>
-                    <Button variant="ghost" size="icon" className="lg:hidden">
-                      <Menu className="h-6 w-6" />
-                      <span className="sr-only">Toggle menu</span>
-                    </Button>
-                  </SheetTrigger>
+                    <SheetTrigger asChild>
+                      <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Open navigation menu">
+                        <Menu className="h-6 w-6" />
+                        <span className="sr-only">Toggle menu</span>
+                      </Button>
+                    </SheetTrigger>
                   <SheetContent side="left" className="w-[300px] sm:w-[400px]">
                     <SheetHeader>
                       <SheetTitle className="flex items-center gap-2">
                         {(theme === 'dark' || theme === 'system') ?
-                          <img src="/evalis-black.png" alt="logo" className="h-5 sm:h-6" /> : <img src="/evalis-white.png" alt="logo" className="h-5 sm:h-6" />
+                          <img src="/evalis-black.png" alt="logo" className="h-5 sm:h-6" width={120} height={32} loading="lazy" decoding="async" crossOrigin="anonymous" /> : <img src="/evalis-white.png" alt="logo" className="h-5 sm:h-6" width={120} height={32} loading="lazy" decoding="async" crossOrigin="anonymous" />
                         }     
                         |
                         {theme === 'dark' || theme === 'system' ?
-                          <img src="/white.png" alt="logo" className="h-5 sm:h-6 " /> : <img src="/dark.png" alt="logo" className="h-5 sm:h-6" />
+                          <img src="/white.png" alt="logo" className="h-5 sm:h-6 " width={120} height={32} loading="lazy" decoding="async" crossOrigin="anonymous" /> : <img src="/dark.png" alt="logo" className="h-5 sm:h-6" width={120} height={32} loading="lazy" decoding="async" crossOrigin="anonymous" />
                         }
                       </SheetTitle>
                     </SheetHeader>
@@ -270,12 +270,12 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
                   <div className="text-2xl md:hidden">
                     {logo}
                   </div>
-                  {(theme === 'dark' || theme === 'system') ?
-                      <img src="/evalis-black.png" alt="Evalis" className="h-5 sm:h-6 hidden md:inline" loading="eager" decoding="async" /> : <img src="/evalis-white.png" alt="Evalis" className="h-5 sm:h-6 hidden md:inline" loading="eager" decoding="async" />
+                    {(theme === 'dark' || theme === 'system') ?
+                      <img src="/evalis-black.png" alt="Evalis" className="h-5 sm:h-6 hidden md:inline" width={120} height={32} loading="eager" decoding="async" crossOrigin="anonymous" /> : <img src="/evalis-white.png" alt="Evalis" className="h-5 sm:h-6 hidden md:inline" width={120} height={32} loading="eager" decoding="async" crossOrigin="anonymous" />
                   }
                   <span className='px-2 hidden md:inline'>|</span>
                   {theme === 'dark' || theme === 'system' ?
-                    <img src="/white.png" alt="AITU student tools" className="h-6 hidden md:inline" loading="eager" decoding="async" /> : <img src="/dark.png" alt="AITU student tools" className="h-6 hidden md:inline" loading="eager" decoding="async" />
+                    <img src="/white.png" alt="AITU student tools" className="h-6 hidden md:inline" width={120} height={32} loading="eager" decoding="async" crossOrigin="anonymous" /> : <img src="/dark.png" alt="AITU student tools" className="h-6 hidden md:inline" width={120} height={32} loading="eager" decoding="async" crossOrigin="anonymous" />
                   }
                 </button>
               </div>

@@ -8,11 +8,11 @@ import { useEffect } from 'react';
 import { useUser } from './hooks/useUser';
 import { Navbar08 } from './components/Navbar';
 import Footer from './components/Footer';
-import GPA from './components/GPA';
-import Attendance from './components/Attendance';
-import Budget from './components/Budget';
-import Dynamic from './components/Dynamic';
-import FinalGrade from './components/FinalGrade';
+const GPA = lazy(() => import('./components/GPA'));
+const Attendance = lazy(() => import('./components/Attendance'));
+const Budget = lazy(() => import('./components/Budget'));
+const Dynamic = lazy(() => import('./components/Dynamic'));
+const FinalGrade = lazy(() => import('./components/FinalGrade'));
 
 const SubjectDirectory = lazy(() => import('./pages/SubjectDirectory'));
 const SubjectCalculator = lazy(() => import('./pages/SubjectCalculator'));
