@@ -225,11 +225,11 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
                     <SheetHeader>
                       <SheetTitle className="flex items-center gap-2">
                         {(theme === 'dark' || theme === 'system') ?
-                          <img src="/evalis-black.png" alt="logo" className="h-5 sm:h-6" width={120} height={32} loading="lazy" decoding="async" crossOrigin="anonymous" /> : <img src="/evalis-white.png" alt="logo" className="h-5 sm:h-6" width={120} height={32} loading="lazy" decoding="async" crossOrigin="anonymous" />
+                          <img src="/evalis-black.png" alt="logo" className="h-5 sm:h-6" loading="lazy" decoding="async" crossOrigin="anonymous" /> : <img src="/evalis-white.png" alt="logo" className="h-5 sm:h-6" loading="lazy" decoding="async" crossOrigin="anonymous" />
                         }     
                         |
                         {theme === 'dark' || theme === 'system' ?
-                          <img src="/white.png" alt="logo" className="h-5 sm:h-6 " width={120} height={32} loading="lazy" decoding="async" crossOrigin="anonymous" /> : <img src="/dark.png" alt="logo" className="h-5 sm:h-6" width={120} height={32} loading="lazy" decoding="async" crossOrigin="anonymous" />
+                          <img src="/white.png" alt="logo" className="h-5 sm:h-6 " loading="lazy" decoding="async" crossOrigin="anonymous" /> : <img src="/dark.png" alt="logo" className="h-5 sm:h-6" loading="lazy" decoding="async" crossOrigin="anonymous" />
                         }
                       </SheetTitle>
                     </SheetHeader>
@@ -271,11 +271,11 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
                     {logo}
                   </div>
                     {(theme === 'dark' || theme === 'system') ?
-                      <img src="/evalis-black.png" alt="Evalis" className="h-5 sm:h-6 hidden md:inline" width={120} height={32} loading="eager" decoding="async" crossOrigin="anonymous" /> : <img src="/evalis-white.png" alt="Evalis" className="h-5 sm:h-6 hidden md:inline" width={120} height={32} loading="eager" decoding="async" crossOrigin="anonymous" />
+                      <img src="/evalis-black.png" alt="Evalis" className="h-5 sm:h-6 hidden md:inline" loading="eager" decoding="async" crossOrigin="anonymous" /> : <img src="/evalis-white.png" alt="Evalis" className="h-5 sm:h-6 hidden md:inline" loading="eager" decoding="async" crossOrigin="anonymous" />
                   }
                   <span className='px-2 hidden md:inline'>|</span>
                   {theme === 'dark' || theme === 'system' ?
-                    <img src="/white.png" alt="AITU student tools" className="h-6 hidden md:inline" width={120} height={32} loading="eager" decoding="async" crossOrigin="anonymous" /> : <img src="/dark.png" alt="AITU student tools" className="h-6 hidden md:inline" width={120} height={32} loading="eager" decoding="async" crossOrigin="anonymous" />
+                    <img src="/white.png" alt="AITU student tools" className="h-6 hidden md:inline" loading="eager" decoding="async" crossOrigin="anonymous" /> : <img src="/dark.png" alt="AITU student tools" className="h-6 hidden md:inline" loading="eager" decoding="async" crossOrigin="anonymous" />
                   }
                 </button>
               </div>
