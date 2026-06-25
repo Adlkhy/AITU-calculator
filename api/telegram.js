@@ -30,11 +30,47 @@ export default async function handler(req, res) {
 
     if (text === "/start") {
 
-        await sendMessage(chatId, "👋 Welcome to Evalis Choose a calculator or open the full website.", {
+        await sendMessage(chatId, "👋 Welcome to Evalis!\n\nFinals are temporary.\nGPA is... slightly less temporary.\nAnd future is not promised so...\n\nChoose a calculator below and let's pretend everything is under control.", {
             inline_keyboard: [
                 [
                     {
-                        text: "📚 Open Evalis",
+                        text: "GPA",
+                        web_app: {
+                            url: "https://evaiis.vercel.app/calculator/gpa"
+                        }
+                    },
+                    {
+                        text: "Attendance",
+                        web_app: {
+                            url: "https://evaiis.vercel.app/calculator/attendance"
+                        }
+                    }
+                ],
+                [
+                    {
+                        text: "Final Grade",
+                        web_app: {
+                            url: "https://evaiis.vercel.app/calculator/final-grade"
+                        }
+                    }
+                ],
+                [
+                    {
+                        text: "Budget Planner",
+                        web_app: {
+                            url: "https://evaiis.vercel.app/calculator/budget"
+                        }
+                    },
+                    {
+                        text: "Leaderboard",
+                        web_app: {
+                            url: "https://evaiis.vercel.app/leaderboard"
+                        }
+                    }
+                ],
+                [
+                    {
+                        text: "Open Full Website",
                         web_app: {
                             url: "https://evaiis.vercel.app/grade-tracker"
                         }
@@ -47,11 +83,11 @@ export default async function handler(req, res) {
 
     if (text === "/gpa") {
 
-        await sendMessage(chatId, "Open GPA Calculator", {
+        await sendMessage(chatId, "Time to see how bad it really is...", {
             inline_keyboard: [
                 [
                     {
-                        text: "📊 GPA Calculator",
+                        text: "GPA",
                         web_app: {
                             url: "https://evaiis.vercel.app/calculator/gpa"
                         }
@@ -63,11 +99,11 @@ export default async function handler(req, res) {
     }
     if (text === "/attendance") {
 
-        await sendMessage(chatId, "Open Attendance Tracker", {
+        await sendMessage(chatId, "Attendance?", {
             inline_keyboard: [
                 [
                     {
-                        text: "📊 Attendance Tracker",
+                        text: "Attendance",
                         web_app: {
                             url: "https://evaiis.vercel.app/calculator/attendance"
                         }
@@ -79,11 +115,11 @@ export default async function handler(req, res) {
     }
     if (text === "/final") {
 
-        await sendMessage(chatId, "Open Final Grade Calculator", {
+        await sendMessage(chatId, "The moment of truth. Let's calculate your last hope...", {
             inline_keyboard: [
                 [
                     {
-                        text: "📊 Final Grade Calculator",
+                        text: "Final Grade",
                         web_app: {
                             url: "https://evaiis.vercel.app/calculator/final-grade"
                         }
@@ -95,11 +131,11 @@ export default async function handler(req, res) {
     }
     if (text === "/budget") {
 
-        await sendMessage(chatId, "Open Budget Planner", {
+        await sendMessage(chatId, "Money in, money out. Can you actually afford this lifestyle?", {
             inline_keyboard: [
                 [
                     {
-                        text: "📊 Budget Planner",
+                        text: "Budget Planner",
                         web_app: {
                             url: "https://evaiis.vercel.app/calculator/budget"
                         }
@@ -111,17 +147,23 @@ export default async function handler(req, res) {
     }
     if (text === "/leaderboard") {
 
-        await sendMessage(chatId, "Open Leaderboard", {
+        await sendMessage(chatId, "See who's crushing it (and who's just... existing).", {
             inline_keyboard: [
                 [
                     {
-                        text: "📊 Leaderboard",
+                        text: "Leaderboard",
                         web_app: {
                             url: "https://evaiis.vercel.app/leaderboard"
                         }
                     }
                 ]
             ]
+        });
+
+    }
+    if (text === "/help") {
+
+        await sendMessage(chatId, "Help? 💀 \n\nThere's no such thing as help here. \nNo one's coming to help, nor save you. \nGo figure out the rest on your own. \n\nThat's life.", {
         });
 
     }
