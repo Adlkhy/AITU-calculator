@@ -13,7 +13,6 @@ const Attendance = lazy(() => import('./components/Attendance'));
 const Budget = lazy(() => import('./components/Budget'));
 const Dynamic = lazy(() => import('./components/Dynamic'));
 const FinalGrade = lazy(() => import('./components/FinalGrade'));
-
 const SubjectDirectory = lazy(() => import('./pages/SubjectDirectory'));
 const SubjectCalculator = lazy(() => import('./pages/SubjectCalculator'));
 const LandingPage = lazy(() => import('./pages/LandingPage'));
@@ -21,6 +20,7 @@ const Login = lazy(() => import('./pages/Login'));
 const Signup = lazy(() => import('./pages/Signup'));
 const AuthCallback = lazy(() => import('./pages/AuthCallback'));
 const Leaderboard = lazy(() => import('./pages/Leaderboard'));
+const ClubLeaderboard = lazy(() => import('./pages/ClubLeaderboard'));
 const NotFoundPage = lazy(() => import('./components/NotFoundPage'));
 const Profile = lazy(() => import('./pages/Profile'));
 const TermOfService = lazy(() => import('./pages/TermOfService'));
@@ -80,6 +80,7 @@ function App() {
             />
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/leaderboard/club" element={<ClubLeaderboard />} />
             <Route path="/profile" element={
               <ProtectedRoute>
                 <Profile />

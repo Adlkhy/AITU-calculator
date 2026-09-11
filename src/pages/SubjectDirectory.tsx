@@ -92,9 +92,15 @@ export default function SubjectDirectory() {
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
     const buildSchedule = (year: number) => ([
-      { name: 'Midterm week', start: new Date(year, 3, 13), end: new Date(year, 3, 20) }, // Apr 13-20
-      { name: 'Endterm week', start: new Date(year, 4, 18), end: new Date(year, 4, 24) }, // May 18-24
-      { name: 'Finals', start: new Date(year, 4, 25), end: new Date(year, 5, 6) },        // May 25-Jun 6
+      { name: 'Midterm week', start: new Date(year, 9, 5), end: new Date(year, 9, 10) },
+      { name: 'Endterm week', start: new Date(year, 10, 9), end: new Date(year, 10, 14) },
+      { name: 'Finals', start: new Date(year, 10, 16), end: new Date(year, 10, 28) },
+      { name: 'Midterm week', start: new Date(year + 1, 2, 4), end: new Date(year + 1, 2, 9) },
+      { name: 'Endterm week', start: new Date(year + 1, 3, 8), end: new Date(year + 1, 3, 13) },
+      { name: 'Finals', start: new Date(year + 1, 3, 15), end: new Date(year + 1, 3, 27) },
+      { name: 'Midterm week', start: new Date(year + 1, 5, 12), end: new Date(year + 1, 5, 17) },
+      { name: 'Endterm week', start: new Date(year + 1, 6, 17), end: new Date(year + 1, 6, 22) },
+      { name: 'Finals', start: new Date(year + 1, 6, 24), end: new Date(year + 1, 7, 5) },
     ]);
 
     const formatRange = (start: Date, end: Date) =>

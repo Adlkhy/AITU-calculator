@@ -26,6 +26,10 @@ const data = {
     {
       title: "AI",
       url: "/ai",
+    },
+    {
+      title: "Club Leaderboard",
+      url: "/leaderboard/club",
     }
   ],
   navMain: [

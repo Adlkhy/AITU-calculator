@@ -247,8 +247,8 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
                       <Link to="/calculator/attendance" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
                         Attendance
                       </Link>
-                      <Link to="/calculator/budget" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
-                        Budget
+                      <Link to="/leaderboard/club" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
+                        Clubs
                       </Link>
                       <Link to="/leaderboard" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
                         Leaderboard
@@ -289,8 +289,8 @@ export const Navbar08 = React.forwardRef<HTMLElement, Navbar08Props>(
                   <Link to="/calculator/attendance" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-base font-medium">
                     Attendance
                   </Link>
-                  <Link to="/calculator/budget" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-base font-medium">
-                    Budget
+                  <Link to="/leaderboard/club" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-base font-medium">
+                    Clubs
                   </Link>
                   <Link to="/leaderboard" className="nav-link px-2 text-muted-foreground hover:text-foreground transition-colors text-base font-medium">
                     Leaderboard
