@@ -30,7 +30,7 @@ export default async function handler(req, res) {
 
     if (text === "/start") {
 
-        await sendMessage(chatId, "👋 Welcome to Evalis!\n\nFinals are temporary.\nGPA is... slightly less temporary.\nAnd future is not promised so...\n\nChoose a calculator below and let's pretend everything is under control.", {
+        await sendMessage(chatId, "Welcome to Evalis!\n\nChoose a calculator below and let's pretend everything is under control.", {
             inline_keyboard: [
                 [
                     {
@@ -52,13 +52,19 @@ export default async function handler(req, res) {
                         web_app: {
                             url: "https://evaiis.vercel.app/calculator/final-grade"
                         }
-                    }
-                ],
-                [
+                    },
                     {
                         text: "Budget Planner",
                         web_app: {
                             url: "https://evaiis.vercel.app/calculator/budget"
+                        }
+                    },
+                ],
+                [
+                    {
+                        text: "Club Leaderboard",
+                        web_app: {
+                            url: "https://evaiis.vercel.app/leaderboard/club"
                         }
                     },
                     {
@@ -115,7 +121,7 @@ export default async function handler(req, res) {
     }
     if (text === "/final") {
 
-        await sendMessage(chatId, "The moment of truth. Let's calculate your last hope...", {
+        await sendMessage(chatId, "Let's calculate your last hope...", {
             inline_keyboard: [
                 [
                     {
@@ -138,6 +144,22 @@ export default async function handler(req, res) {
                         text: "Budget Planner",
                         web_app: {
                             url: "https://evaiis.vercel.app/calculator/budget"
+                        }
+                    }
+                ]
+            ]
+        });
+
+    }
+    if (text === "/leaderboard/club") {
+
+        await sendMessage(chatId, "See how your club is doing compared to others.", {
+            inline_keyboard: [
+                [
+                    {
+                        text: "Leaderboard",
+                        web_app: {
+                            url: "https://evaiis.vercel.app/leaderboard"
                         }
                     }
                 ]
