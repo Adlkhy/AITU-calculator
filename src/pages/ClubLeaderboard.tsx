@@ -40,6 +40,15 @@ interface SuggestFormState {
 
 const FINGERPRINT_KEY = "club_leaderboard_fingerprint";
 const VOTED_KEY = "club_leaderboard_voted_ids";
+const CLUB_CATEGORIES = [
+  "Academic",
+  "Art",
+  "Community",
+  "Technology",
+  "Games",
+  "Business",
+  "Sports",
+] as const;
 
 // ============================================================================
 // Fingerprint helpers
@@ -112,27 +121,86 @@ function persistVotedIds(ids: Set<string>) {
 // Small presentational helpers
 // ============================================================================
 
-function ClubAvatar({ club, className = "" }: { club: Pick<Club, "name" | "image_url">; className?: string }) {
-  if (club.image_url) {
+function getTelegramUsername(link: string | null): string | null {
+  if (!link) return null;
+  const trimmed = link.trim();
+
+  // Handle bare handle/username input (e.g. "@aitufmanon" or "aitufmanon")
+  const directMatch = trimmed.match(/^@?([a-zA-Z0-9_]{5,32})$/);
+  if (directMatch) return directMatch[1];
+
+  try {
+    const url = new URL(trimmed.startsWith("http") ? trimmed : `https://${trimmed}`);
+    const host = url.hostname.replace(/^www\./, "");
+    
+    if (host !== "t.me" && host !== "telegram.me") return null;
+
+    // Grab first segment after domain (ignoring subpaths/query parameters)
+    const username = url.pathname.split("/").filter(Boolean)[0];
+    if (!username || username.startsWith("+") || username === "joinchat") return null;
+
+    return /^[a-zA-Z0-9_]{5,32}$/.test(username) ? username : null;
+  } catch {
+    return null;
+  }
+}
+
+export function ClubAvatar({
+  club,
+  className = "",
+}: {
+  club: Pick<Club, "name" | "image_url" | "link">;
+  className?: string;
+}) {
+  const telegramUsername = getTelegramUsername(club.link ?? null);
+  
+  // Telegram's direct webpic URL
+  const telegramPicUrl = telegramUsername 
+    ? `https://t.me/i/userpic/320/${telegramUsername}.jpg` 
+    : null;
+
+  const [imageState, setImageState] = useState<"primary" | "fallback" | "failed">("primary");
+
+  useEffect(() => {
+    setImageState("primary");
+  }, [club.image_url, club.link]);
+
+  const activeSrc =
+    imageState === "primary" && club.image_url
+      ? club.image_url
+      : imageState !== "failed" && telegramPicUrl
+      ? telegramPicUrl
+      : null;
+
+  const handleImageError = () => {
+    if (imageState === "primary" && telegramPicUrl) {
+      setImageState("fallback");
+    } else {
+      setImageState("failed");
+    }
+  };
+
+  if (activeSrc) {
     return (
       <img
-        src={club.image_url}
+        src={activeSrc}
         alt={club.name}
         className={`rounded-full object-cover bg-muted ${className}`}
-        onError={(e) => {
-          (e.currentTarget as HTMLImageElement).style.display = "none";
-        }}
+        onError={handleImageError}
       />
     );
   }
+
   const initials = club.name
     .split(" ")
+    .filter(Boolean)
     .slice(0, 2)
     .map((w) => w[0]?.toUpperCase())
     .join("");
+
   return (
     <div
-      className={`flex items-center justify-center rounded-full bg-muted text-muted-foreground font-semibold ${className}`}
+      className={`flex items-center justify-center rounded-full bg-muted text-muted-foreground font-semibold select-none ${className}`}
     >
       {initials}
     </div>
@@ -197,7 +265,7 @@ function SuggestClubModal({
 
   if (!open) return null;
 
-  const update = (field: keyof SuggestFormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+  const update = (field: keyof SuggestFormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -260,7 +328,7 @@ function SuggestClubModal({
               onChange={update("name")}
               required
               className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              placeholder="e.g. Photography Club"
+              placeholder="e.g. Fight Club"
             />
           </div>
 
@@ -268,19 +336,27 @@ function SuggestClubModal({
             <label htmlFor="club-category" className="mb-1 block text-sm font-medium text-foreground">
               Category
             </label>
-            <input
+            <select
               id="club-category"
               value={form.category}
               onChange={update("category")}
               required
               className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              placeholder="e.g. Arts, Technology, Sports"
-            />
+            >
+              <option value="" disabled>
+                Choose a category
+              </option>
+              {CLUB_CATEGORIES.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div>
             <label htmlFor="club-description" className="mb-1 block text-sm font-medium text-foreground">
-              Description
+              Description <span className="text-muted-foreground">(keep it short)</span>
             </label>
             <textarea
               id="club-description"
@@ -294,7 +370,7 @@ function SuggestClubModal({
 
           <div>
             <label htmlFor="club-image" className="mb-1 block text-sm font-medium text-foreground">
-              Image URL <span className="text-muted-foreground">(optional)</span>
+              Image URL <span className="text-muted-foreground">(optional if your club has a Public Telegram link)</span>
             </label>
             <input
               id="club-image"
@@ -308,7 +384,7 @@ function SuggestClubModal({
 
           <div>
             <label htmlFor="club-link" className="mb-1 block text-sm font-medium text-foreground">
-              Link <span className="text-muted-foreground">(optional)</span>
+              Telegram Link
             </label>
             <input
               id="club-link"
@@ -316,7 +392,7 @@ function SuggestClubModal({
               onChange={update("link")}
               type="url"
               className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              placeholder="https://..."
+              placeholder="https://t.me/..."
             />
           </div>
 
@@ -717,3 +793,5 @@ export default function ClubLeaderboardPage() {
     </>
   );
 }
+
+// do unavatar
