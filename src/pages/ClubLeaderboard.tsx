@@ -786,6 +786,11 @@ export default function ClubLeaderboardPage() {
           </>
         )}
       </main>
+      <footer className="mx-auto max-w-4xl px-4 pt-6 pb-3 sm:px-6">
+        <p className="text-center text-xs sm:text-sm text-muted-foreground">
+        For club deletion, moderation, or other issues, please contact <a href="https://t.me/Adlkhy" className="text-primary hover:underline">the human in charge.</a>.
+        </p>
+      </footer>
 
       <SuggestClubModal open={modalOpen} onClose={() => setModalOpen(false)} onSubmitted={handleSuggested} />
     </div>
