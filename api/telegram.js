@@ -151,7 +151,7 @@ export default async function handler(req, res) {
         });
 
     }
-    if (text === "/leaderboard/club") {
+    if (text === "/club") {
 
         await sendMessage(chatId, "See how your club is doing compared to others.", {
             inline_keyboard: [
@@ -159,7 +159,7 @@ export default async function handler(req, res) {
                     {
                         text: "Leaderboard",
                         web_app: {
-                            url: "https://evaiis.vercel.app/leaderboard"
+                            url: "https://evaiis.vercel.app/leaderboard/club"
                         }
                     }
                 ]

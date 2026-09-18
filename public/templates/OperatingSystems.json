@@ -1,5 +1,5 @@
 {
-  "courseName": "Computer Networks",
+  "courseName": "Operating Systems",
   "breakdown": [
     {
       "name": "1st attestation",
@@ -22,7 +22,7 @@
           "weight": 20
         },
         {
-          "name": "Midterm (week 5)",
+          "name": "Midterm exam",
           "weight": 20
         }
       ]
@@ -33,27 +33,23 @@
       "subItems": [
         {
           "name": "Assignment 5 (week 6)",
-          "weight": 15
+          "weight": 20
         },
         {
           "name": "Assignment 6 (week 7)",
-          "weight": 15
+          "weight": 20
         },
         {
           "name": "Assignment 7 (week 8)",
-          "weight": 15
+          "weight": 20
         },
         {
           "name": "Assignment 8 (week 9)",
-          "weight": 15
+          "weight": 20
         },
         {
-          "name": "Cisco certificate",
-          "weight": 10
-        },
-        {
-          "name": "Endterm (week 10)",
-          "weight": 30
+          "name": "Endterm exam",
+          "weight": 20
         }
       ]
     },
@@ -62,12 +58,12 @@
       "overallWeight": 40,
       "subItems": [
         {
-          "name": "Paper based Exam (MCQ, open questions)",
+          "name": "Exam (Paper based MCQ + Open Questions)",
           "weight": 100
         }
       ]
     }
   ],
   "gradingScale": [],
-  "totalWeightNote": "0.3*1 st Att + 0.3 *2 nd Att + 0,4 * Final"
+  "totalWeightNote": "0.3*1 st Att + 0.3 *2 nd Att + 0.4*Final"
 }

@@ -1,0 +1,69 @@
+{
+  "courseName": "Database Management Systems",
+  "breakdown": [
+    {
+      "name": "1st attestation",
+      "overallWeight": 30,
+      "subItems": [
+        {
+          "name": "Assignment 1. Creating of ERD diagram",
+          "weight": 20
+        },
+        {
+          "name": "Assignment 2. Intro to DDL",
+          "weight": 20
+        },
+        {
+          "name": "Assignment 3. Intro to DML and JOIN operators",
+          "weight": 20
+        },
+        {
+          "name": "Learn - quiz (on platform learn astana it.kz)",
+          "weight": 10
+        },
+        {
+          "name": "Mid Term*",
+          "weight": 30
+        }
+      ]
+    },
+    {
+      "name": "2nd attestation",
+      "overallWeight": 30,
+      "subItems": [
+        {
+          "name": "Assignment 4. Subquery, grouping, aggregate, functions",
+          "weight": 20
+        },
+        {
+          "name": "Assignment 5. Window functions",
+          "weight": 20
+        },
+        {
+          "name": "Assignment 6. Set Operations, Grouping sets, Cube, and Rollup, PostgreSQL Views, PostgreSQL Indexes, ACID Properties in DBMS",
+          "weight": 20
+        },
+        {
+          "name": "Learn- quiz (on platform learn astana it.kz)",
+          "weight": 10
+        },
+        {
+          "name": "End Term*",
+          "weight": 30
+        }
+      ]
+    },
+    {
+      "name": "Final exam*",
+      "overallWeight": 40,
+      "subItems": [
+        {
+          "name": "Final Test. (MCQ)",
+          "weight": 100
+        }
+      ]
+    }
+  ],
+  "gradingScale": [],
+  "totalWeightNote": "0,3 * 1st Att + 0,3 * 2nd Att + 0,4 * Final"
+}

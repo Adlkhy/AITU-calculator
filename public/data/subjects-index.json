@@ -182,7 +182,7 @@
   {
     "slug": "computer-networks",
     "name": "Computer Networks",
-    "teacher": "",
+    "teacher": "Kazhybayev Olzhas",
     "courseName": "Computer Networks",
     "description": "Calculate Computer Networks grades with a standard 30/30/40 attestation grading structure.",
     "file": "ComputerNetworks.json",
@@ -196,6 +196,36 @@
     "courseName": "Probability and Statistics",
     "description": "Calculate Probability and Statistics grades with a standard 30/30/40 attestation grading structure.",
     "file": "ProbabilityStatistics.json",
+    "type": "template",
+    "tags": ["ALL"]
+  },
+  {
+    "slug": "operating-systems",
+    "name": "Operating Systems",
+    "teacher": "Tolegen Dana",
+    "courseName": "Operating Systems",
+    "description": "Calculate Operating Systems grades with a standard 30/30/40 attestation grading structure.",
+    "file": "OperatingSystems.json",
+    "type": "template",
+    "tags": ["ALL"]
+  },
+  {
+    "slug": "dld",
+    "name": "Digital Logic Design",
+    "teacher": "Batkuldin Alisher",
+    "courseName": "Digital Logic Design",
+    "description": "Calculate Digital Logic Design grades with a standard 30/30/40 attestation grading structure.",
+    "file": "digital-logic-design.json",
+    "type": "template",
+    "tags": ["ALL"]
+  },
+  {
+    "slug": "dbms",
+    "name": "Database Management Systems",
+    "teacher": "Sakhipov Aivar",
+    "courseName": "Database Management Systems",
+    "description": "Calculate Database Management Systems grades with a standard 30/30/40 attestation grading structure.",
+    "file": "database-management-systems.json",
     "type": "template",
     "tags": ["ALL"]
   },
