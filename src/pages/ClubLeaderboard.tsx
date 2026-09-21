@@ -704,6 +704,9 @@ export default function ClubLeaderboardPage() {
               <p className="mt-1 text-sm text-muted-foreground">
                 Vote for your favorite AITU clubs — one vote per club.
               </p>
+              <p className="mt-3 rounded-md border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm font-medium text-amber-700 dark:text-amber-300">
+                Attention: This leaderboard is currently unavailable because of hacks. <br />Will work after One Eternity...
+              </p>
             </div>
             <button
               type="button"
