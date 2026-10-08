@@ -1,0 +1,70 @@
+{
+  "courseName": "Software Design Patterns",
+  "breakdown": [
+    {
+      "name": "1st attestation",
+      "overallWeight": 30,
+      "subItems": [
+        {
+          "name": "Assignment 1 (Builder Pattern)",
+          "weight": 15
+        },
+        {
+          "name": "Assignment 2 (Factory Method & Abstract Factory)",
+          "weight": 15
+        },
+        {
+          "name": "MCQ Quiz # 1 (Adapter Pattern)",
+          "weight": 15
+        },
+        {
+          "name": "Assignment 3 (Bridge Pattern)",
+          "weight": 15
+        },
+        {
+          "name": "Midterm",
+          "weight": 40
+        }
+      ]
+    },
+    {
+      "name": "2nd attestation",
+      "overallWeight": 30,
+      "subItems": [
+        {
+          "name": "Assignment 4 (Facade Pattern)",
+          "weight": 15
+        },
+        {
+          "name": "Assignment 5 (Strategy Pattern)",
+          "weight": 15
+        },
+        {
+          "name": "MCQ Quiz # 2 (Observer Pattern)",
+          "weight": 15
+        },
+        {
+          "name": "Assignment 6 (Visitor Pattern)",
+          "weight": 15
+        },
+        {
+          "name": "Endterm",
+          "weight": 40
+        }
+      ]
+    },
+    {
+      "name": "Final exam",
+      "overallWeight": 40,
+      "subItems": [
+        {
+          "name": "Team Project",
+          "weight": 100
+        }
+      ]
+    }
+  ],
+  "gradingScale": [],
+  "totalWeightNote": "0.3*1st Att + 0.3 *2nd Att + 0,4* Final",
+  "yearLabel": "2026"
+}

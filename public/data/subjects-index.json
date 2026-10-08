@@ -230,6 +230,16 @@
     "tags": ["ALL"]
   },
   {
+    "slug": "software-design-patterns",
+    "name": "Software Design Patterns",
+    "teacher": "Kharmyssov Chingis",
+    "courseName": "Software Design Patterns",
+    "description": "Calculate Software Design Patterns grades with a standard 30/30/40 attestation grading structure.",
+    "file": "software-design-patterns.json",
+    "type": "template",
+    "tags": ["CS", "SE"]
+  },
+  {
     "slug": "custom",
     "name": "Custom Calculator",
     "courseName": "Custom Grade Calculator",
