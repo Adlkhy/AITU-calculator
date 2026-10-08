@@ -86,12 +86,13 @@ async function sha256(input: string): Promise<string> {
  * source of uniqueness/persistence) with coarse device signals so two
  * fresh localStorage stores on the same machine still differ. */
 async function getVoterFingerprint(): Promise<string> {
-  const cached = localStorage.getItem(FINGERPRINT_KEY);
-  if (cached) return cached;
+  try {
+    const cached = localStorage.getItem(FINGERPRINT_KEY);
+    if (cached) return cached;
+  } catch { /* storage blocked, fall through */ }
 
-  const uuid = crypto.randomUUID();
   const raw = [
-    uuid,
+    crypto.randomUUID(),
     navigator.userAgent,
     navigator.language,
     `${screen.width}x${screen.height}`,
@@ -99,8 +100,9 @@ async function getVoterFingerprint(): Promise<string> {
     getCanvasSignature(),
   ].join("|");
 
-  const fingerprint = await sha256(raw);
-  localStorage.setItem(FINGERPRINT_KEY, fingerprint);
+  const fingerprint = await sha256(raw); // 64 hex chars, fits the RPC's length check
+
+  try { localStorage.setItem(FINGERPRINT_KEY, fingerprint); } catch { /* ignore */ }
   return fingerprint;
 }
 
