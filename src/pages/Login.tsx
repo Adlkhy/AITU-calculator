@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { LoginForm } from "@/components/login-form"
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast, Toaster } from 'sonner';
 import { SeoMeta } from '@/lib/seo';
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +25,15 @@ export default function LoginPage() {
     if (error) {
       toast.error(error.message);
     } else {
-      navigate("/calculator", { replace: true });
+      const state = location.state as
+        | { returnTo?: string; pendingLikeClubId?: string }
+        | null;
+      navigate(state?.returnTo ?? "/calculator", {
+        replace: true,
+        state: state?.pendingLikeClubId
+          ? { pendingLikeClubId: state.pendingLikeClubId }
+          : undefined,
+      });
     }
     setLoading(false);
   };

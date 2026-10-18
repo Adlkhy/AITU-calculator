@@ -1,7 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { type RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 import { Search, Trophy, Heart, Plus, X, Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
+import { useClubLikes } from "@/hooks/useClubLikes";
+import { useUser } from "@/hooks/useUser";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { SeoMeta } from "@/lib/seo";
 import { Navbar08 } from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -38,8 +42,6 @@ interface SuggestFormState {
   link: string;
 }
 
-const FINGERPRINT_KEY = "club_leaderboard_fingerprint";
-const VOTED_KEY = "club_leaderboard_voted_ids";
 const CLUB_CATEGORIES = [
   "Academic",
   "Art",
@@ -49,75 +51,6 @@ const CLUB_CATEGORIES = [
   "Business",
   "Sports",
 ] as const;
-
-// ============================================================================
-// Fingerprint helpers
-// ============================================================================
-
-/** A lightweight, stable-ish device signature. Not meant to defeat a
- * determined attacker — just to raise the bar above "clear localStorage". */
-function getCanvasSignature(): string {
-  try {
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return "no-canvas";
-    ctx.textBaseline = "top";
-    ctx.font = "14px 'Arial'";
-    ctx.fillStyle = "#f60";
-    ctx.fillRect(0, 0, 100, 20);
-    ctx.fillStyle = "#069";
-    ctx.fillText("club-leaderboard-fp", 2, 2);
-    return canvas.toDataURL();
-  } catch {
-    return "no-canvas";
-  }
-}
-
-async function sha256(input: string): Promise<string> {
-  const data = new TextEncoder().encode(input);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  return Array.from(new Uint8Array(hashBuffer))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
-}
-
-/** Returns a persistent fingerprint string, generating and caching one
- * in localStorage on first visit. Combines a random UUID (the actual
- * source of uniqueness/persistence) with coarse device signals so two
- * fresh localStorage stores on the same machine still differ. */
-async function getVoterFingerprint(): Promise<string> {
-  try {
-    const cached = localStorage.getItem(FINGERPRINT_KEY);
-    if (cached) return cached;
-  } catch { /* storage blocked, fall through */ }
-
-  const raw = [
-    crypto.randomUUID(),
-    navigator.userAgent,
-    navigator.language,
-    `${screen.width}x${screen.height}`,
-    Intl.DateTimeFormat().resolvedOptions().timeZone,
-    getCanvasSignature(),
-  ].join("|");
-
-  const fingerprint = await sha256(raw); // 64 hex chars, fits the RPC's length check
-
-  try { localStorage.setItem(FINGERPRINT_KEY, fingerprint); } catch { /* ignore */ }
-  return fingerprint;
-}
-
-function getVotedIds(): Set<string> {
-  try {
-    const raw = localStorage.getItem(VOTED_KEY);
-    return raw ? new Set(JSON.parse(raw)) : new Set();
-  } catch {
-    return new Set();
-  }
-}
-
-function persistVotedIds(ids: Set<string>) {
-  localStorage.setItem(VOTED_KEY, JSON.stringify(Array.from(ids)));
-}
 
 // ============================================================================
 // Small presentational helpers
@@ -429,12 +362,12 @@ function SuggestClubModal({
 
 function Podium({
   clubs,
-  votedIds,
+  likedClubIds,
   pendingIds,
   onVote,
 }: {
   clubs: Club[];
-  votedIds: Set<string>;
+  likedClubIds: Set<string>;
   pendingIds: Set<string>;
   onVote: (id: string) => void;
 }) {
@@ -466,7 +399,7 @@ function Podium({
             <div className="flex items-center gap-2">
               <span className="text-base font-bold">{club.likes_count}</span>
               <VoteButton
-                voted={votedIds.has(club.id)}
+                voted={likedClubIds.has(club.id)}
                 pending={pendingIds.has(club.id)}
                 onVote={() => onVote(club.id)}
               />
@@ -520,25 +453,17 @@ function ClubRow({
 // ============================================================================
 
 export default function ClubLeaderboardPage() {
+  const { session } = useUser();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [clubs, setClubs] = useState<Club[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
-
-  const [votedIds, setVotedIds] = useState<Set<string>>(() => getVotedIds());
-  const [pendingIds, setPendingIds] = useState<Set<string>>(new Set());
+  const { likeAdjustments, likedClubIds, pendingIds, toggleLike } = useClubLikes();
 
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [modalOpen, setModalOpen] = useState(false);
-
-  const fingerprintRef = useRef<string | null>(null);
-
-  // Load fingerprint once
-  useEffect(() => {
-    getVoterFingerprint().then((fp) => {
-      fingerprintRef.current = fp;
-    });
-  }, []);
 
   // Initial fetch
   useEffect(() => {
@@ -549,14 +474,21 @@ export default function ClubLeaderboardPage() {
       const { data, error } = await supabase
         .from("clubs")
         .select("*")
-        .order("likes_count", { ascending: false });
+        .order("likes_count", { ascending: false })
+        .order("created_at", { ascending: true })
+        .order("id", { ascending: true });
 
       if (cancelled) return;
 
       if (error) {
         setLoadError("Couldn't load the leaderboard. Please refresh.");
       } else {
-        setClubs((data ?? []) as Club[]);
+        setClubs(
+          (data ?? []).map((club) => ({
+            ...(club as Club),
+            likes_count: Number((club as Club).likes_count) || 0,
+          }))
+        );
       }
       setLoading(false);
     })();
@@ -566,7 +498,7 @@ export default function ClubLeaderboardPage() {
     };
   }, []);
 
-  // Realtime subscription: keep likes_count (and new/edited clubs) in sync
+  // Realtime subscription: keep new and edited clubs in sync.
   useEffect(() => {
     const channel = supabase
       .channel("clubs-leaderboard")
@@ -578,13 +510,15 @@ export default function ClubLeaderboardPage() {
             if (payload.eventType === "INSERT") {
               const newClub = payload.new as Club;
               if (prev.some((c) => c.id === newClub.id)) return prev;
-              return [...prev, newClub].sort((a, b) => b.likes_count - a.likes_count);
+              return [...prev, newClub];
             }
             if (payload.eventType === "UPDATE") {
               const updated = payload.new as Club;
-              return prev
-                .map((c) => (c.id === updated.id ? updated : c))
-                .sort((a, b) => b.likes_count - a.likes_count);
+              return prev.map((c) =>
+                c.id === updated.id
+                  ? { ...updated, likes_count: c.likes_count }
+                  : c
+              );
             }
             if (payload.eventType === "DELETE") {
               const removed = payload.old as Partial<Club>;
@@ -601,87 +535,74 @@ export default function ClubLeaderboardPage() {
     };
   }, []);
 
+  useEffect(() => {
+    const pendingLikeClubId = (location.state as { pendingLikeClubId?: string } | null)
+      ?.pendingLikeClubId;
+    if (!session || !pendingLikeClubId) return;
+
+    if (!session.user.email_confirmed_at) {
+      toast.warning("Please verify your email before liking a club.");
+    } else {
+      void toggleLike(pendingLikeClubId);
+    }
+    navigate(location.pathname, { replace: true, state: null });
+  }, [location.pathname, location.state, navigate, session, toggleLike]);
+
   const categories = useMemo(() => {
     const set = new Set(clubs.map((c) => c.category));
     return ["All", ...Array.from(set).sort()];
   }, [clubs]);
 
+  const sortedClubs = useMemo(() => {
+    if (loading) return [];
+
+    const adjustedClubs = clubs.map((club) => ({
+      ...club,
+      likes_count: Math.max(club.likes_count + (likeAdjustments[club.id] ?? 0), 0),
+    }));
+    return [...adjustedClubs].sort((a, b) => {
+      const likesDifference = b.likes_count - a.likes_count;
+      if (likesDifference !== 0) return likesDifference;
+      const createdDifference = a.created_at.localeCompare(b.created_at);
+      return createdDifference !== 0 ? createdDifference : a.id.localeCompare(b.id);
+    });
+  }, [clubs, likeAdjustments, loading]);
+
   const filteredClubs = useMemo(() => {
     const query = search.trim().toLowerCase();
-    return clubs.filter((c) => {
+    return sortedClubs.filter((c) => {
       const matchesCategory = activeCategory === "All" || c.category === activeCategory;
       const matchesQuery = !query || c.name.toLowerCase().includes(query);
       return matchesCategory && matchesQuery;
     });
-  }, [clubs, search, activeCategory]);
+  }, [sortedClubs, search, activeCategory]);
 
-  // filteredClubs is already sorted because `clubs` is sorted on write/realtime.
   const topThree = filteredClubs.slice(0, 3);
   const rest = filteredClubs.slice(3);
 
   const handleVote = useCallback(
-    async (clubId: string) => {
-      if (votedIds.has(clubId) || pendingIds.has(clubId)) return;
-      const fingerprint = fingerprintRef.current ?? (await getVoterFingerprint());
-      fingerprintRef.current = fingerprint;
-
-      // Optimistic UI update
-      setPendingIds((prev) => new Set(prev).add(clubId));
-      setClubs((prev) =>
-        prev
-          .map((c) => (c.id === clubId ? { ...c, likes_count: c.likes_count + 1 } : c))
-          .sort((a, b) => b.likes_count - a.likes_count)
-      );
-      const nextVoted = new Set(votedIds).add(clubId);
-      setVotedIds(nextVoted);
-      persistVotedIds(nextVoted);
-
-      const { error } = await supabase
-        .from("club_likes")
-        .insert({ club_id: clubId, voter_fingerprint: fingerprint });
-
-      setPendingIds((prev) => {
-        const next = new Set(prev);
-        next.delete(clubId);
-        return next;
-      });
-
-      if (error) {
-        // Postgres unique_violation code
-        if (error.code === "23505") {
-          // Already voted from this fingerprint (e.g. across tabs/devices
-          // sharing storage) — keep it marked as voted, just roll back
-          // the optimistic increment since the trigger won't have fired.
-          setClubs((prev) =>
-            prev
-              .map((c) => (c.id === clubId ? { ...c, likes_count: Math.max(c.likes_count - 1, 0) } : c))
-              .sort((a, b) => b.likes_count - a.likes_count)
-          );
-          return;
-        }
-
-        // Any other failure: roll back both the optimistic count and the
-        // local "voted" flag so the user can retry.
-        setClubs((prev) =>
-          prev
-            .map((c) => (c.id === clubId ? { ...c, likes_count: Math.max(c.likes_count - 1, 0) } : c))
-            .sort((a, b) => b.likes_count - a.likes_count)
-        );
-        setVotedIds((prev) => {
-          const next = new Set(prev);
-          next.delete(clubId);
-          persistVotedIds(next);
-          return next;
+    (clubId: string) => {
+      if (!session) {
+        navigate("/login", {
+          state: { returnTo: "/leaderboard/club", pendingLikeClubId: clubId },
         });
+        return;
       }
+
+      if (!session.user.email_confirmed_at) {
+        toast.warning("Please verify your email before liking a club.");
+        return;
+      }
+
+      void toggleLike(clubId);
     },
-    [votedIds, pendingIds]
+    [navigate, session, toggleLike]
   );
 
   const handleSuggested = useCallback((club: Club) => {
     setClubs((prev) => {
       if (prev.some((c) => c.id === club.id)) return prev;
-      return [...prev, club].sort((a, b) => b.likes_count - a.likes_count);
+      return [...prev, { ...club, likes_count: club.likes_count }];
     });
   }, []);
 
@@ -706,9 +627,9 @@ export default function ClubLeaderboardPage() {
               <p className="mt-1 text-sm text-muted-foreground">
                 Vote for your favorite AITU clubs — one vote per club.
               </p>
-              <p className="mt-3 rounded-md border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm font-medium text-amber-700 dark:text-amber-300">
+              {/* <p className="mt-3 rounded-md border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm font-medium text-amber-700 dark:text-amber-300">
                 Attention: This leaderboard is currently unavailable because of hacks. <br />Will work after One Eternity...
-              </p>
+              </p> */}
             </div>
             <button
               type="button"
@@ -774,7 +695,7 @@ export default function ClubLeaderboardPage() {
 
         {!loading && !loadError && filteredClubs.length > 0 && (
           <>
-            <Podium clubs={topThree} votedIds={votedIds} pendingIds={pendingIds} onVote={handleVote} />
+            <Podium clubs={topThree} likedClubIds={likedClubIds} pendingIds={pendingIds} onVote={handleVote} />
 
             <div className="space-y-2">
               {rest.map((club, idx) => (
@@ -782,7 +703,7 @@ export default function ClubLeaderboardPage() {
                   key={club.id}
                   club={club}
                   rank={idx + 4}
-                  voted={votedIds.has(club.id)}
+                  voted={likedClubIds.has(club.id)}
                   pending={pendingIds.has(club.id)}
                   onVote={() => handleVote(club.id)}
                 />
