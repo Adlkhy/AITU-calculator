@@ -23,11 +23,13 @@ import { useUser } from '../hooks/useUser';
 import { Loader2, Save, Trash, Pencil } from 'lucide-react';
 import { Badge } from './ui/badge';
 import { ChartContainer, type ChartConfig } from './ui/chart';
+import { readGuestGrades, writeGuestGrades } from '@/lib/guestGrades';
 
 interface GradeCalculatorProps {
   data: SyllabusData;
   initialScores?: Record<string, number>;
   initialId?: string | null; // Optional: if editing an existing record
+  subjectKey?: string;
 }
 
 const chartConfig = {
@@ -36,16 +38,33 @@ const chartConfig = {
   final: { label: "Final Exam", color: "var(--chart-3)" },
 } satisfies ChartConfig;
 
-export const GradeCalculator: React.FC<GradeCalculatorProps> = ({ 
+export const GradeCalculator: React.FC<GradeCalculatorProps> = (props) => {
+  const { user, loading } = useUser();
+  if (loading) return <p className="text-sm text-muted-foreground">Loading calculator...</p>;
+
+  // Remount on subject/account changes so drafts and pending account loads stay isolated.
+  const identity = JSON.stringify([props.subjectKey ?? props.data.courseName,
+    props.data.breakdown, user?.id ?? 'guest', props.initialId]);
+  return <GradeCalculatorContent key={identity} {...props} />;
+};
+
+const GradeCalculatorContent: React.FC<GradeCalculatorProps> = ({
   data, 
   initialScores,
-  initialId = null 
+  initialId = null,
+  subjectKey,
 }) => {
   const { user } = useUser();
+  const guestKey = subjectKey ?? `course:${data.courseName}`;
+  const layout = JSON.stringify(data.breakdown);
+  const [restored] = useState(() => !user && !initialId
+    ? readGuestGrades(guestKey, layout)
+    : { draft: null, unavailable: false });
+  const [storageUnavailable, setStorageUnavailable] = useState(restored.unavailable);
   
   // State
-  const [scores, setScores] = useState<Record<string, number>>(initialScores || {});
-  const [courseName, setCourseName] = useState<string>(data.courseName || 'Unnamed Course');
+  const [scores, setScores] = useState<Record<string, number>>(initialScores ?? restored.draft?.scores ?? {});
+  const [courseName, setCourseName] = useState<string>(restored.draft?.courseName ?? data.courseName ?? 'Unnamed Course');
   
   // Persistence State
   const [savedId, setSavedId] = useState<string | null>(initialId);
@@ -226,6 +245,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
   // --- PERSISTENCE ---
 
   useEffect(() => {
+    let cancelled = false;
     const fetchSavedCalculator = async () => {
       if (!user || !data.courseName || initialId) return;
 
@@ -244,7 +264,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
           return;
         }
 
-        if (savedData) {
+        if (savedData && !cancelled) {
           setSavedId(savedData.id);
           setScores(savedData.scores_data);
           setCourseName(savedData.course_name);
@@ -255,11 +275,25 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
     };
 
     fetchSavedCalculator();
+    return () => { cancelled = true; };
   }, [user, data.courseName, initialId, data]);
 
   const handleScoreChange = (key: string, value: string) => {
     const numValue = Math.min(100, Math.max(0, parseFloat(value) || 0));
-    setScores(prev => ({ ...prev, [key]: numValue }));
+    const nextScores = { ...scores };
+    if (value === '') delete nextScores[key];
+    else nextScores[key] = numValue;
+    setScores(nextScores);
+    persistGuestDraft(nextScores, courseName);
+  };
+
+  // Save during edits, without a delayed timer or unload event that could lose the last grade.
+  const persistGuestDraft = (nextScores: Record<string, number>, nextName: string) => {
+    if (!user && !initialId) {
+      setStorageUnavailable(!writeGuestGrades(guestKey, layout, {
+        scores: nextScores, courseName: nextName,
+      }));
+    }
   };
 
   // --- SAVE FUNCTION ---
@@ -390,6 +424,13 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
           </div>
         </div>
         
+        {!user && (
+          <p className="text-xs md:text-sm text-muted-foreground" role="status">
+            {storageUnavailable
+              ? 'Browser saving is unavailable. Your grades may be lost when you leave this page.'
+              : 'Grades are automatically saved in this browser. They can be lost if you clear site data or use private browsing, and won’t appear in another browser or device.'}
+          </p>
+        )}
         {/* EDITABLE COURSE NAME CARD */}
         <Card className="">
           <CardContent className="">
@@ -400,7 +441,10 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
                <Input 
                  value={courseName}
                  name='Course Name'
-                 onChange={(e) => setCourseName(e.target.value)}
+                 onChange={(e) => {
+                   setCourseName(e.target.value);
+                   persistGuestDraft(scores, e.target.value);
+                 }}
                  className="sm:text-lg font-semibold text-muted-foreground pr-10 border-transparent hover:border-input focus:border-input transition-colors"
                />
                <Pencil className="h-4 w-4 absolute right-3 text-muted-foreground pointer-events-none" />
@@ -422,7 +466,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
                   placeholder="Score"
                   name="Assignment Score"
                   className="w-24 p-2 text-center font-mono"
-                  value={scores[`${catIdx}-main`] || ''}
+                  value={scores[`${catIdx}-main`] ?? ''}
                   onChange={(e) => handleScoreChange(`${catIdx}-main`, e.target.value)}
                 />
                 <span className="text-foreground/80 font-mono">%</span>
@@ -444,7 +488,7 @@ export const GradeCalculator: React.FC<GradeCalculatorProps> = ({
                         placeholder="0-100"
                         name="Assignment Weight"
                         className="w-20 p-1.5 text-center text-sm font-mono"
-                        value={scores[`${catIdx}-${subIdx}`] || ''}
+                        value={scores[`${catIdx}-${subIdx}`] ?? ''}
                         onChange={(e) => handleScoreChange(`${catIdx}-${subIdx}`, e.target.value)}
                       />
                       <span className="text-foreground">%</span>

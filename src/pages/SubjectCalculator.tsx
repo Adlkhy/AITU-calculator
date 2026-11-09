@@ -121,7 +121,7 @@ export default function SubjectCalculator() {
   const renderCalculator = () => {
     // Template-backed subjects — GradeCalculator handles all the business logic
     if (template) {
-      return <GradeCalculator data={template} />;
+      return <GradeCalculator data={template} subjectKey={subject?.slug} />;
     }
 
     // Built-in tools resolved by slug
